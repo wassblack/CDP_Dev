@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const user = require('../models/user');
+const ModelUser = require('../models/user');
 const bcrypt = require('bcryptjs');
 
 function checkIfEmailInString(text) {
@@ -45,29 +45,42 @@ router.post('/register', (req, res) => {
     }
     console.log(errors.values);
     if (errors === undefined || errors.length == 0) {
-        user.findOne({ email: email }).then(user => {
-            //user already exists
-            errors.push({ msg: 'email exist déja' });
-            if(user){
-                res.render('register', {
-                    errors,
-                    name,
-                    firstname,
-                    email,
-                    password,
-                    password2
-                });
-            } else{
-                const newUser = new User({
-                    name,
-                    firstname,
-                    email,
-                    password
-                });
-                console.log(newUser);
-                res.send('Crée');
-            }
-        });
+        ModelUser.findOne({ email: email })
+            .then(user => {
+                if (user) {
+                    //user already exists
+                    console.log('User exists');
+                    errors.push({ msg: 'email exist déja' });
+                    res.render('register', {
+                        errors,
+                        name,
+                        firstname,
+                        email,
+                        password,
+                        password2
+                    });
+                } else {
+                    const newUser = new ModelUser({
+                        lastname: name,
+                        firstname,
+                        email,
+                        password
+                    });
+                    //Encrypt password using bcrypt
+                    bcrypt.genSalt(10, (err, salt) => {
+                        bcrypt.hash(newUser.password, salt, (err, hash) => {
+                            if(err) throw err;
+                            //new password hashed
+                            newUser.password = hash;
+                            newUser.save()
+                            .then(user => {
+                                res.redirect('/users/login');
+                            })
+                            .catch(err => console.log(err));
+                        })
+                    });
+                }
+            });
     } else {
         res.render('register', {
             errors,
