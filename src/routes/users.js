@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const ModelUser = require('../models/user');
 const bcrypt = require('bcryptjs');
+const passport = require('passport');
 
 function checkIfEmailInString(text) {
     var re = /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
@@ -74,7 +75,9 @@ router.post('/register', (req, res) => {
                             newUser.password = hash;
                             newUser.save()
                             .then(user => {
+                                req.flash('success_msg','Votre compte a été bien crée !');
                                 res.redirect('/users/login');
+
                             })
                             .catch(err => console.log(err));
                         })
@@ -92,6 +95,20 @@ router.post('/register', (req, res) => {
         });
 
     }
+});
+
+router.post('/login', (req, res, next) =>{
+    passport.authenticate('local', {
+        successRedirect: '/Projects',
+        failureRedirect: '/users/login',
+        failureFlash: true
+    })(req, res, next);
+});
+
+router.get('/logout', (req, res)=>{
+    req.logOut();
+    req.flash('success_msg','Deconnexion');
+    res.redirect('/users/login');
 });
 
 module.exports = router;
