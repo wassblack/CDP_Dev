@@ -1,0 +1,47 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="#">Scrum it</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
+        aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Projets <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Documentations</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Releases</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Tests</a>
+            </li>
+        </ul>
+    </div>
+    <div class="nav navbar-nav navbar-righ">
+        <a class="nav-link" href="/users/logout">Déconnexion</a>
+    </div>
+</nav>
+
+<div class="row mt-5">
+    <div class="col-md-6 m-auto">
+        <div class="card card-body">
+            <h1 class="text-center mb-3">Création de projet</h1>
+            <% include message%>
+            <form action="/createProject" method="POST">
+                <div class="form-group">
+                    <label for="name">Nom</label>
+                    <input type="text" id="name" name="name" class="form-control" placeholder="Entrez le nom de votre projet" />
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <input type="text" id="description" name="description" class="form-control"
+                        placeholder="Décrivez votre projet en quelques lignes ..." />
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Créer un projet</button>
+            </form>
+        </div>
+    </div>
+</div>
