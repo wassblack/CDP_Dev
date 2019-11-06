@@ -20,30 +20,25 @@ Réaliser un outil pour gérer la production logicielle (à la Scrum)
 # Backlog
 | ID | Description | Priorité | Difficulté | Sprint |
 |-|-|-|-|-|
-| 1 | En tant que visiteur, je souhaite pouvoir créer mon compte en entrant mes coordonnées (nom, prénom, id utilisateur, Mdp, mail) |  | 3 | 1 |
-| 2 | En tant que visiteur, je souhaite pouvoir me connecter à mon compte avec mes identifiants (id / Mdp) afin d'accéder à la liste de mes projets |  | 1 | 1 |
-| 3 | En tant qu'utilisateur identifié, je souhaite pouvoir me déconnecter  |  | 1 | 1 |
-| 4 | En tant qu'utilisateur identifié, je souhaite pouvoir créer un nouveau projet en cliquant sur nouveau projet et en entrant le nom de mon projet (Obligatoire) + sa description (Optionnel) |  | 3 | 1 |
-| 5 | En tant qu'utilisateur identifié, je souhaite pouvoir éditer un projet en cliquant sur le projet et en entrant le nouveau nom et/ou la nouvelle description |  | 3 | 1 |
-| 6 | En tant qu'utilisateur identifié, je souhaite pouvoir supprimer un projet en cliquant sur supprimer le projet |  | 1 | 1 |
-| 7 | En tant qu'utilisateur identifié, je souhaite pouvoir ajouter des contributeurs à mon projet en cliquant sur le projet puis sur modifier et en entrant l'id du contributeur à ajouter |  | 3 | 1 |
-| 8 | En tant qu'utilisateur identifié, je souhaite pouvoir lister mes projets en cliquant sur mes projets |  | 2 | 1 |
-| 9 | En tant qu'utilisateur identifié, je souhaite pouvoir ajouter une User Story au backlog de mon projet en accédant à mon projet puis en cliquant sur "ajouter US" puis en entrant sa description (Obligatoire) sa priorité (Obligatoire) et sa difficulté (Obligatoire)  |  | 3 | 1 |
-| 10 | En tant qu'utilisateur identifié, je souhaite pouvoir supprimer une User Story du backlog de mon projet en accédant à mon projet puis en cliquant sur "supprimer US" à côté de l'User Story à supprimer. |  | 1 | 1 |
-| 11 | En tant qu'utilisateur identifié, je souhaite pouvoir modifier une User Story du backlog de mon projet en accédant à mon projet puis en cliquant sur "modifier US" puis en entrant les nouvelles informations (id, description, difficulté) | | 3 | 2 |
-| 12 | En tant qu'utilisateur identifié, je souhaite pouvoir créer un sprint en cliquant sur ajouter sprint et en entrant le nom du sprint (Obligatoire), sa date de début (Obligatoire), sa date de fin (Obligatoire) | | 3 | 2 |
-| 13 | En tant qu'utilisateur identifié, je souhaite pouvoir affecter des issues à un sprint en cliquant sur ajouter issues et en sélectionnant les issues à ajouter | | 3 | 2 |
-| 14 | En tant qu'utilisateur identifié, je souhaite pouvoir modifier les issues d'un sprint en cliquant sur "Editer les issues du sprint" et en sélectionnant l'issue à modifier (voir US10) | | 3 | 2 |
-| 15 | En tant qu'utilisateur identifié, je souhaite pouvoir créer des tâches en cliquant sur créer tâche et en entrant le nom (Obligatoire), description (Obligatoire), issue liée (Obligatoire), développeur (optionnel)| | 3 | 2 |
-| 16 | En tant qu'utilisateur identifié, je souhaite pouvoir modifier une tâche en cliquant sur modifier tâche et en entrant le nouveau nom et/ou description et/ou  statut et/ou développeur| | 3 | 2 |
-| 17 | En tant qu'utilisateur identifié, je souhaite pouvoir supprimer une tâche en cliquant sur supprimer tache | | 1 | 2 |
-| 18 | En tant qu'utilisateur identifié, je souhaite pouvoir lister les tâches liées à un sprint en cliquant sur le sprint. | | 2 | 2 |
-| 19 | En tant qu'utilisateur identifié, je souhaite pouvoir créer un test "End to End" et le rajouter  à une tache en cliquant sur créer test et en entrant le nom (Obligatoire), description(Optionnel), id tache(Obligatoire), état (Obligatoire) |  | 3 | 3 |
-| 20 | En tant qu'utilisateur identifié, je souhaite pouvoir supprimer un test en cliquant sur "supprimer test"  | | 1 | 3 |
-| 21 | En tant qu'utilisateur identifié, je souhaite pouvoir créer une release en cliquant sur créer release et en entrant la version(Obligatoire), description(Optionnel), lien vers le dépôt (Obligatoire) | | 3 | 3 |
-| 22 | En tant qu'utilisateur identifié, je souhaite pouvoir modifier une release en cliquant sur les releases et en sélectionnant la release et en entrant la nouvelle version, description, lien vers le dépôt  | | 3 | 3 |
-| 23 | En tant qu'utilisateur identifié, je souhaite pouvoir supprimer une release en cliquant sur les releases pour ensuite cliquer sur "Supprimer release" à côté de la release à supprimer. | | 1 | 3 |
-| 24 | En tant qu'utilisateur identifié, je souhaite pouvoir lister les releases en cliquant sur "releases". | | 2 | 3 |
-| 25 | En tant qu'utilisateur identifié, je souhaite pouvoir créer une documentation en cliquant sur créér documentation et en entrant le type (code/user/admin) (Obligatoire), description(Optionnel), fichier (Obligatoire)  | | 3 | 3 |
-| 26 | En tant qu'utilisateur identifié, je souhaite pouvoir modifier une documentation en cliquant sur documentations et en sélectionnant la documentation puis en entrant le type et/ou description et/ou le fichier  | | 3 | 3 |
-| 27 | En tant qu'utilisateur identifié, je souhaite pouvoir supprimer une documentation en cliquant sur documentations puis sur supprimer documentation  | | 1 | 3 |
+| 1 | En tant que visiteur, je souhaite pouvoir créer un compte en entrant mes coordonnées (nom, prénom, id utilisateur, mot de passe, email) afin d'accéder aux fonctionnalités de l'application. | | 3 | 1 |
+| 2 | En tant que visiteur, je souhaite pouvoir me connecter à l'aide des identifiants choisis lors de la création de mon compte afin de gérer mes projets ou mes informations personnelles. | | 1 | 1 |
+| 3 | En tant qu'utilisateur identifié, je souhaite pouvoir me déconnecter afin de quitter l'application en toute sécurité. | | 1 | 1 |
+| 4 | En tant qu'utilisateur identifié, je souhaite pouvoir accéder à un formulaire me permettant de créer un projet en renseignant un nom (obligatoire) et une description (facultative) afin de gérer ce projet. | | 3 | 1 |
+| 5 | En tant qu'utilisateur identifié, je souhaite pouvoir modifier un projet en changeant son nom et/ou sa description ou supprimer un projet afin de rectifier une erreur ou d'acter l'abandon du projet. | | 3 | 1 |
+| 6 | En tant qu'utilisateur identifié, je souhaite pouvoir consulter la liste de mes projets. | | 1 | 1 |
+| 7 | En tant qu'utilisateur identifié, je souhaite pouvoir accéder au backlog de mon projet afin de gérer les User Stories de mon projet. | | 1 | 1 |
+| 8 | En tant qu'utilisateur identifié, je souhaite pouvoir ajouter une User Story à mon projet en renseignan sa description (obligatoire), sa priorité (obligatoire) et sa difficulté (obligatoire). | | 3 | 1 |
+| 9 | En tant qu'utilisateur identifié, je souhaite pouvoir ajouter des contributeurs à mon projet afin qu'ils puissent contribuer au développement de ce projet. | | 3 | 2 |
+| 10 | En tant qu'utilisateur identifié, je souhaite pouvoir modifier une User Story ou la supprimer afin de rectifier une erreur ou de prendre en compte un changement dans la demande du client. | | 3 | 2 |
+| 11 | En tant qu'utilisateur identifié, je souhaite pouvoir créer un Sprint en renseignant son nom, sa date de début et sa date de fin afin d'associer des User Stories à ce Sprint. | | 3 | 2 |
+| 12 | En tant qu'utilisateur identifié, je souhaite pouvoir éditer un Sprint en y ajoutant ou supprimant des User Stories, en modifiant la date de début et/ou la date de fin ou encore en supprimant ce sprint afin de gérer une évolution dans la planification du développement. | | 3 | 2 |
+| 13 | En tant qu'utilisateur identifié, je souhaite pouvoir créer une tâche en entrant son nom (obligatoire), sa description (obligatoire), la ou les issues qui lui sont liées (obligatoire) et en y associant un contributeur (optionnel). | | 3 | 2 |
+| 14 | En tant qu'utilisateur identifié, je souhaite pouvoir modifier une tâche et changer sa description et/ou le(s) contributeur(s) associés ou la supprimer afin d'acter un changement dans la planification ou de rectifier une erreur. | | 3 | 2 |
+| 15 | En tant qu'utilisateur identifié, je souhaite pouvoir créer un test "End to End" et le rajouter à une tâche en entrant le nom (obligatoire), la description (optionnelle), l'id de la tâche (obligatoire) et un état (obligatoire) afin de permettre le suivi de la réalisation de cette tâche. | | 3 | 3 |
+| 16 | En tant qu'utilisateur identifié, je souhaite pouvoir supprimer un test. | | 1 | 3 |
+| 17 | En tant qu'utilisateur identifié, je souhaite pouvoir créer une release en entrant la version (obligatoire), une description (optionnelle) et un lien vers le dépôt (obligatoire). | | 3 | 3 |
+| 18 | En tant qu'utilisateur identifié, je souhaite pouvoir modifier une release et ainsi changer la version, la description et/ou le lien vers le dépôt afin de mettre à jour la release en fonction de l'évolution du projet. | | 2 | 3 |
+| 19 | En tant qu'utilisateur identifié, je souhaite pouvoir supprimer une release afin de rectifier une erreur ou de suivre l'évolution du projet. | | 1 | 3 |
+| 20 | En tant qu'utilisateur identifié, je souhaite pouvoir créer une documentation en entrant son type (code/user/admin) (obligatoire), sa description (optionnelle) ainsi que en spécifiant un fichier (obligatoire) | | 3 | 3 |
+| 21 | En tant qu'utilisateur identifié, je souhaite pouvoir modifier une documentation en modifiant le type et/ou sa description et/ou le fichier associé afin de retracer une modification dans le code. | | 2 | 3 |
+| 22 | En tant qu'utilisateur identifié, je souhaite pouvoir supprimer une documentation afin de corriger une erreur. | | 1 | 3 |
