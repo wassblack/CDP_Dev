@@ -25,12 +25,13 @@ router.post('/createProject', ensureAuthenticated, (req, res)  => {
         errors.push({ msg: 'La description de votre projet doit prendre moins de 300 caractères' });
     }
 
-    console.log(errors.values);
     if (errors.length == 0) {
         const newProject = new ModelProject({
             name: projectName,
             description: projectDescription,
-            users: [],
+            users: [{
+                email : req.user.email
+            }],
             sprints: [],
             releases: []
         });
