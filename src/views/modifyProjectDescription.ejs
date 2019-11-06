@@ -27,8 +27,8 @@
 
 <div class="row mt-5">
     <div class="col-md-6 m-auto">
-        <h1><%= projectName %>
-            <form action="/project/<%= projectId %>/modifyName" method="POST">
+         <h1><%= projectName %>
+            <form action="/project/<%= projectId %>/modifyName" method="GET" style="display:inline">
                 <input type="image" src="/icons/edit-button.png"" />
             </form>
         </h1>
@@ -39,9 +39,11 @@
                         style="width:100%" />
                 <button type="submit" class="btn btn-dark">Appliquer</button>
             </form>
-
-            <a href="">Accéder au backlog</a>
-            <button type="button" class="btn btn-dark">Supprimer</button>
         </div>
+
+        <a href="">Accéder au backlog</a>
+        <br>
+        <button class="btn btn-dark" onclick="confirmDeletePopup()" width="10%">Supprimer le projet</button>
+        
     </div>
 </div>

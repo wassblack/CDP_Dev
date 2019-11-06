@@ -35,10 +35,14 @@
 
         <div class="card card-body">
             <p><%= projectDesc %></p>
-            <button type="button" class="btn btn-dark">Modifier</button>
-            <a href="">Accéder au backlog</a>
-            <button type="button" class="btn btn-dark">Supprimer</button>
+            <form action="/project/<%= projectId %>/modifyDescription" method="GET">
+                <button type="submit" class="btn btn-dark">Modifier</button>
+            </form>
         </div>
+    
+        <a href="">Accéder au backlog</a>
+        <br>
+        <button class="btn btn-dark" onclick="confirmDeletePopup()" width="10%">Supprimer le projet</button>
 
     </div>
 </div>

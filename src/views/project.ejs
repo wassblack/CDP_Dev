@@ -25,27 +25,34 @@
     </div>
 </nav>
 
+<script>
+    function confirmDeletePopup()
+    {
+        if (confirm("Êtes-vous sûr de vouloir supprimer ce projet ?")) {
+            window.location = "/project/<%= projectId %>/delete";
+        } 
+    }
+</script>
+
 <div class="row mt-5">
     <div class="col-md-6 m-auto">
         <% include message %>
         <h1><%= projectName %>
-            <form action="/project/<%= projectId %>/modifyName" method="GET">
+            <form action="/project/<%= projectId %>/modifyName" method="GET" style="display:inline">
                 <input type="image" src="/icons/edit-button.png"" />
             </form>
         </h1>
-
-        <!-- <input type=" image" src="/icons/edit-button.png" formmethod="post" formaction="/users/login" /> -->
 
         <div class="card card-body">
             <p><%= projectDesc %></p>
             <form action="/project/<%= projectId %>/modifyDescription" method="GET">
                 <button type="submit" class="btn btn-dark">Modifier</button>
             </form>
-            <a href="">Accéder au backlog</a>
-            <form action="" method="GET">
-                <button type="submit" class="btn btn-dark">Supprimer</button>
-            </form>
         </div>
+
+        <a href="">Accéder au backlog</a>
+        <br>
+        <button class="btn btn-dark" onclick="confirmDeletePopup()" width="10%">Supprimer le projet</button>
 
     </div>
 </div>
