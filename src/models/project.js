@@ -88,7 +88,6 @@ const projectSchema = mongoose.Schema({
     ]
 });
 
-console.log(projectSchema);
 const Project = mongoose.model('project', projectSchema);
 
 module.exports = Project;
