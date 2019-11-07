@@ -1,6 +1,6 @@
 # Sprint 1
 | ID | Description | Priorité | Difficulté |
-|-|-|-|-|-|
+|-|-|-|-|
 | 1 | En tant que visiteur, je souhaite pouvoir créer un compte en entrant mes coordonnées (nom, prénom, id utilisateur, mot de passe, email) afin d'accéder aux fonctionnalités de l'application. | HIGH | 3 |
 | 2 | En tant que visiteur, je souhaite pouvoir me connecter à l'aide des identifiants choisis lors de la création de mon compte afin de gérer mes projets ou mes informations personnelles. | HIGH | 1 |
 | 3 | En tant qu'utilisateur identifié, je souhaite pouvoir me déconnecter afin de quitter l'application en toute sécurité. | HIGH | 1 |
