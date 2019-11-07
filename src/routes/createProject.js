@@ -40,7 +40,7 @@ router.post('/createProject', ensureAuthenticated, (req, res)  => {
         res.redirect('/project/' + newProject._id);
     }
     else {
-        res.render('/createProject', {
+        res.render('createProject', {
             errors,
             projectName,
             projectDescription

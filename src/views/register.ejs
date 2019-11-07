@@ -8,36 +8,34 @@
             <form action="/users/register" method="POST">
                 <div class="form-group">
                     <label for="name">Nom</label>
-                    <input type="name" id="name" name="name" class="form-control" placeholder="Entrer Nom"
+                    <input type="name" id="name" name="name" class="form-control"
                         value="<%= typeof name != 'undefined' ? name : '' %>" />
                 </div>
                 <div class="form-group">
-                    <label for="firstname">Prenom</label>
-                    <input type="text" id="firstname" name="firstname" class="form-control" placeholder="Entrer Prenom"
+                    <label for="firstname">Prénom</label>
+                    <input type="text" id="firstname" name="firstname" class="form-control"
                         value="<%= typeof firstname != 'undefined' ? firstname : '' %>" />
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email" class="form-control" placeholder="Entrer Email"
+                    <input type="email" id="email" name="email" class="form-control"
                         value="<%= typeof email != 'undefined' ? email : '' %>" />
                 </div>
                 <div class="form-group">
                     <label for="password">Mot de passe</label>
                     <input type="password" id="password" name="password" class="form-control"
-                        placeholder="Créer Mot de passe"
                         value="<%= typeof password != 'undefined' ? password : '' %>" />
                 </div>
                 <div class="form-group">
-                    <label for="password2">Confirmer Mot de passe</label>
+                    <label for="password2">Confirmer mot de passe</label>
                     <input type="password" id="password2" name="password2" class="form-control"
-                        placeholder="Confirmer Mot de passe"
                         value="<%= typeof password2 != 'undefined' ? password2 : '' %>" />
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">
                     Créer nouveau compte
                 </button>
             </form>
-            <p class="lead mt-4">Vous avez déja un compte? <a href="/users/login">Se connecter</a></p>
+            <p class="lead mt-4">Vous avez déjà un compte? <a href="/users/login">Se connecter</a></p>
         </div>
     </div>
 </div>

@@ -25,33 +25,34 @@ router.post('/register', (req, res) => {
         errors.push({ msg: 'Champ requis non remplis' });
     }
 
-    if (password !== password2) {
-        errors.push({ msg: 'Mot de pass ne correspond pas' });
+    else {
+        if (password !== password2) {
+            errors.push({ msg: 'Votre mot de passe ne correspond pas' });
+        }
+
+        if (password.length < 6 || password.length > 40) {
+            errors.push({ msg: 'La taille de votre mot de passe doit être comprise entre 6 et 40' });
+        }
+
+        if (name.length > 40) {
+            errors.push({ msg: 'Votre nom ne peut pas dépasser les 40 caractères' });
+        }
+
+        if (firstname.length > 40) {
+            errors.push({ msg: 'Votre prénom ne peut pas dépasser les 40 caractères' });
+        }
+
+        if (!checkIfEmailInString(email)) {
+            errors.push({ msg: 'Votre adresse email n\'est pas conforme' });
+        }
     }
 
-    if (password.lenght < 6 || password.lenght > 40) {
-        errors.push({ msg: 'taille du Mot de pass non conforme' });
-    }
-
-    if (name.lenght > 40) {
-        errors.push({ msg: 'taille du nom non conforme' });
-    }
-
-    if (firstname.lenght > 40) {
-        errors.push({ msg: 'taille du prenom non conforme' });
-    }
-
-    if (!checkIfEmailInString(email)) {
-        errors.push({ msg: 'email non conforme' });
-    }
-    console.log(errors.values);
-    if (errors === undefined || errors.length == 0) {
+    if (errors.length == 0) {
         ModelUser.findOne({ email: email })
             .then(user => {
                 if (user) {
                     //user already exists
-                    console.log('User exists');
-                    errors.push({ msg: 'email exist déja' });
+                    errors.push({ msg: 'Il existe déjà un compte avec cet email' });
                     res.render('register', {
                         errors,
                         name,
@@ -75,7 +76,7 @@ router.post('/register', (req, res) => {
                             newUser.password = hash;
                             newUser.save()
                             .then(user => {
-                                req.flash('success_msg','Votre compte a été bien crée !');
+                                req.flash('success_msg','Votre compte a bien été créé !');
                                 res.redirect('/users/login');
 
                             })
@@ -107,7 +108,7 @@ router.post('/login', (req, res, next) =>{
 
 router.get('/logout', (req, res)=>{
     req.logOut();
-    req.flash('success_msg','Deconnexion');
+    req.flash('success_msg','Vous vous êtes bien déconnecté');
     res.redirect('/users/login');
 });
 
