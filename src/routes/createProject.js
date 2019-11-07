@@ -37,7 +37,7 @@ router.post('/createProject', ensureAuthenticated, (req, res)  => {
         });
 
         newProject.save();
-        res.redirect('/project/' + newProject._id);
+        res.redirect('/Projects');
     }
     else {
         res.render('createProject', {

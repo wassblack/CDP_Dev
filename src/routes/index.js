@@ -1,4 +1,5 @@
 const express = require('express');
+const ModelProject = require('../models/project');
 const router = express.Router();
 //Must add to every resource access page
 const { ensureAuthenticated } = require('../config/authenticated');
@@ -8,8 +9,20 @@ router.get('/', ensureAuthenticated,(req, res) => {
 });
 //Passing ensureAthenticated
 router.get('/Projects',ensureAuthenticated, (req, res) => {
-    res.render('Projects', {
-        user: req.user
-    });
+    var projects;
+    ModelProject.find({ 'users.email' : req.user.email })
+    .then(projects => {
+        if (projects) {
+         
+        } else {
+            
+        }
+        res.render('Projects', {
+            user: req.user,
+            projects : projects
+        });
+    }).catch(err => console.log(err));
+    
+    
 });
 module.exports = router;
