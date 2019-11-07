@@ -3,7 +3,7 @@ const router = express.Router();
 //Must add to every resource access page
 const { ensureAuthenticated } = require('../config/authenticated');
 
-router.get('/', (req, res) => {
+router.get('/', ensureAuthenticated,(req, res) => {
     res.render('Projects');
 });
 //Passing ensureAthenticated
