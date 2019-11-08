@@ -102,11 +102,7 @@ router.get('/project/:projectId/modifyDescription', ensureAuthenticated, (req, r
 
 router.get('/project/:projectId/delete', ensureAuthenticated, (req, res)  => {
     ModelProject.deleteOne({_id: req.session.projectId}, function() {});
-    
-    res.render('Projects', {
-        user: req.user,
-        
-    });
+    res.redirect('/Projects');
 });
 
 module.exports = router;

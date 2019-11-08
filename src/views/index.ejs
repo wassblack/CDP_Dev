@@ -3,7 +3,7 @@
 <% if(typeof projects == 'undefined' || projects.length == 0) { %>
 <div class="card-header">Projets</div>
 <div class="card-body">
-    <h4 class="card-title">Voulez vous créer un projet</h4>
+    <h4 class="card-title">Voulez-vous créer un projet ?</h4>
     <form action="/createProject" method="GET">
         <button type="submit" class="btn btn-outline-primary">Créer Projet</button>
     </form>
@@ -18,15 +18,14 @@
         </tr>
     </thead>
     <div class="jumbotron">
-        <h3>Vous avez <%= projects.length %> projets </h3>
+        <h3>Vous avez <%= projects.length %> <% if (projects.length <= 1) { %> projet <% } else { %> projets <% } %></h3>
         <tbody>
             <% projects.forEach(function (project) { %>
             <tr class="table-light">
-                <td><%= project.name %></td>
+                <td><a href="/project/<%= project.id %>"><%= project.name %></a></td>
                 <td><%= project.description  %></td>
                 <td>
                     <a href="/project/<%= project.id %>"><i class="fas fa-edit fa-lg"></i></a>
-                    <a href="/project/<%= project.id %>/delete"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
                     <a href="#"><i class="fas fa-user-plus fa-lg"></i></a>
                 </td>
             </tr>
