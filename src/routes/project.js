@@ -100,9 +100,9 @@ router.get('/project/:projectId/modifyDescription', ensureAuthenticated, (req, r
     });
 });
 
+
 router.get('/project/:projectId/delete', ensureAuthenticated, (req, res) => {
     ModelProject.deleteOne({ _id: req.session.projectId }, function () { });
-
     res.render('Projects', {
         user: req.user,
 
@@ -114,6 +114,7 @@ router.get('/project/:projectId/addUser', ensureAuthenticated, (req, res) => {
         user: req.user
     });
 });
+
 router.post('/project/:projectId/addUser', ensureAuthenticated, (req, res) => {
     const projectId = req.body.projectId;
     const newUser = req.body.newUser;

@@ -5,19 +5,14 @@ const router = express.Router();
 const { ensureAuthenticated } = require('../config/authenticated');
 
 router.get('/', ensureAuthenticated,(req, res) => {
-    res.render('Projects');
+    res.redirect('/Projects');
 });
 //Passing ensureAthenticated
 router.get('/Projects',ensureAuthenticated, (req, res) => {
     var projects;
     ModelProject.find({ 'users.email' : req.user.email })
     .then(projects => {
-        if (projects) {
-         
-        } else {
-            
-        }
-        res.render('Projects', {
+        res.render('index', {
             user: req.user,
             projects : projects
         });
