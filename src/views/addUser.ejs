@@ -1,0 +1,17 @@
+<%- include ./partials/navBar%>
+<div class="card-header">Projets</div>
+<div class="card-body">
+    <h4 class="card-title">Ajout d'utilisateur au Projet : <%= projectId %> </h4>
+    <div class="form-group">
+            <%- include ./partials/message%>
+        <form action="/project/:projectId/addUser" method="POST">
+            <label for="addUser">Email</label>
+            <input type="hidden" name="projectId" value="<%= projectId %>">
+            <input type="email" class="form-control" name="newUser" id="newUser" aria-describedby="emailHelp"
+                placeholder="Email de l'utilisateur a ajouter">
+            <small id="emailHelp" class="form-text text-muted">l'utilisateur que vous voulez ajouter doit avoir un
+                compte</small>
+            <button type="submit" class="btn btn-outline-primary">Ajouter</button>
+        </form>
+    </div>
+<div>

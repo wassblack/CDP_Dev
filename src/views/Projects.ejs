@@ -9,11 +9,13 @@
     </form>
 </div>
 <%} else {%>
+<%- include ./partials/message%>
 <table class="table table-hover">
     <thead>
         <tr>
             <th scope="col">Nom du projet</th>
             <th scope="col">Description</th>
+            <th scope="col">Collaborateurs</th>
             <th scope="col">Operations</th>
         </tr>
     </thead>
@@ -25,9 +27,18 @@
                 <td><%= project.name %></td>
                 <td><%= project.description  %></td>
                 <td>
+                    <ul>
+                        <% project.users.forEach(function (user) { %>
+                        <li><%= user.email %></li>
+                        <% });%>
+                    </ul>
+
+                </td>
+                <td>
                     <a href="/project/<%= project.id %>"><i class="fas fa-edit fa-lg"></i></a>
                     <a href="/project/<%= project.id %>/delete"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
-                    <a href="#"><i class="fas fa-user-plus fa-lg"></i></a>
+                    <a href="/project/<%= project.id %>/addUser"><i id="<%= project.id %>" name="<%= project.id %>"
+                            class="fas fa-user-plus fa-lg"></i></a>
                 </td>
             </tr>
             <% });%>
