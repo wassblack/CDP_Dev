@@ -103,7 +103,7 @@ router.get('/project/:projectId/modifyDescription', ensureAuthenticated, (req, r
 
 router.get('/project/:projectId/delete', ensureAuthenticated, (req, res) => {
     ModelProject.deleteOne({ _id: req.session.projectId }, function () { });
-    res.render('Projects', {
+    res.render('index', {
         user: req.user,
 
     });
@@ -146,13 +146,13 @@ router.post('/project/:projectId/addUser', ensureAuthenticated, (req, res) => {
             }
         }).catch(err => errors.push({ msg: err }));
     if (errors.length > 0) {
-        res.render('/Projects', {
+        res.render('/index', {
             projectId: projectId,
             errors: errors,
             user: req.user
         });
     } else {
-        res.redirect('/Projects');
+        res.redirect('/index');
     }
 
 });

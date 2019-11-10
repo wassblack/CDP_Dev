@@ -71,16 +71,16 @@ router.post('/register', (req, res) => {
                     //Encrypt password using bcrypt
                     bcrypt.genSalt(10, (err, salt) => {
                         bcrypt.hash(newUser.password, salt, (err, hash) => {
-                            if(err) throw err;
+                            if (err) throw err;
                             //new password hashed
                             newUser.password = hash;
                             newUser.save()
-                            .then(user => {
-                                req.flash('success_msg','Votre compte a bien été créé !');
-                                res.redirect('/users/login');
+                                .then(user => {
+                                    req.flash('success_msg', 'Votre compte a bien été créé !');
+                                    res.redirect('/users/login');
 
-                            })
-                            .catch(err => console.log(err));
+                                })
+                                .catch(err => console.log(err));
                         })
                     });
                 }
@@ -98,7 +98,7 @@ router.post('/register', (req, res) => {
     }
 });
 
-router.post('/login', (req, res, next) =>{
+router.post('/login', (req, res, next) => {
     passport.authenticate('local', {
         successRedirect: '/Projects',
         failureRedirect: '/users/login',
@@ -106,9 +106,9 @@ router.post('/login', (req, res, next) =>{
     })(req, res, next);
 });
 
-router.get('/logout', (req, res)=>{
+router.get('/logout', (req, res) => {
     req.logOut();
-    req.flash('success_msg','Vous vous êtes bien déconnecté');
+    req.flash('success_msg', 'Vous vous êtes bien déconnecté');
     res.redirect('/users/login');
 });
 
