@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 });
 
 //Routes
-app.use('/', require('./routes/index'), require('./routes/createProject'), require('./routes/project'));
+app.use('/', require('./routes/index'), require('./routes/createProject'), require('./routes/project'), require('./routes/userStory'));
 app.use('/users', require('./routes/users'));
 
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {

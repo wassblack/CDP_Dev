@@ -1,0 +1,28 @@
+<% include ./partials/navBar%>
+
+<div class="row mt-5">
+    <div class="col-md-6 m-auto">
+        <div class="card card-body">
+            <h1 class="text-center mb-3">Ajout d'une User Story</h1>
+            <% include ./partials/message%>
+            <form action="/project/<%= projectId %>/createUserStory" method="POST">
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <input type="text" id="description" name="description" class="form-control"
+                    placeholder="Décrivez votre User Story en quelques lignes ..." />
+                </div>
+                <div class="form-group">
+                    <label for="difficulty">Difficulte</label>
+                    <input type="text" id="difficulty" name="difficulty" class="form-control"
+                    placeholder="Definissez la difficulte" />
+                </div>
+                <div class="form-group">
+                    <label for="priority">Priorite</label>
+                    <input type="text" id="priority" name="priority" class="form-control"
+                    placeholder="Definissez la priorite" />
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Ajouter une User Story</button>
+            </form>
+        </div>
+    </div>
+</div>

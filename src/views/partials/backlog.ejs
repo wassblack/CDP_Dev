@@ -1,0 +1,44 @@
+<% if(typeof userStorys == 'undefined' || userStorys.length == 0) { %>
+    <div class="card-header">Backlog</div>
+    <div class="card-body">
+        <h4 class="card-title">Voulez-vous ajouter une User Story ?</h4>
+        <form action="/project/<%= projectId %>/createUserStory" method="GET">
+            <button type="submit" class="btn btn-outline-primary">Ajouter User Story</button>
+        </form>
+    </div>
+<%} else {%>
+<%- include ./message%>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Description</th>
+                <th scope="col">Difficulté</th>
+                <th scope="col">Priorité</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <div class="jumbotron">
+            <tbody>
+                <% userStorys.forEarch(function (userStory, i) { %>
+                <tr class="table-light">
+                    <td >i.toString(10)</td>
+                    <td><%= userStory.description %></td>
+                    <td><%= userStory.difficulty %></td>
+                    <td><%= userStory.priority %></td>
+                    <td>
+                        <a href=""><i class="fas fa-edit fa-lg"></i></a>
+                        <a href=""><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>                    
+                    </td>
+                </tr>
+                <% });%>
+            </tbody>
+            <tfoot>
+                <form action="/project/<%= projectId %>/createUserStory" method="GET">
+                    <button type="submit" class="btn btn-secondary">Ajouter une User Story</button>
+                </form>
+            </tfoot>
+        </div>
+    </table>
+    <%}%>
+    </div>
