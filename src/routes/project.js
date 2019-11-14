@@ -13,7 +13,7 @@ router.get('/project/:projectId', ensureAuthenticated, (req, res) => {
             project => {
                 req.session.projectName = project.name;
                 req.session.projectDesc = project.description;
-                userStories = MadelUserStory.find({ projectId: projectId })
+                let userStories = MadelUserStory.find({ projectId: projectId })
                     .then(userStorys => {
                         res.render('project', {
                             userStorys: userStorys,
