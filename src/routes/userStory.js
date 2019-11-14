@@ -14,7 +14,7 @@ router.post('/project/:projectId/createUserStory', ensureAuthenticated, (req, re
     const userStoryDescription = req.body.description;
     const userStoryDifficulty = req.body.difficulty;
     const userStoryPriority = req.body.priority;
-    const projectId = req.body.projectId;
+    const projectId = req.params.projectId;
 
     let errors = [];
     if (!projectId) {
@@ -41,7 +41,7 @@ router.post('/project/:projectId/createUserStory', ensureAuthenticated, (req, re
             priority: parseInt(userStoryPriority, 10)
         });
         newUserStory.save();
-        res.redirect('/project/:'+projectId);
+        res.redirect('/project/'+projectId);
     } else {
         res.render('createUserStory', {
             projectId: projectId,

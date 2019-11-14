@@ -7,7 +7,8 @@ const { ensureAuthenticated } = require('../config/authenticated');
 
 // Page displaying the main information about the selected project
 router.get('/project/:projectId', ensureAuthenticated, (req, res) => {
-    let projectId = req.params.projectId.replace(':', '');
+    req.session.projectId = req.params.projectId;
+    let projectId = req.params.projectId;
     ModelProject.findOne({ _id: projectId })
         .then(
             project => {
@@ -87,7 +88,7 @@ router.post('/project/:projectId', ensureAuthenticated, (req, res) => {
 // Click on the edit button next to the project name
 router.get('/project/:projectId/modifyName', ensureAuthenticated, (req, res) => {
     res.render('modifyProjectName', {
-        projectId: req.session.projectId,
+        projectId: req.params.projectId,
         projectName: req.session.projectName,
         projectDesc: req.session.projectDesc
     });
