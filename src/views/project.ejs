@@ -15,21 +15,21 @@
         <% include ./partials/message%>
         <h1><%= projectName %>
             <form action="/project/<%= projectId %>/modifyName" method="GET" style="display:inline">
-                <input type="image" src="/icons/edit-button.png"" />
+                <input type="image" src="/icons/edit-button.png" id="modifyNameButton" />
             </form>
         </h1>
 
         <div class="card card-body">
             <p><%= projectDesc %></p>
             <form action="/project/<%= projectId %>/modifyDescription" method="GET">
-                <button type="submit" class="btn btn-dark">Modifier</button>
+                <button type="submit" class="btn btn-dark" id="modifyDescButton">Modifier</button>
             </form>
         </div>
 
         <%- include ./partials/backlog%>
         
         <br>
-        <button class="btn btn-dark" onclick="confirmDeletePopup()" width="10%">Supprimer le projet</button>
+        <button class="btn btn-dark" onclick="confirmDeletePopup()" id="deleteProjectButton">Supprimer le projet</button>
 
     </div>
 </div>

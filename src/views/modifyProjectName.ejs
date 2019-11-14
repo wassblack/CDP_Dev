@@ -4,7 +4,7 @@
 
         <form action="/project/<%= projectId %>/" method="POST">
             <input type="text" value="<%= projectName %>" id="projectName" name="projectName" />
-            <input type="image" src="/icons/confirm-icon.png" />
+            <input type="image" src="/icons/confirm-icon.png" id="confirmModification"/>
         </form>
 
         <div class="card card-body">
@@ -16,7 +16,7 @@
     
         <a href="">Accéder au backlog</a>
         <br>
-        <button class="btn btn-dark" onclick="confirmDeletePopup()" width="10%">Supprimer le projet</button>
+        <button class="btn btn-dark" onclick="confirmDeletePopup()">Supprimer le projet</button>
 
     </div>
 </div>

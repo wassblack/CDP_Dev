@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const ModelProject = require('../models/project');
 const ModelUser = require('../models/user');
-const MadelUserStory = require('../models/userStory');
+const ModelUserStory = require('../models/userStory');
 const { ensureAuthenticated } = require('../config/authenticated');
 
 // Page displaying the main information about the selected project
@@ -14,7 +14,7 @@ router.get('/project/:projectId', ensureAuthenticated, (req, res) => {
             project => {
                 req.session.projectName = project.name;
                 req.session.projectDesc = project.description;
-                let userStories = MadelUserStory.find({ projectId: projectId })
+                let userStories = ModelUserStory.find({ projectId: projectId })
                     .then(userStorys => {
                         res.render('project', {
                             userStorys: userStorys,
