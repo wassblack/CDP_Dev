@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const userStorySchema = mongoose.Schema({
+    projectId: {
+        type: String,
+        required: true
+    },
     description: {
         type: String,
         required: true

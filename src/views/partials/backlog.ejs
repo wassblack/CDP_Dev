@@ -7,11 +7,9 @@
         </form>
     </div>
 <%} else {%>
-<%- include ./message%>
     <table class="table table-hover">
         <thead>
             <tr>
-                <th scope="col">ID</th>
                 <th scope="col">Description</th>
                 <th scope="col">Difficulté</th>
                 <th scope="col">Priorité</th>
@@ -20,9 +18,9 @@
         </thead>
         <div class="jumbotron">
             <tbody>
-                <% userStorys.forEarch(function (userStory, i) { %>
+                
                 <tr class="table-light">
-                    <td >i.toString(10)</td>
+                    <% userStorys.forEach(function (userStory) { %>
                     <td><%= userStory.description %></td>
                     <td><%= userStory.difficulty %></td>
                     <td><%= userStory.priority %></td>

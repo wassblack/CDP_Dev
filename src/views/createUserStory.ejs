@@ -6,6 +6,7 @@
             <h1 class="text-center mb-3">Ajout d'une User Story</h1>
             <% include ./partials/message%>
             <form action="/project/<%= projectId %>/createUserStory" method="POST">
+
                 <div class="form-group">
                     <label for="description">Description</label>
                     <input type="text" id="description" name="description" class="form-control"
@@ -21,6 +22,7 @@
                     <input type="text" id="priority" name="priority" class="form-control"
                     placeholder="Definissez la priorite" />
                 </div>
+                <input type="hidden" name="projectId" value="<%= projectId %>"> 
                 <button type="submit" class="btn btn-primary btn-block">Ajouter une User Story</button>
             </form>
         </div>

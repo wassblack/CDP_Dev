@@ -14,31 +14,41 @@ router.post('/project/:projectId/createUserStory', ensureAuthenticated, (req, re
     const userStoryDescription = req.body.description;
     const userStoryDifficulty = req.body.difficulty;
     const userStoryPriority = req.body.priority;
-    const projectId = req.session.projectId;
+    const projectId = req.body.projectId;
 
     let errors = [];
-
-    if(userStoryDescription && userStoryDescription.length > 300) {
-        errors.push({ msg: 'La description de votre User Story doit prendre moins de 300 caracteres.'});
+    if (!projectId) {
+        errors.push({ msg: 'L\'id du project nest pas definie' });
     }
 
-    if(!userStoryDifficulty || userStoryDifficulty <= 0) {
+    if (userStoryDescription && userStoryDescription.length > 300) {
+        errors.push({ msg: 'La description de votre User Story doit prendre moins de 300 caracteres.' });
+    }
+
+    if (!userStoryDifficulty || userStoryDifficulty <= 0) {
         errors.push({ msg: 'La difficulte doit etre specifiee' });
     }
 
-    if(!userStoryPriority) {
+    if (!userStoryPriority) {
         errors.push({ msg: 'La priorite doit etre specifiee' });
     }
 
     if (errors.length == 0) {
         const newUserStory = new ModelUserStory({
+            projectId: projectId,
             description: userStoryDescription,
             difficulty: parseInt(userStoryDifficulty, 10),
             priority: parseInt(userStoryPriority, 10)
         });
         newUserStory.save();
-        res.redirect('/Projects');
+        res.redirect('/project/:'+projectId);
+    } else {
+        res.render('createUserStory', {
+            projectId: projectId,
+            errors: errors
+        });
     }
 });
 
 module.exports = router;
+
