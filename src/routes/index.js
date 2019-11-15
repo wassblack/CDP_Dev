@@ -9,7 +9,6 @@ router.get('/', ensureAuthenticated, (req, res) => {
 });
 //Passing ensureAthenticated
 router.get('/Projects', ensureAuthenticated, (req, res) => {
-    var projects;
     ModelProject.find({ 'users.email': req.user.email })
         .then(projects => {
             res.render('index', {

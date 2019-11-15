@@ -1,0 +1,24 @@
+<div class="row mt-5">
+    <div class="col-md-6 m-auto">
+        <div class="card card-body">
+            <form action="/project/<%= projectId %>/" method="POST">
+
+                <div class="form-group">
+                    <label class="col-form-label" for="inputDefault">Nom du projet</label>
+                    <input type="text" class="form-control" placeholder="Default input" id="projectName"
+                        name="projectName" value="<%= projectName %>">
+                </div>
+
+
+                <div class="form-group">
+                    <label for="ProjectDescription">Description du projet</label>
+                    <textarea class="form-control" id="projectDesc" name="projectDesc"
+                        rows="3"><%= projectDesc %></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Modifier</button>
+
+            </form>
+        </div>
+    </div>
+</div>
