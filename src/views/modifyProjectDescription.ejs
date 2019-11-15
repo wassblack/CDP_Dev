@@ -11,13 +11,13 @@
             <form action="/project/<%= projectId %>/" method="POST">
                 <input type="text" value="<%= projectDesc %>" id="projectDescription" name="projectDescription"
                         style="width:100%" />
-                <button type="submit" class="btn btn-dark">Appliquer</button>
+                <button type="submit" class="btn btn-dark" id="confirmModification">Appliquer</button>
             </form>
         </div>
 
         <a href="">Accéder au backlog</a>
         <br>
-        <button class="btn btn-dark" onclick="confirmDeletePopup()" width="10%">Supprimer le projet</button>
+        <button class="btn btn-dark" onclick="confirmDeletePopup()">Supprimer le projet</button>
         
     </div>
 </div>

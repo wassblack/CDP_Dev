@@ -1,0 +1,25 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="Sprint1">
+<!--
+  <test name="ChromeTest" >
+  	<parameter name="browser" value="chrome" />
+    <classes>
+       <class name="Sprint1Test">
+       		<methods>
+				<include name="testIssue5Modification" />
+			</methods>
+		</class>
+    </classes>
+  </test>
+ -->
+
+  <test name="FirefoxTest" >
+  	<parameter name="browser" value="firefox" />
+    <classes>
+       <class name="Sprint1Test" />
+    </classes>
+  </test>
+  
+
+</suite>

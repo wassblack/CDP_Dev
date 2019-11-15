@@ -5,7 +5,7 @@
 <div class="card-body">
     <h4 class="card-title">Voulez-vous créer un projet ?</h4>
     <form action="/createProject" method="GET">
-        <button type="submit" class="btn btn-outline-primary">Créer Projet</button>
+        <button type="submit" id="createFirstProjectButton" class="btn btn-outline-primary">Créer Projet</button>
     </form>
 </div>
 <%} else {%>
@@ -20,8 +20,9 @@
         </tr>
     </thead>
     <div class="jumbotron">
-        <h3>Vous avez <%= projects.length %> <% if (projects.length <= 1) { %> projet <% } else { %> projets <% } %></h3>
-        <tbody>
+        <h3>Vous avez <%= projects.length %> <% if (projects.length <= 1) { %> projet <% } else { %> projets <% } %>
+        </h3>
+        <tbody id="projectsList">
             <% projects.forEach(function (project) { %>
             <tr class="table-light">
                 <td><a href="/project/<%= project.id %>"><%= project.name %></a></td>
@@ -35,6 +36,7 @@
 
                 </td>
                 <td>
+
                     <a href="/project/<%= project.id %>/ModifyProject"><i class="fas fa-edit fa-lg"></i></a>
                     <a href="/project/<%= project.id %>/delete"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
                     <a href="/project/<%= project.id %>/addUser"><i id="<%= project.id %>" name="<%= project.id %>"
@@ -45,7 +47,7 @@
         </tbody>
         <tfoot>
             <form action="/createProject" method="GET">
-                <button type="submit" class="btn btn-secondary">Créer projet</button>
+                <button type="submit" class="btn btn-secondary" id="createProjectButton">Créer projet</button>
             </form>
         </tfoot>
 </table>
