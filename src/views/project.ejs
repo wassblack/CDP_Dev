@@ -2,7 +2,7 @@
 <script>
     function confirmDeletePopup() {
         if (confirm("Êtes-vous sûr de vouloir supprimer ce projet ?")) {
-            window.location = "/project/<%= projectId %>/delete";
+            window.location = "/project/<%= project.id %>/delete";
         }
     }
 </script>
@@ -11,16 +11,17 @@
         <% include ./partials/message%>
 
         <div class="card border-light mb-3" style="max-width: 75rem;">
-            <div class="card-header"><%= projectName %>
-                <small><a href="/project/<%= projectId %>/modifyProject"><i class="fas fa-edit fa-lg"></i></a></small>
+            <div class="card-header">Modifier le projet
+                <small><a href="/project/<%= project.id %>/modifyProject"><i class="fas fa-edit fa-lg"></i></a></small>
             </div>
             <div class="card-body">
-                <h4 class="card-title"><%= projectName %></h4>
-                <p class="card-text"><%= projectDesc %></p>
+                <h4 class="card-title"><%= project.name %></h4>
+                <p class="card-text"><%= project.description %></p>
             </div>
             <%- include ./partials/backlog%>
+            <%- include ./partials/sprints%>
             <br>
-            <button class="btn btn-dark" onclick="confirmDeletePopup()" width="10%">Supprimer le projet</button>
+            <button class="btn btn-dark" onclick="confirmDeletePopup()">Supprimer le projet</button>
 
         </div>
     </div>

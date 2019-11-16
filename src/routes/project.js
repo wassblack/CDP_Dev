@@ -9,32 +9,32 @@ const { ensureAuthenticated } = require('../config/authenticated');
 router.get('/project/:projectId', ensureAuthenticated, (req, res) => {
     req.session.projectId = req.params.projectId;
     let projectId = req.params.projectId;
+
     ModelProject.findOne({ _id: projectId })
         .then(
             project => {
+                if (req.session.project !== undefined && project.id !== req.session.project.id) {
+                    req.session.project = project;
+                }
                 req.session.projectName = project.name;
                 req.session.projectDesc = project.description;
-                let userStories = ModelUserStory.find({ projectId: projectId })
-                    .then(userStorys => {
+                ModelUserStory.find({ projectId: projectId })
+                    .then(userStories => {
                         res.render('project', {
-                            userStorys: userStorys,
-                            projectId: projectId,
-                            projectName: req.session.projectName,
-                            projectDesc: req.session.projectDesc
+                            project: project,
+                            orphanUs: userStories
                         });
                     }).catch(err => console.log("Couldn't find this project: " + err));
             }
         )
         .catch(err => console.log("Couldn't find this project: " + err));
-
 });
+
 // Modify Project
 router.get('/project/:projectId/ModifyProject', ensureAuthenticated, (req, res) => {
     ModelProject.findOne({_id: req.params.projectId}).then(project=>{
         res.render('modifyProject', {
-            projectId: req.params.projectId,
-            projectName: project.name,
-            projectDesc: project.description
+            project: project
         });
     }).catch(err => console.log(err));
     
@@ -84,10 +84,8 @@ router.post('/project/:projectId', ensureAuthenticated, (req, res) => {
         ModelUserStory.find({ projectId: req.params.projectId }).then(userStories => {
             ModelProject.findOne({_id: req.params.projectId}).then(project=>{
                 res.render('project', {
-                    userStorys: userStories,
-                    projectId: req.params.projectId,
-                    projectName: project.name,
-                    projectDesc: project.description
+                    project: project,
+                    orphanUs: userStories
                 });
             });
             
@@ -97,9 +95,7 @@ router.post('/project/:projectId', ensureAuthenticated, (req, res) => {
         ModelProject.findOne({_id: req.params.projectId}).then(project=>{
             res.render('project', {
                 errors,
-                projectId: req.params.projectId,
-                projectName: project.name,
-                projectDesc: project.description
+                project: project
             });
         });
         
@@ -111,9 +107,9 @@ router.get('/project/:projectId/delete', ensureAuthenticated, (req, res) => {
     ModelProject.deleteOne({ _id: req.params.projectId }, function () { });
     res.render('index', {
         user: req.user,
-
     });
 });
+
 router.get('/project/:projectId/addUser', ensureAuthenticated, (req, res) => {
     res.render('addUser', {
         projectId: req.params.projectId,
@@ -159,6 +155,44 @@ router.post('/project/:projectId/addUser', ensureAuthenticated, (req, res) => {
         });
     } else {
         res.redirect('/');
+    }
+
+});
+
+router.get('/project/:projectId/createSprint', ensureAuthenticated, (req, res) => {
+    res.render('createSprint', {
+        projectId: req.params.projectId,
+        user: req.user
+    });
+});
+
+router.post('/project/:projectId/createSprint', ensureAuthenticated, (req, res) => {
+    const errors = [];
+
+    const projectId = req.params.projectId;
+    const sprintName = req.body.name;
+    const startDate = req.body.startDate;
+    const endDate = req.body.endDate;
+
+    let sprint = { name: sprintName, startDate: new Date(startDate), endDate: new Date(endDate) };
+
+    ModelProject.updateOne({ _id: projectId },
+        { $push: { sprints: sprint } }, (succ, err) => {
+            if (err) {
+                errors.push({ msg: 'Erreur lors de l\'ajout du sprint: ' + err });
+            }
+        }
+    );
+
+    if (errors.length > 0) {
+        res.render('/project/:projectId/createSprint', {
+            projectId: projectId,
+            errors: errors,
+            user: req.user
+        });
+    }
+    else {
+        res.redirect('/project/' + req.params.projectId);
     }
 
 });

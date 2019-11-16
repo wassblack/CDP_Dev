@@ -25,10 +25,10 @@ const projectSchema = mongoose.Schema({
             },
             startDate: Date,
             endDate: Date,
-            userStorys: [
+            userStories: [
                 {
                     description: String,
-                    defficulty: {
+                    difficulty: {
                         type: Number,
                         required: true
                     },
@@ -42,7 +42,7 @@ const projectSchema = mongoose.Schema({
                                 type: String,
                                 required: true
                             },
-                            deveoloperId:{
+                            developerId:{
                                 type: String,
                                 required: false
                             },

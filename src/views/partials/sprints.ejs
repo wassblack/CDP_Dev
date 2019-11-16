@@ -1,0 +1,41 @@
+<% if(typeof project.sprints == 'undefined' || project.sprints.length == 0) { %>
+    <div class="card-header">Sprints</div>
+    <div class="card-body">
+        <h5 class="card-title">Vous n'avez pas de sprints.</h5>
+        <form action="/project/<%= project.id %>/createSprint" method="GET">
+            <button type="submit" class="btn btn-outline-primary">Créer un nouveau sprint</button>
+        </form>
+    </div>
+<%} else {%>
+    <div class="card-header">Liste des sprints</div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Date de début</th>
+                <th scope="col">Date de fin</th>
+                <th scope="col">User stories</th>
+            </tr>
+        </thead>
+            <tbody>
+                
+                <tr class="table-light">
+                    <% project.sprints.forEach(function (sprint) { %>
+                    <td><%= sprint.name %></td>
+                    <td><%= sprint.startDate %></td>
+                    <td><%= sprint.endDate %></td>
+                    <td>
+                        <% sprint.userStories.forEach(function (us) { %>
+                            <%= us.description %>
+                        <% }); %>
+                    </td>
+                </tr>
+                <% });%>
+            </tbody>
+            <tfoot>
+                <form action="/project/<%= project.id %>/createSprint" method="GET">
+                    <button type="submit" class="btn btn-secondary">Créer un nouveau sprint</button>
+                </form>
+            </tfoot>
+    </table>
+    <%}%>
