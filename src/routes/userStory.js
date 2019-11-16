@@ -41,7 +41,7 @@ router.post('/project/:projectId/createUserStory', ensureAuthenticated, (req, re
             priority: parseInt(userStoryPriority, 10)
         });
         newUserStory.save();
-        res.redirect('/project/'+projectId);
+        res.redirect('/project/' + projectId);
     } else {
         res.render('createUserStory', {
             projectId: projectId,
@@ -54,7 +54,7 @@ router.post('/project/:projectId/editUserStory', ensureAuthenticated, (req, res)
     const newUserStoryDescription = req.body.description;
     const newUserStoryDifficulty = req.body.difficulty;
     const newUserStoryPriority = req.body.priority;
-    const projectId = req.session.projectId;
+    const projectId = req.params.projectId;
 
     let errors = [];
 
@@ -65,7 +65,7 @@ router.post('/project/:projectId/editUserStory', ensureAuthenticated, (req, res)
         else {
             ModelUserStory.updateOne({ _id: req.body.userStoryId }, {
                 description: newUserStoryDescription
-            }, function() { });
+            }, function () { });
         }
     }
 
@@ -76,18 +76,18 @@ router.post('/project/:projectId/editUserStory', ensureAuthenticated, (req, res)
         else {
             ModelUserStory.updateOne({ _id: req.body.userStoryId }, {
                 difficulty: newUserStoryDifficulty
-            }, function() { });
+            }, function () { });
         }
     }
 
     else if (newUserStoryPriority) {
         if (newUserStoryPriority <= 0 || newUserStoryPriority > 3) {
-            errors.push({ msg: 'la priorité doit être comprise entre 1 et 3'});
+            errors.push({ msg: 'la priorité doit être comprise entre 1 et 3' });
         }
         else {
             ModelUserStory.updateOne({ _id: req.body.userStoryId }, {
                 priority: newUserStoryPriority
-            }, function() { });
+            }, function () { });
         }
     }
 
@@ -96,52 +96,42 @@ router.post('/project/:projectId/editUserStory', ensureAuthenticated, (req, res)
     }
 
     if (errors.length == 0) {
-        res.redirect('/project/'+projectId);
-        //res.render('project', {
-        //    projectId: req.session.projectId,
-        //    projectName: req.session.projectName,
-        //    projectDesc: req.session.projectDesc
-        //});
+        res.redirect('/project/' + projectId);
     }
     else {
         res.render('modifyUserStory', {
-            projectId: req.session.projectId,
+            projectId: req.params.projectId,
             userStory: req.params.userStoryId,
             errors: errors
         });
     }
 });
 
-//router.post('/project/:projectId/editUserStory', ensureAuthenticated, (req, res) => {
-//    const projectId = req.params.projectId;
-//    res.redirect('/project/'+projectId);
-//});
 
 router.get('/project/:projectId/editUserStory/:userStoryId', ensureAuthenticated, (req, res) => {
     ModelUserStory.findOne({ _id: req.params.userStoryId })
-    .then(userStory => {
-        res.render('modifyUserStory', {
-            projectId: req.params.projectId,
-            projectName:req.session.projectName,
-            projectDesc: req.session.projectDesc,
-            userStoryId: req.params.userStoryId,
-            userStory: userStory
-        });
-    })
-    .catch(err => console.log("Couldn't find this user story: " + err));
+        .then(userStory => {
+            res.render('modifyUserStory', {
+                projectId: req.params.projectId,
+                userStoryId: req.params.userStoryId,
+                userStory: userStory
+            });
+        })
+        .catch(err => console.log("Couldn't find this user story: " + err));
 });
 
 router.get('/project/:projectId/deleteUserStory/:userStoryId', ensureAuthenticated, (req, res) => {
-    ModelUserStory.deleteOne({ _id: req.params.userStoryId }, function() { });
-    let userStories = ModelUserStory.find({ projectId: req.session.projectId })
-    .then(userStorys => {
-        res.render('project', {
-            userStorys: userStorys,
-            projectId: req.session.projectId,
-            projectName: req.session.projectName,
-            projectDesc: req.session.projectDesc
-        });
-    }).catch(err => console.log("Couldn't find this project: " + err));
+    const projectId = req.params.projectId;
+    ModelUserStory.deleteOne({ _id: req.params.userStoryId }, function () { });
+    ModelProject.findOne({ _id: projectId }).then(project => {
+        ModelUserStory.find({ projectId: projectId })
+            .then(userStorys => {
+                res.render('project', {
+                    project: project,
+                    orphanUs: userStorys
+                });
+            }).catch(err => console.log("Couldn't find this project: " + err));
+    })
 });
 
 module.exports = router;

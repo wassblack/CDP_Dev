@@ -2,7 +2,7 @@
 <script>
     function confirmDeletePopup() {
         if (confirm("Êtes-vous sûr de vouloir supprimer ce projet ?")) {
-            window.location = "/project/<%= project.id %>/delete";
+            window.location = "/project/<%= project._id %>/delete";
         }
     }
 </script>

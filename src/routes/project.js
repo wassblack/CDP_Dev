@@ -7,40 +7,33 @@ const { ensureAuthenticated } = require('../config/authenticated');
 
 // Page displaying the main information about the selected project
 router.get('/project/:projectId', ensureAuthenticated, (req, res) => {
-    req.session.projectId = req.params.projectId;
     let projectId = req.params.projectId;
-
     ModelProject.findOne({ _id: projectId })
-        .then(
-            project => {
-                if (req.session.project !== undefined && project.id !== req.session.project.id) {
-                    req.session.project = project;
-                }
-                req.session.projectName = project.name;
-                req.session.projectDesc = project.description;
-                ModelUserStory.find({ projectId: projectId })
-                    .then(userStories => {
-                        res.render('project', {
-                            project: project,
-                            orphanUs: userStories
-                        });
-                    }).catch(err => console.log("Couldn't find this project: " + err));
-            }
+        .then(project => {
+            ModelUserStory.find({ projectId: projectId })
+                .then(userStories => {
+                    res.render('project', {
+                        project: project,
+                        orphanUs: userStories
+                    });
+                }).catch(err => console.log("Couldn't find this project: " + err));
+        }
         )
         .catch(err => console.log("Couldn't find this project: " + err));
 });
 
 // Modify Project
 router.get('/project/:projectId/ModifyProject', ensureAuthenticated, (req, res) => {
-    ModelProject.findOne({_id: req.params.projectId}).then(project=>{
+    ModelProject.findOne({ _id: req.params.projectId }).then(project => {
         res.render('modifyProject', {
             project: project
         });
     }).catch(err => console.log(err));
-    
+
 });
 // Modification of the name or description of the selected project
 router.post('/project/:projectId', ensureAuthenticated, (req, res) => {
+    const projectId = req.params.projectId;
     const newProjectName = req.body.projectName;
     const newProjectDescription = req.body.projectDesc;
 
@@ -52,13 +45,11 @@ router.post('/project/:projectId', ensureAuthenticated, (req, res) => {
         }
 
         else {
-            ModelProject.updateOne({ _id: req.session.projectId }, {
+            ModelProject.updateOne({ _id: projectId }, {
                 name: newProjectName,
                 description: newProjectDescription
 
             }, function () { });
-
-            req.session.projectName = newProjectName
         }
     }
 
@@ -67,11 +58,9 @@ router.post('/project/:projectId', ensureAuthenticated, (req, res) => {
             errors.push({ msg: 'La description de votre projet doit prendre moins de 300 caractères' });
         }
         else {
-            ModelProject.updateOne({ _id: req.session.projectId }, {
+            ModelProject.updateOne({ _id: projectId }, {
                 description: newProjectDescription
             }, function () { });
-
-            req.session.projectDesc = newProjectDescription
         }
     }
 
@@ -82,23 +71,23 @@ router.post('/project/:projectId', ensureAuthenticated, (req, res) => {
     if (errors.length == 0) {
 
         ModelUserStory.find({ projectId: req.params.projectId }).then(userStories => {
-            ModelProject.findOne({_id: req.params.projectId}).then(project=>{
+            ModelProject.findOne({ _id: req.params.projectId }).then(project => {
                 res.render('project', {
                     project: project,
                     orphanUs: userStories
                 });
             });
-            
+
         }).catch(err => console.log(err));
     }
     else {
-        ModelProject.findOne({_id: req.params.projectId}).then(project=>{
+        ModelProject.findOne({ _id: req.params.projectId }).then(project => {
             res.render('project', {
                 errors,
                 project: project
             });
         });
-        
+
     }
 
 });
