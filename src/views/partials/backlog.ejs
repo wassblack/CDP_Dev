@@ -25,8 +25,8 @@
                     <td><%= userStory.difficulty %></td>
                     <td><%= userStory.priority %></td>
                     <td>
-                        <a href=""><i class="fas fa-edit fa-lg"></i></a>
-                        <a href=""><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>                    
+                        <a href="/project/<%= projectId %>/editUserStory/<%= userStory.id %>"><i class="fas fa-edit fa-lg"></i></a>
+                        <a href="/project/<%= projectId %>/deleteUserStory/<%= userStory.id %>"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>                    
                     </td>
                 </tr>
                 <% });%>

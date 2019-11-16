@@ -50,5 +50,99 @@ router.post('/project/:projectId/createUserStory', ensureAuthenticated, (req, re
     }
 });
 
+router.post('/project/:projectId/editUserStory', ensureAuthenticated, (req, res) => {
+    const newUserStoryDescription = req.body.description;
+    const newUserStoryDifficulty = req.body.difficulty;
+    const newUserStoryPriority = req.body.priority;
+    const projectId = req.session.projectId;
+
+    let errors = [];
+
+    if (newUserStoryDescription) {
+        if (newUserStoryDescription.length > 300) {
+            errors.push({ msg: 'La description de votre User Story doit prendre moins de 300 caracteres.' });
+        }
+        else {
+            ModelUserStory.updateOne({ _id: req.body.userStoryId }, {
+                description: newUserStoryDescription
+            }, function() { });
+        }
+    }
+
+    else if (newUserStoryDifficulty) {
+        if (newUserStoryDifficulty <= 0 || newUserStoryDifficulty > 10) {
+            errors.push({ msg: 'La difficulte doit etre specifiee' });
+        }
+        else {
+            ModelUserStory.updateOne({ _id: req.body.userStoryId }, {
+                difficulty: newUserStoryDifficulty
+            }, function() { });
+        }
+    }
+
+    else if (newUserStoryPriority) {
+        if (newUserStoryPriority <= 0 || newUserStoryPriority > 3) {
+            errors.push({ msg: 'la priorité doit être comprise entre 1 et 3'});
+        }
+        else {
+            ModelUserStory.updateOne({ _id: req.body.userStoryId }, {
+                priority: newUserStoryPriority
+            }, function() { });
+        }
+    }
+
+    else {
+        console.log("An error occured when modifying the User Story attributes");
+    }
+
+    if (errors.length == 0) {
+        res.redirect('/project/'+projectId);
+        //res.render('project', {
+        //    projectId: req.session.projectId,
+        //    projectName: req.session.projectName,
+        //    projectDesc: req.session.projectDesc
+        //});
+    }
+    else {
+        res.render('modifyUserStory', {
+            projectId: req.session.projectId,
+            userStory: req.params.userStoryId,
+            errors: errors
+        });
+    }
+});
+
+//router.post('/project/:projectId/editUserStory', ensureAuthenticated, (req, res) => {
+//    const projectId = req.params.projectId;
+//    res.redirect('/project/'+projectId);
+//});
+
+router.get('/project/:projectId/editUserStory/:userStoryId', ensureAuthenticated, (req, res) => {
+    ModelUserStory.findOne({ _id: req.params.userStoryId })
+    .then(userStory => {
+        res.render('modifyUserStory', {
+            projectId: req.params.projectId,
+            projectName:req.session.projectName,
+            projectDesc: req.session.projectDesc,
+            userStoryId: req.params.userStoryId,
+            userStory: userStory
+        });
+    })
+    .catch(err => console.log("Couldn't find this user story: " + err));
+});
+
+router.get('/project/:projectId/deleteUserStory/:userStoryId', ensureAuthenticated, (req, res) => {
+    ModelUserStory.deleteOne({ _id: req.params.userStoryId }, function() { });
+    let userStories = ModelUserStory.find({ projectId: req.session.projectId })
+    .then(userStorys => {
+        res.render('project', {
+            userStorys: userStorys,
+            projectId: req.session.projectId,
+            projectName: req.session.projectName,
+            projectDesc: req.session.projectDesc
+        });
+    }).catch(err => console.log("Couldn't find this project: " + err));
+});
+
 module.exports = router;
 
