@@ -55,7 +55,7 @@ router.post('/project/:projectId/editUserStory', ensureAuthenticated, (req, res)
     const newUserStoryDifficulty = req.body.difficulty;
     const newUserStoryPriority = req.body.priority;
     const projectId = req.params.projectId;
-
+    const userStoryId = req.body.userStoryId;
     let errors = [];
 
     if (newUserStoryDescription) {
@@ -69,7 +69,7 @@ router.post('/project/:projectId/editUserStory', ensureAuthenticated, (req, res)
         }
     }
 
-    else if (newUserStoryDifficulty) {
+    if (newUserStoryDifficulty) {
         if (newUserStoryDifficulty <= 0 || newUserStoryDifficulty > 10) {
             errors.push({ msg: 'La difficulte doit etre specifiee' });
         }
@@ -80,7 +80,7 @@ router.post('/project/:projectId/editUserStory', ensureAuthenticated, (req, res)
         }
     }
 
-    else if (newUserStoryPriority) {
+    if (newUserStoryPriority) {
         if (newUserStoryPriority <= 0 || newUserStoryPriority > 3) {
             errors.push({ msg: 'la priorité doit être comprise entre 1 et 3' });
         }
