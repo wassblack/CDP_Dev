@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const moment = require('moment');
 const ModelProject = require('../models/project');
 const ModelUser = require('../models/user');
 const ModelUserStory = require('../models/userStory');
@@ -14,6 +15,7 @@ router.get('/project/:projectId', ensureAuthenticated, (req, res) => {
                 .then(userStories => {
                     res.render('project', {
                         project: project,
+                        moment: moment,
                         orphanUs: userStories
                     });
                 }).catch(err => console.log("Couldn't find this project: " + err));
@@ -74,6 +76,7 @@ router.post('/project/:projectId', ensureAuthenticated, (req, res) => {
             ModelProject.findOne({ _id: req.params.projectId }).then(project => {
                 res.render('project', {
                     project: project,
+                    moment: moment,
                     orphanUs: userStories
                 });
             });
@@ -84,7 +87,8 @@ router.post('/project/:projectId', ensureAuthenticated, (req, res) => {
         ModelProject.findOne({ _id: req.params.projectId }).then(project => {
             res.render('project', {
                 errors,
-                project: project
+                project: project,
+                moment: moment
             });
         });
 
@@ -149,44 +153,6 @@ router.post('/project/:projectId/addUser', ensureAuthenticated, (req, res) => {
         });
     } else {
         res.redirect('/');
-    }
-
-});
-
-router.get('/project/:projectId/createSprint', ensureAuthenticated, (req, res) => {
-    res.render('createSprint', {
-        projectId: req.params.projectId,
-        user: req.user
-    });
-});
-
-router.post('/project/:projectId/createSprint', ensureAuthenticated, (req, res) => {
-    const errors = [];
-
-    const projectId = req.params.projectId;
-    const sprintName = req.body.name;
-    const startDate = req.body.startDate;
-    const endDate = req.body.endDate;
-
-    let sprint = { name: sprintName, startDate: new Date(startDate), endDate: new Date(endDate) };
-
-    ModelProject.updateOne({ _id: projectId },
-        { $push: { sprints: sprint } }, (succ, err) => {
-            if (err) {
-                errors.push({ msg: 'Erreur lors de l\'ajout du sprint: ' + err });
-            }
-        }
-    );
-
-    if (errors.length > 0) {
-        res.render('/project/:projectId/createSprint', {
-            projectId: projectId,
-            errors: errors,
-            user: req.user
-        });
-    }
-    else {
-        res.redirect('/project/' + req.params.projectId);
     }
 
 });

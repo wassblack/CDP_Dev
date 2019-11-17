@@ -15,8 +15,8 @@
                 <small><a href="/project/<%= project.id %>/modifyProject"><i class="fas fa-edit fa-lg"></i></a></small>
             </div>
             <div class="card-body">
-                <h4 class="card-title"><%= project.name %></h4>
-                <p class="card-text"><%= project.description %></p>
+                <h1><%= project.name %></h1>
+                <h5 class="card-title"><%= project.description %></h5>
             </div>
             <%- include ./partials/backlog%>
             <%- include ./partials/sprints%>

@@ -1,13 +1,13 @@
 <% if(typeof orphanUs == 'undefined' || orphanUs.length == 0) { %>
     <div class="card-header">Backlog</div>
     <div class="card-body">
-        <h4 class="card-title">Voulez-vous ajouter une User Story ?</h4>
+        <h5 class="card-title">Vous n'avez pas de user stories.</h5>
         <form action="/project/<%= project.id %>/createUserStory" method="GET">
-            <button type="submit" class="btn btn-outline-primary">Ajouter User Story</button>
+            <button type="submit" class="btn btn-outline-primary">Ajouter une user story</button>
         </form>
     </div>
 <%} else {%>
-    <div class="card-header">Issues n'étant pas assigné à des sprints</div>
+    <h5 class="card-header">Issues n'étant pas assignées à des sprints</h5>
     <table class="table table-hover">
         <thead>
             <tr>

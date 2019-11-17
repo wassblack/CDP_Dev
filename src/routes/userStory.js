@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const moment = require('moment');
 const ModelProject = require('../models/project');
 const ModelUserStory = require('../models/userStory');
 const { ensureAuthenticated } = require('../config/authenticated');
@@ -128,6 +129,7 @@ router.get('/project/:projectId/deleteUserStory/:userStoryId', ensureAuthenticat
             .then(userStorys => {
                 res.render('project', {
                     project: project,
+                    moment: moment,
                     orphanUs: userStorys
                 });
             }).catch(err => console.log("Couldn't find this project: " + err));
