@@ -94,9 +94,14 @@ router.post('/project/:projectId', ensureAuthenticated, (req, res) => {
 
 router.get('/project/:projectId/delete', ensureAuthenticated, (req, res) => {
     ModelProject.deleteOne({ _id: req.params.projectId }, function () { });
-    res.render('index', {
-        user: req.user,
-    });
+    ModelProject.find({ 'users.email': req.user.email })
+        .then(projects => {
+            res.render('index', {
+                user: req.user,
+                projects: projects
+            });
+        }).catch(err => console.log(err));
+
 });
 
 router.get('/project/:projectId/addUser', ensureAuthenticated, (req, res) => {
