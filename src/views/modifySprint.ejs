@@ -8,7 +8,7 @@
                 <form action="/project/<%= projectId %>/modifySprint/<%= sprintId %>" method="POST">
                     <div class="form-group">
                         <label for="name">Nom</label>
-                        <input type="text" id="name" name="name" class="form-control" placeholder="Entrez le nom du sprint" value="<%=sprint.name %>" />
+                        <input type="text" id="name" name="name" class="form-control" placeholder="Entrez le nom du sprint" value="<%=sprintName %>" />
                     </div>
                     <div class="form-group">
                         <label for="description">Date de début</label>
@@ -17,7 +17,7 @@
                                 <div class="form-group">
                                     <div class="input-group date" id="datepickerstart" data-target-input="nearest">
                                         <input type="text" id="startDate" name="startDate" class="form-control datetimepicker-input" data-target="#datepickerstart"
-                                            value="<%= moment(sprint.startDate).format('MM/DD/YYYY') %>" />
+                                            value="<%= moment(sprintStartDate).format('MM/DD/YYYY') %>" />
                                         <div class="input-group-append" data-target="#datepickerstart" data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                         </div>
@@ -40,7 +40,7 @@
                                 <div class="form-group">
                                     <div class="input-group date" id="datepickerend" data-target-input="nearest">
                                         <input type="text" id="endDate" name="endDate" class="form-control datetimepicker-input" data-target="#datepickerend"
-                                            value="<%= moment(sprint.endDate).format('MM/DD/YYYY') %>" />
+                                            value="<%= moment(sprintEndDate).format('MM/DD/YYYY') %>" />
                                         <div class="input-group-append" data-target="#datepickerend" data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                         </div>
