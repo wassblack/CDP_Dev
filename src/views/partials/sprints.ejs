@@ -24,39 +24,93 @@
                 <p class="lead">Ce sprint n'a pas de user stories associées.</p>
             <%} else {%>
                 <p class="lead">Liste des user stories du sprint :</p>
-                <p>
-                    <% sprint.userStories.forEach(function (us) { %>
-                        <%= us.description %>
-                        <a href="/project/<%= project.id %>/editUserStory/<%= us.id %>"><i class="fas fa-edit fa-lg"></i></a>
-                        <a href="/project/<%= project.id %>/deleteUserStory/<%= us.id %>"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>   
-                    <% }); %>
-                </p>
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Description</th>
+                            <th scope="col">Difficulté</th>
+                            <th scope="col">Priorité</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="table-light">
+                            <% sprint.userStories.forEach(function (userStory) { %>
+                            <td><%= userStory.description %></td>
+                            <td><%= userStory.difficulty %></td>
+                            <td><%= userStory.priority %></td>
+                            <td>
+                                <a href="#"><i class="fas fa-edit fa-lg"></i></a>
+                                <a href="#"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
+                            </td>
+                        </tr>
+                        <% });%>
+                    </tbody>
+                </table>
             <%}%>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalUserStories">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalUserStories<%= sprint.id %>">
             Ajouter des user stories
             </button>
         </div>
 
-        <div class="modal" id="modalUserStories">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Liste des user stories disponibles</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+        <div class="modal" id="modalUserStories<%= sprint.id %>">
+            <div class="modal-dialog modal-lg" role="document">
+                <form action="/project/<%= project.id %>/addUs/<%= sprint.id %>" method="POST" class="mr-auto">
+                    <div class="modal-content">
+                        <% if(typeof orphanUs == 'undefined' || orphanUs.length == 0) { %>
+                            <div class="modal-header">
+                                <h5 class="modal-title">Il n'y a pas de user story pouvant être rajoutée au sprint.</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                            </div>
+                         <%} else {%>
+                        <div class="modal-header">
+                            <h5 class="modal-title">Liste des user stories disponibles</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Difficulté</th>
+                                        <th scope="col">Priorité</th>
+                                        <th scope="col">Selection</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="table-light">
+                                        <% orphanUs.forEach(function (userStory) { %>
+                                        <td><%= userStory.description %></td>
+                                        <td><%= userStory.difficulty %></td>
+                                        <td><%= userStory.priority %></td>
+                                        <td>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="customCheck<%= sprint.id %><%= userStory.id %>" 
+                                                    name="selectedUs" value="<%= JSON.stringify(userStory) %>" unchecked>
+                                                <label class="custom-control-label" for="customCheck<%= sprint.id %><%= userStory.id %>"></label>
+                                            </div> 
+                                        </td>
+                                    </tr>
+                                    <% });%>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Ajouter les user stories sélectionnées</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        </div>
+                        <%}%>
                     </div>
-                    <div class="modal-body">
-                        <p>Modal body text goes here.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
-
     <% });%>
 
     <form action="/project/<%= project.id %>/createSprint" method="GET">

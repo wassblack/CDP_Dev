@@ -179,4 +179,60 @@ router.get('/project/:projectId/deleteSprint/:sprintId', ensureAuthenticated, (r
     );
 });
 
+router.post('/project/:projectId/addUs/:sprintId', ensureAuthenticated, (req, res) => {
+    const projectId = req.params.projectId;
+    const sprintId = req.params.sprintId;
+    const selectedUsJSON = req.body.selectedUs;
+
+    // Translate the US in JSON format into objects and add them into the list of US that will be added in the sprint
+    let selectedUs;
+
+    if (selectedUsJSON != undefined) {
+        // If the user selected only one user story
+        if (!Array.isArray(selectedUsJSON)) {
+            selectedUs = JSON.parse(selectedUsJSON);
+
+            // Delete the orphan user story
+            ModelUserStory.deleteOne({ _id: selectedUs._id }, function () { });
+        }
+        // Else ...
+        else if (selectedUsJSON.length > 1) {
+            selectedUs = []
+            for (let i = 0; i < selectedUsJSON.length; i++) {
+                const us = JSON.parse(selectedUsJSON[i]);
+                selectedUs.push(us);
+
+                // Delete the orphan user story
+                ModelUserStory.deleteOne({ _id: us._id }, function () {});
+            }
+        }
+
+        // Update the database with the added user stories
+        ModelProject.updateOne(
+            { 'sprints._id' : sprintId },
+            { "$push": { "sprints.$.userStories": selectedUs } },
+            function(err) {
+                if (err) {
+                    console.log("Couldn't update the sprint: " + err)
+                }
+                else {
+                    ModelProject.findOne({ _id: projectId }).then(project => {
+                        ModelUserStory.find({ projectId: projectId })
+                            .then(userStorys => {
+                                res.render('project', {
+                                    project: project,
+                                    moment: moment,
+                                    orphanUs: userStorys
+                                });
+                            }).catch(err => console.log("Couldn't find this project: " + err));
+                    });
+                }
+            }
+        );
+    }
+    else {
+        res.redirect('/project/' + projectId);
+    }
+});
+
 module.exports = router;
