@@ -39,23 +39,13 @@ router.post('/project/:projectId/createSprint', ensureAuthenticated, (req, res) 
         let sprint = { name: sprintName, startDate: new Date(startDate), endDate: new Date(endDate) };
 
         ModelProject.updateOne({ _id: projectId },
-            { $push: { sprints: sprint } }, 
-            function(err, succ) {
+            { $push: { sprints: sprint } },
+            function(err) {
                 if (err) {
-                    console.log("Erreur lors de la création du sprint: " + err);
+                    console.log("Coudn't create the sprint: " + err);
                 }
                 else {
-                    ModelProject.findOne({ _id: projectId }).then(project => {
-                        ModelUserStory.find({ projectId: projectId })
-                            .then(userStorys => {
-                                res.render('project', {
-                                    project: project,
-                                    moment: moment,
-                                    orphanUs: userStorys
-                                });
-                            })
-                            .catch(err => console.log("Couldn't find this project: " + err));
-                    });
+                    renderProjectPage(res, projectId);
                 }
             }
         );
@@ -73,8 +63,8 @@ router.get('/project/:projectId/modifySprint/:sprintId', ensureAuthenticated, (r
     const sprintId = req.params.sprintId;
 
     ModelProject.findOne(
-        { 'sprints._id' : sprintId }, 
-        { 'sprints.$': 1 }, 
+        { 'sprints._id' : sprintId },
+        { 'sprints.$': 1 },
         function(err, project) {
             if (err) {
                 console.log("Couldn't find the sprint: "+ err)
@@ -125,16 +115,7 @@ router.post('/project/:projectId/modifySprint/:sprintId', ensureAuthenticated, (
                     console.log("Couldn't update the sprint: "+ err)
                 }
                 else {
-                    ModelProject.findOne({ _id: projectId }).then(project => {
-                        ModelUserStory.find({ projectId: projectId })
-                            .then(userStorys => {
-                                res.render('project', {
-                                    project: project,
-                                    moment: moment,
-                                    orphanUs: userStorys
-                                });
-                            }).catch(err => console.log("Couldn't find this project: " + err));
-                    });
+                    renderProjectPage(res, projectId);
                 }
             }
         );
@@ -159,21 +140,12 @@ router.get('/project/:projectId/deleteSprint/:sprintId', ensureAuthenticated, (r
     ModelProject.updateOne(
         { _id: projectId },
         { "$pull": { sprints: { _id : sprintId } } },
-        function(err, succ) {
+        function(err) {
             if (err) {
                 console.log("Could not delete this sprint: " + err);
             }
             else {
-                ModelProject.findOne({ _id: projectId }).then(project => {
-                    ModelUserStory.find({ projectId: projectId })
-                        .then(userStorys => {
-                            res.render('project', {
-                                project: project,
-                                moment: moment,
-                                orphanUs: userStorys
-                            });
-                        }).catch(err => console.log("Couldn't find this project: " + err));
-                });
+                renderProjectPage(res, projectId);
             }
         }
     );
@@ -187,7 +159,7 @@ router.post('/project/:projectId/addUs/:sprintId', ensureAuthenticated, (req, re
     // Translate the US in JSON format into objects and add them into the list of US that will be added in the sprint
     let selectedUs;
 
-    if (selectedUsJSON != undefined) {
+    if (selectedUsJSON !== undefined) {
         // If the user selected only one user story
         if (!Array.isArray(selectedUsJSON)) {
             selectedUs = JSON.parse(selectedUsJSON);
@@ -216,16 +188,7 @@ router.post('/project/:projectId/addUs/:sprintId', ensureAuthenticated, (req, re
                     console.log("Couldn't update the sprint: " + err)
                 }
                 else {
-                    ModelProject.findOne({ _id: projectId }).then(project => {
-                        ModelUserStory.find({ projectId: projectId })
-                            .then(userStorys => {
-                                res.render('project', {
-                                    project: project,
-                                    moment: moment,
-                                    orphanUs: userStorys
-                                });
-                            }).catch(err => console.log("Couldn't find this project: " + err));
-                    });
+                    renderProjectPage(res, projectId);
                 }
             }
         );
@@ -234,5 +197,22 @@ router.post('/project/:projectId/addUs/:sprintId', ensureAuthenticated, (req, re
         res.redirect('/project/' + projectId);
     }
 });
+
+function renderProjectPage(res, projectId)
+{
+    ModelProject.findOne({ _id: projectId })
+        .then(project => {
+            ModelUserStory.find({ projectId: projectId })
+                .then(userStorys => {
+                    res.render('project', {
+                        project: project,
+                        moment: moment,
+                        orphanUs: userStorys
+                    });
+                })
+                .catch(err => console.log("Couldn't find orphan user stories: " + err));
+        })
+        .catch(err => console.log("Couldn't find user stories: " + err));
+}
 
 module.exports = router;

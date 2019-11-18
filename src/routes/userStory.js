@@ -56,7 +56,6 @@ router.post('/project/:projectId/editUserStory', ensureAuthenticated, (req, res)
     const newUserStoryDifficulty = req.body.difficulty;
     const newUserStoryPriority = req.body.priority;
     const projectId = req.params.projectId;
-    const userStoryId = req.body.userStoryId;
     let errors = [];
 
     if (newUserStoryDescription) {
@@ -101,9 +100,9 @@ router.post('/project/:projectId/editUserStory', ensureAuthenticated, (req, res)
     }
     else {
         res.render('modifyUserStory', {
+            errors: errors,
             projectId: req.params.projectId,
             userStory: req.params.userStoryId,
-            errors: errors
         });
     }
 });

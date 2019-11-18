@@ -9,19 +9,7 @@ const { ensureAuthenticated } = require('../config/authenticated');
 // Page displaying the main information about the selected project
 router.get('/project/:projectId', ensureAuthenticated, (req, res) => {
     let projectId = req.params.projectId;
-    ModelProject.findOne({ _id: projectId })
-        .then(project => {
-            ModelUserStory.find({ projectId: projectId })
-                .then(userStories => {
-                    res.render('project', {
-                        project: project,
-                        moment: moment,
-                        orphanUs: userStories
-                    });
-                }).catch(err => console.log("Couldn't find this project: " + err));
-        }
-        )
-        .catch(err => console.log("Couldn't find this project: " + err));
+    renderProjectPage(res, projectId);
 });
 
 // Modify Project
@@ -71,29 +59,16 @@ router.post('/project/:projectId', ensureAuthenticated, (req, res) => {
     }
 
     if (errors.length == 0) {
-
-        ModelUserStory.find({ projectId: req.params.projectId }).then(userStories => {
-            ModelProject.findOne({ _id: req.params.projectId }).then(project => {
-                res.render('project', {
-                    project: project,
-                    moment: moment,
-                    orphanUs: userStories
-                });
-            });
-
-        }).catch(err => console.log(err));
+        renderProjectPage(res, projectId);
     }
     else {
         ModelProject.findOne({ _id: req.params.projectId }).then(project => {
-            res.render('project', {
+            res.render('modifyProject', {
                 errors,
-                project: project,
-                moment: moment
+                project: project
             });
         });
-
     }
-
 });
 
 router.get('/project/:projectId/delete', ensureAuthenticated, (req, res) => {
@@ -104,7 +79,8 @@ router.get('/project/:projectId/delete', ensureAuthenticated, (req, res) => {
                 user: req.user,
                 projects: projects
             });
-        }).catch(err => console.log(err));
+        })
+        .catch(err => console.log(err));
 
 });
 
@@ -123,11 +99,11 @@ router.post('/project/:projectId/addUser', ensureAuthenticated, (req, res) => {
     ModelUser.findOne({ email: newUser })
         .then(user => {
             if (user) {
-                //User is registred 
+                // User is registered
                 var userToadd = { email: newUser };
                 ModelProject.find({ _id: projectId, users: { $elemMatch: { email: newUser } } })
                     .then(project => {
-                        //Checking if user already assigned to the project
+                        // Checking if user already assigned to the project
                         if (project.length > 0) {
                             errors.push({ msg: 'l\'utilisateur est deja un collaborateurs du projet' });
                         } else {
@@ -156,5 +132,22 @@ router.post('/project/:projectId/addUser', ensureAuthenticated, (req, res) => {
     }
 
 });
+
+function renderProjectPage(res, projectId)
+{
+    ModelProject.findOne({ _id: projectId })
+        .then(project => {
+            ModelUserStory.find({ projectId: projectId })
+                .then(userStorys => {
+                    res.render('project', {
+                        project: project,
+                        moment: moment,
+                        orphanUs: userStorys
+                    });
+                })
+                .catch(err => console.log("Couldn't find orphan user stories: " + err));
+        })
+        .catch(err => console.log("Couldn't find user stories: " + err));
+}
 
 module.exports = router;
