@@ -61,13 +61,13 @@ router.get('/project/:projectId/delete', ensureAuthenticated, (req, res) => {
     ModelProject.deleteOne({ _id: req.params.projectId }, function () { })
         .then(_ => {
             ModelProject.find({ 'users.email': req.user.email })
-            .then(projects => {
-                res.render('index', {
-                    user: req.user,
-                    projects: projects
-                });
-            })
-            .catch(err => console.log(err));
+                .then(projects => {
+                    res.render('index', {
+                        user: req.user,
+                        projects: projects
+                    });
+                })
+                .catch(err => console.log(err));
         });
 
 });
@@ -131,10 +131,48 @@ router.get('/project/:projectId/createTask', ensureAuthenticated, (req, res) => 
 
 });
 
+router.post('/project/:projectId/createTask', ensureAuthenticated, (req, res) => {
+    const dev = req.body.developerId;
+    const description = req.body.description;
+    const state = req.body.state;
+    let errors = [];
+
+    if (!dev || !state) {
+        errors.push({ msg: "champs requis non remplis" });
+    }
+    if (state > 3 || state < 1) {
+        errors.push({ msg: "valeur non possible" });
+    }
+    if (description.length > 300) {
+        errors.push({ msg: "Description trop longue" });
+    }
+
+    if (errors.length == 0) {
+        const newTask = new ModelTask({
+            projectId: req.params.projectId,
+            description,
+            developerId: dev,
+            state
+        });
+        newTask.save().then(task => {
+            renderProjectPage(res, req.params.projectId);
+        }).catch(err => console.log(err));
+    } else {
+        ModelProject.findOne({ _id: req.params.projectId }).then(project => {
+            res.render('createTask', {
+                errors,
+                project
+            });
+        })
+
+    }
+
+});
+
 function renderProjectPage(res, projectId) {
     let noOrphanUs = false;
 
-    ModelUserStory.countDocuments({projectId : projectId, isOrphan : true})
+    ModelUserStory.countDocuments({ projectId: projectId, isOrphan: true })
         .then(numberOfOrphanUs => {
             noOrphanUs = (numberOfOrphanUs === 0);
         });
