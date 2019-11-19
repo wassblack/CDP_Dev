@@ -3,6 +3,7 @@ const router = express.Router();
 const moment = require('moment');
 const ModelProject = require('../models/project');
 const ModelUserStory = require('../models/userStory');
+const ModelTask = require('../models/task');
 const { ensureAuthenticated } = require('../config/authenticated');
 
 router.get('/project/:projectId/createUserStory', ensureAuthenticated, (req, res) => {
@@ -43,7 +44,7 @@ router.post('/project/:projectId/createUserStory', ensureAuthenticated, (req, re
             isOrphan: true
         });
         newUserStory.save();
-        res.redirect('/project/' + projectId);
+        renderProjectPage(res, projectId);
     } else {
         res.render('createUserStory', {
             projectId: projectId,
@@ -97,7 +98,7 @@ router.post('/project/:projectId/editUserStory', ensureAuthenticated, (req, res)
     }
 
     if (errors.length == 0) {
-        res.redirect('/project/' + projectId);
+        renderProjectPage(res, projectId);
     }
     else {
         res.render('modifyUserStory', {
@@ -124,17 +125,44 @@ router.get('/project/:projectId/editUserStory/:userStoryId', ensureAuthenticated
 router.get('/project/:projectId/deleteUserStory/:userStoryId', ensureAuthenticated, (req, res) => {
     const projectId = req.params.projectId;
     ModelUserStory.deleteOne({ _id: req.params.userStoryId }, function () { });
-    ModelProject.findOne({ _id: projectId }).then(project => {
-        ModelUserStory.find({ projectId: projectId })
-            .then(userStorys => {
-                res.render('project', {
-                    project: project,
-                    moment: moment,
-                    orphanUs: userStorys
-                });
-            }).catch(err => console.log("Couldn't find this project: " + err));
-    })
+
+
+    renderProjectPage(res, projectId);
 });
+
+function renderProjectPage(res, projectId) {
+    let noOrphanUs;
+
+    ModelUserStory.countDocuments({isOrphan : true})
+        .then(numberOfOrphanUs => {
+            if (numberOfOrphanUs === 0) {
+                noOrphanUs = true;
+            }
+            else {
+                noOrphanUs = false;
+            }
+        });
+
+    ModelProject.findOne({ _id: projectId })
+        .then(project => {
+            ModelUserStory.find({ projectId: projectId })
+                .then(userStorys => {
+                    ModelTask.find({ projectId: projectId }).then(task => {
+                        res.render('project', {
+                            project: project,
+                            moment: moment,
+                            orphanUs: userStorys,
+                            tasks: task,
+                            noOrphanUs: noOrphanUs
+                        });
+                    })
+
+                })
+                .catch(err => console.log("Couldn't find orphan user stories: " + err));
+        })
+        .catch(err => console.log("Couldn't find user stories: " + err));
+}
+
 
 module.exports = router;
 

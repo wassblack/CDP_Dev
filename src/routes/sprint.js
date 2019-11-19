@@ -3,6 +3,7 @@ const router = express.Router();
 const moment = require('moment');
 const ModelProject = require('../models/project');
 const ModelUserStory = require('../models/userStory');
+const ModelTask = require('../models/task');
 const { ensureAuthenticated } = require('../config/authenticated');
 
 router.get('/project/:projectId/createSprint', ensureAuthenticated, (req, res) => {
@@ -206,7 +207,7 @@ function renderProjectPage(res, projectId)
 {
     let noOrphanUs;
 
-    ModelUserStory.count({isOrphan : true})
+    ModelUserStory.countDocuments({isOrphan : true})
         .then(numberOfOrphanUs => {
             if (numberOfOrphanUs === 0) {
                 noOrphanUs = true;
@@ -214,7 +215,7 @@ function renderProjectPage(res, projectId)
             else {
                 noOrphanUs = false;
             }
-        })
+        });
 
     ModelProject.findOne({ _id: projectId })
         .then(project => {

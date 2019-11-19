@@ -137,7 +137,7 @@ router.post('/project/:projectId/addUser', ensureAuthenticated, (req, res) => {
 function renderProjectPage(res, projectId) {
     let noOrphanUs;
 
-    ModelUserStory.count({isOrphan : true})
+    ModelUserStory.countDocuments({isOrphan : true})
         .then(numberOfOrphanUs => {
             if (numberOfOrphanUs === 0) {
                 noOrphanUs = true;
@@ -145,7 +145,7 @@ function renderProjectPage(res, projectId) {
             else {
                 noOrphanUs = false;
             }
-        })
+        });
 
     ModelProject.findOne({ _id: projectId })
         .then(project => {
