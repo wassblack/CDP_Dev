@@ -25,7 +25,7 @@
         <tbody id="projectsList">
             <% projects.forEach(function (project) { %>
             <tr class="table-light">
-                <td><a href="/project/<%= project.id %>"><%= project.name %></a></td>
+                <td><a href="/project/<%= project.id %>" id="projectPageLink"><%= project.name %></a></td>
                 <td><%= project.description  %></td>
                 <td>
                     <ul>

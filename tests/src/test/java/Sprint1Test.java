@@ -1,3 +1,4 @@
+import org.bson.conversions.Bson;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -8,9 +9,15 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
+
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 
 public class Sprint1Test
 {
@@ -126,19 +133,15 @@ public class Sprint1Test
 		// Click on the icon to modify a project
 		driver.findElement(By.cssSelector("#projectPageLink")).click();
 		
-		// Fill new name
+		// Fill new name and description
 		String newProjectName = "Selenium project v2";
-		driver.findElement(By.cssSelector("#modifyNameButton")).click();
-		driver.findElement(By.cssSelector("#projectName")).clear();
-		driver.findElement(By.cssSelector("#projectName")).sendKeys(newProjectName);
-		driver.findElement(By.cssSelector("#confirmModification")).click();
-		
-		// Fill new description
 		String newProjectDesc = "Selenium updated this project";
-		driver.findElement(By.cssSelector("#modifyDescButton")).click();
-		driver.findElement(By.cssSelector("#projectDescription")).clear();
-		driver.findElement(By.cssSelector("#projectDescription")).sendKeys(newProjectDesc);
-		driver.findElement(By.cssSelector("#confirmModification")).click();
+		driver.findElement(By.cssSelector("#modifyProjectLink")).click();
+		driver.findElement(By.cssSelector("#projectName")).clear();
+		driver.findElement(By.cssSelector("#projectDesc")).clear();
+		driver.findElement(By.cssSelector("#projectName")).sendKeys(newProjectName);
+		driver.findElement(By.cssSelector("#projectDesc")).sendKeys(newProjectDesc);
+		driver.findElement(By.cssSelector("#submitModify")).click();
 		
 		// Check if the project has been updated on the list of projects
 		driver.get(BASE_URL + "/Projects");
@@ -165,14 +168,19 @@ public class Sprint1Test
 
 		// Delete the project
 		driver.findElement(By.cssSelector("#deleteProjectButton")).click();
-		driver.switchTo().alert().accept();
+		driver.findElement(By.cssSelector("#confirmDeleteProject")).click();
 		
 		// Check if the project no longer appear on the list of projects
-		try {
-			driver.findElement(By.cssSelector("#projectsList"));
-			Assert.fail();
+		boolean isDisplayed = false;
+		WebElement projectsList = driver.findElement(By.cssSelector("#projectsList"));
+		for (WebElement w : projectsList.findElements(By.tagName("tr"))) {
+			if (w.getText().contains("Worthless project") && w.getText().contains("This project is meant to be deleted")) {
+				isDisplayed = true;
+				break;
+			}
 		}
-		catch (NoSuchElementException e) {}
+		
+		Assert.assertEquals(false, isDisplayed);
 	}
 
 	@Test
@@ -198,6 +206,20 @@ public class Sprint1Test
 		driver.quit();
 	}
 	
+	// Clean the database from the test documents
+	@AfterTest
+	public void cleanDatabase()
+	{
+		// Connection to MongoDB
+		MongoClient mongoClient = MongoClients.create("mongodb+srv://team:FRNK6OOMZq9PBdMq@cluster0-e1ewl.mongodb.net/scrumit?retryWrites=true&w=majority");
+		MongoDatabase database = mongoClient.getDatabase("scrumit");
+
+		// Delete the test documents
+		database.getCollection("users").deleteOne(Filters.eq("email", "selenium@auto.com"));
+		database.getCollection("projects").deleteOne(Filters.eq("name", "Worthless project"));
+		database.getCollection("projects").deleteOne(Filters.eq("name", "Selenium project v2"));
+	}
+	
 	public void login()
 	{
 		driver.get(BASE_URL);
@@ -213,4 +235,5 @@ public class Sprint1Test
 		driver.findElement(By.cssSelector("#description")).sendKeys("This project is meant to be deleted");
 		driver.findElement(By.cssSelector("#submitCreate")).click();
 	}
+	
 }

@@ -17,7 +17,14 @@
   <test name="FirefoxTest" >
   	<parameter name="browser" value="firefox" />
     <classes>
-       <class name="Sprint1Test" />
+       <class name="Sprint1Test">
+       <methods>
+				<exclude name="testIssue1" />
+				<exclude name="testIssue2" />
+				<exclude name="testIssue3" />
+			</methods>
+       
+       </class>
     </classes>
   </test>
   
