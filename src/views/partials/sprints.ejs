@@ -7,7 +7,7 @@
     </form>
 </div>
 <%} else {%>
-<h2 class="card-header">Liste des sprints</h2>
+<h3 class="card-header">Liste des sprints</h3>
 
 <% project.sprints.forEach(function (sprint) { %>
 <div class="jumbotron">
@@ -46,7 +46,7 @@
                     <a href="/project/<%= project.id %>/editUserStory/<%= userStory._id %>"><i
                             class="fas fa-edit fa-lg" disabled></i></a>
                     <a href="/project/<%= project.id %>/deleteUserStory/<%= userStory._id %>"><i
-                            class="fa fa-trash fa-lg" aria-hidden="true" disabled></i></a>
+                            class="far fa-minus-square fa-lg" aria-hidden="true" disabled></i></a>
                 </td>
             </tr>
             <% });%>
@@ -62,7 +62,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <form action="/project/<%= project.id %>/addUs/<%= sprint.id %>" method="POST" class="mr-auto">
             <div class="modal-content">
-                <% if(typeof orphanUs == 'undefined' || orphanUs.length == 0) { %>
+                <% if(noOrphanUs) { %>
                 <div class="modal-header">
                     <h5 class="modal-title">Il n'y a pas de user story pouvant être rajoutée au sprint.</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -91,18 +91,20 @@
                         <tbody>
                             <tr class="table-light">
                                 <% orphanUs.forEach(function (userStory) { %>
-                                <td><%= userStory.description %></td>
-                                <td><%= userStory.difficulty %></td>
-                                <td><%= userStory.priority %></td>
-                                <td>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input"
-                                            id="customCheck<%= sprint.id %><%= userStory.id %>" name="selectedUs"
-                                            value="<%= JSON.stringify(userStory) %>" unchecked>
-                                        <label class="custom-control-label"
-                                            for="customCheck<%= sprint.id %><%= userStory.id %>"></label>
-                                    </div>
-                                </td>
+                                <% if (userStory.isOrphan) { %>
+                                    <td><%= userStory.description %></td>
+                                    <td><%= userStory.difficulty %></td>
+                                    <td><%= userStory.priority %></td>
+                                    <td>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input"
+                                                id="customCheck<%= sprint.id %><%= userStory.id %>" name="selectedUs"
+                                                value="<%= JSON.stringify(userStory) %>" unchecked>
+                                            <label class="custom-control-label"
+                                                for="customCheck<%= sprint.id %><%= userStory.id %>"></label>
+                                        </div>
+                                    </td>
+                                <% } %>
                             </tr>
                             <% });%>
                         </tbody>

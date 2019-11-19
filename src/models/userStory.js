@@ -16,6 +16,14 @@ const userStorySchema = mongoose.Schema({
     priority: {
         type: Number,
         required: true
+    },
+    isOrphan: {
+        type: Boolean,
+        required: true
+    },
+    sprintId: {
+        type: String,
+        required: false
     }
 });
 

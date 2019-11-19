@@ -164,8 +164,10 @@ router.post('/project/:projectId/addUs/:sprintId', ensureAuthenticated, (req, re
         if (!Array.isArray(selectedUsJSON)) {
             selectedUs = JSON.parse(selectedUsJSON);
 
-            // Delete the orphan user story
-            ModelUserStory.deleteOne({ _id: selectedUs._id }, function () { });
+            // Set the orphan user story's parent (this sprint)
+            ModelUserStory.updateOne({ _id: selectedUs._id },
+                                     { isOrphan: false, sprintId: sprintId },
+                                     function() {});
         }
         // Else ...
         else if (selectedUsJSON.length > 1) {
@@ -174,8 +176,10 @@ router.post('/project/:projectId/addUs/:sprintId', ensureAuthenticated, (req, re
                 const us = JSON.parse(selectedUsJSON[i]);
                 selectedUs.push(us);
 
-                // Delete the orphan user story
-                ModelUserStory.deleteOne({ _id: us._id }, function () {});
+                // Set the orphan user story's parent (this sprint)
+                ModelUserStory.updateOne({ _id: us._id },
+                                         { isOrphan: false, sprintId: sprintId },
+                                         function() {});
             }
         }
 
@@ -200,15 +204,32 @@ router.post('/project/:projectId/addUs/:sprintId', ensureAuthenticated, (req, re
 
 function renderProjectPage(res, projectId)
 {
+    let noOrphanUs;
+
+    ModelUserStory.count({isOrphan : true})
+        .then(numberOfOrphanUs => {
+            if (numberOfOrphanUs === 0) {
+                noOrphanUs = true;
+            }
+            else {
+                noOrphanUs = false;
+            }
+        })
+
     ModelProject.findOne({ _id: projectId })
         .then(project => {
             ModelUserStory.find({ projectId: projectId })
                 .then(userStorys => {
-                    res.render('project', {
-                        project: project,
-                        moment: moment,
-                        orphanUs: userStorys
-                    });
+                    ModelTask.find({ projectId: projectId }).then(task => {
+                        res.render('project', {
+                            project: project,
+                            moment: moment,
+                            orphanUs: userStorys,
+                            tasks: task,
+                            noOrphanUs: noOrphanUs
+                        });
+                    })
+
                 })
                 .catch(err => console.log("Couldn't find orphan user stories: " + err));
         })

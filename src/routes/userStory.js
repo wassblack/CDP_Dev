@@ -39,7 +39,8 @@ router.post('/project/:projectId/createUserStory', ensureAuthenticated, (req, re
             projectId: projectId,
             description: userStoryDescription,
             difficulty: parseInt(userStoryDifficulty, 10),
-            priority: parseInt(userStoryPriority, 10)
+            priority: parseInt(userStoryPriority, 10),
+            isOrphan: true
         });
         newUserStory.save();
         res.redirect('/project/' + projectId);
