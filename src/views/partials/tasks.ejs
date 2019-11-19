@@ -1,0 +1,39 @@
+<% if(typeof tasks == 'undefined' || tasks.length == 0) { %>
+<div class="card-header">Taches</div>
+<div class="card-body">
+    <h5 class="card-title">Vous n'avez pas de taches.</h5>
+    <form action="/project/<%= project.id %>/createTask" method="GET">
+        <button type="submit" class="btn btn-outline-primary">Ajouter une nouvelle tache</button>
+    </form>
+</div>
+<%} else {%>
+    <h5 class="card-header">Taches existante</h5>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Description</th>
+                <th scope="col">Développeur</th>
+                <th scope="col">Etat</th>
+            </tr>
+        </thead>
+            <tbody>
+                
+                <tr class="table-light">
+                    <% tasks.forEach(function (task) { %>
+                    <td><%= task.description %></td>
+                    <td><%= task.developerId %></td>
+                    <td><%= task.state %></td>
+                    <td>
+                        <a href="/project/<%= project.id %>/editUserStory/<%= userStory.id %>"><i class="fas fa-edit fa-lg"></i></a>
+                        <a href="/project/<%= project.id %>/deleteUserStory/<%= userStory.id %>"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>                   
+                    </td>
+                </tr>
+                <% });%>
+            </tbody>
+            <tfoot>
+                <form action="/project/<%= project.id %>/createTask" method="GET">
+                    <button type="submit" class="btn btn-secondary">Ajouter une nouvelle tache</button>
+                </form>
+            </tfoot>
+    </table>
+<%}%>

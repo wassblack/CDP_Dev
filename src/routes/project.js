@@ -4,6 +4,7 @@ const moment = require('moment');
 const ModelProject = require('../models/project');
 const ModelUser = require('../models/user');
 const ModelUserStory = require('../models/userStory');
+const ModelTask = require('../models/task');
 const { ensureAuthenticated } = require('../config/authenticated');
 
 // Page displaying the main information about the selected project
@@ -133,21 +134,34 @@ router.post('/project/:projectId/addUser', ensureAuthenticated, (req, res) => {
 
 });
 
-function renderProjectPage(res, projectId)
-{
+function renderProjectPage(res, projectId) {
     ModelProject.findOne({ _id: projectId })
         .then(project => {
             ModelUserStory.find({ projectId: projectId })
                 .then(userStorys => {
-                    res.render('project', {
-                        project: project,
-                        moment: moment,
-                        orphanUs: userStorys
-                    });
+                    ModelTask.find({ projectId: projectId }).then(task => {
+                        res.render('project', {
+                            project: project,
+                            moment: moment,
+                            orphanUs: userStorys,
+                            tasks: task
+                        });
+                    })
+
                 })
                 .catch(err => console.log("Couldn't find orphan user stories: " + err));
         })
         .catch(err => console.log("Couldn't find user stories: " + err));
 }
+
+router.get('/project/:projectId/createTask', ensureAuthenticated, (req, res) => {
+    ModelProject.findOne({ _id: req.params.projectId }).then(project => {
+        res.render('createTask', {
+            project: project,
+            user: req.user
+        });
+    }).catch(err => console.log(err));
+
+});
 
 module.exports = router;

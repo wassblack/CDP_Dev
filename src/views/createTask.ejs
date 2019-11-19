@@ -1,0 +1,36 @@
+<% include ./partials/navBar%>
+
+<div class="row mt-5">
+    <div class="col-md-6 m-auto">
+        <div class="card card-body">
+            <h1 class="text-center mb-3">Création de tache</h1>
+            <% include ./partials/message%>
+            <form action="/project/<%= project.id %>/createTask" method="POST">
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea class="form-control" id="description" rows="3" name="description" class="form-control"
+                        placeholder="Décrivez votre tache en quelques lignes"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="developerId">Developeur</label>
+                    <select class="form-control" id="developerId" name="developerId">
+                        <% if(typeof project.users == 'undefined' || project.users.length == 0) { %>
+                        <option>-</option>
+                        <%} else {%>
+                        <% project.users.forEach(function (user) { %>
+                        <option><%= user.email %></option>
+                        <% });%>
+                        <% };%>
+                    </select>
+                </div>
+                <div class="form-group"></div>
+                <label for="state">Etat</label>
+                <input type="number" id="state" name="state" class="form-control" value="1" style="width:100%" required
+                    min="1" max="3" />
+        </div>
+        <div class="form-group">
+            <button type="submit" id="submitCreate" class="btn btn-primary btn-block">Créer un projet</button>
+            </form>
+        </div>
+    </div>
+</div>

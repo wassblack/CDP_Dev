@@ -1,119 +1,125 @@
 <% if(typeof project.sprints == 'undefined' || project.sprints.length == 0) { %>
-    <div class="card-header">Sprints</div>
-    <div class="card-body">
-        <h5 class="card-title">Vous n'avez pas de sprints.</h5>
-        <form action="/project/<%= project.id %>/createSprint" method="GET">
-            <button type="submit" class="btn btn-outline-primary">Créer un nouveau sprint</button>
-        </form>
-    </div>
+<div class="card-header">Sprints</div>
+<div class="card-body">
+    <h5 class="card-title">Vous n'avez pas de sprints.</h5>
+    <form action="/project/<%= project.id %>/createSprint" method="GET">
+        <button type="submit" class="btn btn-outline-primary">Créer un nouveau sprint</button>
+    </form>
+</div>
 <%} else {%>
-    <h2 class="card-header">Liste des sprints</h2>
+<h2 class="card-header">Liste des sprints</h2>
 
-    <% project.sprints.forEach(function (sprint) { %>
-        <div class="jumbotron">
-            <h3 class="display-5">
-                <%= sprint.name %>
-                <small><a href="/project/<%= project.id %>/modifySprint/<%= sprint.id %>"><i class="fas fa-edit fa-lg"></i></a></small>
-                <small><a href="/project/<%= project.id %>/deleteSprint/<%= sprint.id %>"><i class="fas fa-trash fa-lg"></i></a></small>
-            </h3>
-            
-            <p class="lead">Date de début : <%= moment(sprint.startDate).format( 'DD MMM YYYY') %></p>
-            <p class="lead">Date de fin : <%= moment(sprint.endDate).format( 'DD MMM YYYY') %></p>
-            <hr class="my-4">
-            <% if (sprint.userStories.length == 0) { %>
-                <p class="lead">Ce sprint n'a pas de user stories associées.</p>
-            <%} else {%>
-                <p class="lead">Liste des user stories du sprint :</p>
+<% project.sprints.forEach(function (sprint) { %>
+<div class="jumbotron">
+    <h3 class="display-5">
+        <%= sprint.name %>
+        <small><a href="/project/<%= project.id %>/modifySprint/<%= sprint.id %>"><i
+                    class="fas fa-edit fa-lg"></i></a></small>
+        <small><a href="/project/<%= project.id %>/deleteSprint/<%= sprint.id %>"><i
+                    class="fas fa-trash fa-lg"></i></a></small>
+    </h3>
 
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">Description</th>
-                            <th scope="col">Difficulté</th>
-                            <th scope="col">Priorité</th>
-                            <th scope="col">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="table-light">
-                            <% sprint.userStories.forEach(function (userStory) { %>
-                            <td><%= userStory.description %></td>
-                            <td><%= userStory.difficulty %></td>
-                            <td><%= userStory.priority %></td>
-                            <td>
-                                <a href="#"><i class="fas fa-edit fa-lg"></i></a>
-                                <a href="#"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
-                            </td>
-                        </tr>
-                        <% });%>
-                    </tbody>
-                </table>
-            <%}%>
+    <p class="lead">Date de début : <%= moment(sprint.startDate).format( 'DD MMM YYYY') %></p>
+    <p class="lead">Date de fin : <%= moment(sprint.endDate).format( 'DD MMM YYYY') %></p>
+    <hr class="my-4">
+    <% if (sprint.userStories.length == 0) { %>
+    <p class="lead">Ce sprint n'a pas de user stories associées.</p>
+    <%} else {%>
+    <p class="lead">Liste des user stories du sprint :</p>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Description</th>
+                <th scope="col">Difficulté</th>
+                <th scope="col">Priorité</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="table-light">
+                <% sprint.userStories.forEach(function (userStory) { %>
+                <td><%= userStory.description %></td>
+                <td><%= userStory.difficulty %></td>
+                <td><%= userStory.priority %></td>
+                <td>
+                    <a href="/project/<%= project.id %>/editUserStory/<%= userStory._id %>"><i
+                            class="fas fa-edit fa-lg" disabled></i></a>
+                    <a href="/project/<%= project.id %>/deleteUserStory/<%= userStory._id %>"><i
+                            class="fa fa-trash fa-lg" aria-hidden="true" disabled></i></a>
+                </td>
+            </tr>
+            <% });%>
+        </tbody>
+    </table>
+    <%}%>
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalUserStories<%= sprint.id %>">
-            Ajouter des user stories
-            </button>
-        </div>
+    Ajouter des user stories
+    </button>
+</div>
 
-        <div class="modal" id="modalUserStories<%= sprint.id %>">
-            <div class="modal-dialog modal-lg" role="document">
-                <form action="/project/<%= project.id %>/addUs/<%= sprint.id %>" method="POST" class="mr-auto">
-                    <div class="modal-content">
-                        <% if(typeof orphanUs == 'undefined' || orphanUs.length == 0) { %>
-                            <div class="modal-header">
-                                <h5 class="modal-title">Il n'y a pas de user story pouvant être rajoutée au sprint.</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                            </div>
-                         <%} else {%>
-                        <div class="modal-header">
-                            <h5 class="modal-title">Liste des user stories disponibles</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Description</th>
-                                        <th scope="col">Difficulté</th>
-                                        <th scope="col">Priorité</th>
-                                        <th scope="col">Selection</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="table-light">
-                                        <% orphanUs.forEach(function (userStory) { %>
-                                        <td><%= userStory.description %></td>
-                                        <td><%= userStory.difficulty %></td>
-                                        <td><%= userStory.priority %></td>
-                                        <td>
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="customCheck<%= sprint.id %><%= userStory.id %>" 
-                                                    name="selectedUs" value="<%= JSON.stringify(userStory) %>" unchecked>
-                                                <label class="custom-control-label" for="customCheck<%= sprint.id %><%= userStory.id %>"></label>
-                                            </div> 
-                                        </td>
-                                    </tr>
-                                    <% });%>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Ajouter les user stories sélectionnées</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                        </div>
-                        <%}%>
+<div class="modal" id="modalUserStories<%= sprint.id %>">
+    <div class="modal-dialog modal-lg" role="document">
+        <form action="/project/<%= project.id %>/addUs/<%= sprint.id %>" method="POST" class="mr-auto">
+            <div class="modal-content">
+                <% if(typeof orphanUs == 'undefined' || orphanUs.length == 0) { %>
+                <div class="modal-header">
+                    <h5 class="modal-title">Il n'y a pas de user story pouvant être rajoutée au sprint.</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <%} else {%>
+                <div class="modal-header">
+                    <h5 class="modal-title">Liste des user stories disponibles</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Description</th>
+                                <th scope="col">Difficulté</th>
+                                <th scope="col">Priorité</th>
+                                <th scope="col">Selection</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="table-light">
+                                <% orphanUs.forEach(function (userStory) { %>
+                                <td><%= userStory.description %></td>
+                                <td><%= userStory.difficulty %></td>
+                                <td><%= userStory.priority %></td>
+                                <td>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input"
+                                            id="customCheck<%= sprint.id %><%= userStory.id %>" name="selectedUs"
+                                            value="<%= JSON.stringify(userStory) %>" unchecked>
+                                        <label class="custom-control-label"
+                                            for="customCheck<%= sprint.id %><%= userStory.id %>"></label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <% });%>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Ajouter les user stories sélectionnées</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                </div>
+                <%}%>
                     </div>
                 </form>
             </div>
         </div>
     <% });%>
 
-    <form action="/project/<%= project.id %>/createSprint" method="GET">
-        <button type="submit" class="btn btn-secondary">Créer un nouveau sprint</button>
-    </form>
-<%}%>
+                <form action="/project/<%= project.id %>/createSprint" method="GET">
+                    <button type="submit" class="btn btn-secondary">Créer un nouveau sprint</button>
+                </form>
+                <%}%>
