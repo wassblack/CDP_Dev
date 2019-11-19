@@ -20,19 +20,19 @@ router.post('/project/:projectId/createUserStory', ensureAuthenticated, (req, re
 
     let errors = [];
     if (!projectId) {
-        errors.push({ msg: 'L\'id du project nest pas definie' });
+        errors.push({ msg: 'L\'id du projet n\'est pas définie' });
     }
 
     if (userStoryDescription && userStoryDescription.length > 300) {
-        errors.push({ msg: 'La description de votre User Story doit prendre moins de 300 caracteres.' });
+        errors.push({ msg: 'La description de votre user story doit prendre moins de 300 caracteres.' });
     }
 
     if (!userStoryDifficulty || userStoryDifficulty <= 0) {
-        errors.push({ msg: 'La difficulte doit etre specifiee' });
+        errors.push({ msg: 'La difficulté doit être spécifiée' });
     }
 
     if (!userStoryPriority) {
-        errors.push({ msg: 'La priorite doit etre specifiee' });
+        errors.push({ msg: 'La priorité doit être spécifiée' });
     }
 
     if (errors.length == 0) {
@@ -43,8 +43,7 @@ router.post('/project/:projectId/createUserStory', ensureAuthenticated, (req, re
             priority: parseInt(userStoryPriority, 10),
             isOrphan: true
         });
-        newUserStory.save();
-        renderProjectPage(res, projectId);
+        newUserStory.save().then(_ => renderProjectPage(res, projectId));
     } else {
         res.render('createUserStory', {
             projectId: projectId,
@@ -62,43 +61,35 @@ router.post('/project/:projectId/editUserStory', ensureAuthenticated, (req, res)
 
     if (newUserStoryDescription) {
         if (newUserStoryDescription.length > 300) {
-            errors.push({ msg: 'La description de votre User Story doit prendre moins de 300 caracteres.' });
+            errors.push({ msg: 'La description de votre user story doit prendre moins de 300 caracteres.' });
         }
-        else {
-            ModelUserStory.updateOne({ _id: req.body.userStoryId }, {
-                description: newUserStoryDescription
-            }, function () { });
-        }
+    }
+    else {
+        errors.push({ msg: 'Vous devez renseigner une description pour la user story' });
     }
 
     if (newUserStoryDifficulty) {
         if (newUserStoryDifficulty <= 0 || newUserStoryDifficulty > 10) {
-            errors.push({ msg: 'La difficulte doit etre specifiee' });
+            errors.push({ msg: 'La difficulté doit être specifiée' });
         }
-        else {
-            ModelUserStory.updateOne({ _id: req.body.userStoryId }, {
-                difficulty: newUserStoryDifficulty
-            }, function () { });
-        }
+    }
+    else {
+        errors.push({ msg: 'Vous devez renseigner une difficulté pour la user story' });
     }
 
     if (newUserStoryPriority) {
         if (newUserStoryPriority <= 0 || newUserStoryPriority > 3) {
-            errors.push({ msg: 'la priorité doit être comprise entre 1 et 3' });
-        }
-        else {
-            ModelUserStory.updateOne({ _id: req.body.userStoryId }, {
-                priority: newUserStoryPriority
-            }, function () { });
+            errors.push({ msg: 'La priorité doit être comprise entre 1 et 3' });
         }
     }
-
     else {
-        console.log("An error occured when modifying the User Story attributes");
+        errors.push({ msg: 'Vous devez renseigner une priorité pour la user story' });
     }
 
-    if (errors.length == 0) {
-        renderProjectPage(res, projectId);
+    if (errors.length === 0) {
+        ModelUserStory.updateOne({ _id: req.body.userStoryId }, { description: newUserStoryDescription
+            , difficulty: newUserStoryDifficulty, priority: newUserStoryPriority })
+            .then(_ => renderProjectPage(res, projectId));
     }
     else {
         res.render('modifyUserStory', {
@@ -124,23 +115,16 @@ router.get('/project/:projectId/editUserStory/:userStoryId', ensureAuthenticated
 
 router.get('/project/:projectId/deleteUserStory/:userStoryId', ensureAuthenticated, (req, res) => {
     const projectId = req.params.projectId;
-    ModelUserStory.deleteOne({ _id: req.params.userStoryId }, function () { });
-
-
-    renderProjectPage(res, projectId);
+    ModelUserStory.deleteOne({ _id: req.params.userStoryId }, function () { })
+        .then(_ => renderProjectPage(res, projectId));
 });
 
 function renderProjectPage(res, projectId) {
-    let noOrphanUs;
+    let noOrphanUs = false;
 
-    ModelUserStory.countDocuments({isOrphan : true})
+    ModelUserStory.countDocuments({projectId : projectId, isOrphan : true})
         .then(numberOfOrphanUs => {
-            if (numberOfOrphanUs === 0) {
-                noOrphanUs = true;
-            }
-            else {
-                noOrphanUs = false;
-            }
+            noOrphanUs = (numberOfOrphanUs === 0);
         });
 
     ModelProject.findOne({ _id: projectId })

@@ -34,33 +34,18 @@ router.post('/project/:projectId', ensureAuthenticated, (req, res) => {
         if (newProjectName.length > 40) {
             errors.push({ msg: 'Le nom de votre projet doit être inférieur à 40 caractères' });
         }
-
-        else {
-            ModelProject.updateOne({ _id: projectId }, {
-                name: newProjectName,
-                description: newProjectDescription
-
-            }, function () { });
-        }
     }
-
-    else if (newProjectDescription) {
-        if (newProjectDescription.length > 300) {
-            errors.push({ msg: 'La description de votre projet doit prendre moins de 300 caractères' });
-        }
-        else {
-            ModelProject.updateOne({ _id: projectId }, {
-                description: newProjectDescription
-            }, function () { });
-        }
-    }
-
     else {
-        console.log("An error occured when modifying the project attributes")
+        errors.push({ msg: 'Vous devez renseigner un nom pour le projet' });
     }
 
-    if (errors.length == 0) {
-        renderProjectPage(res, projectId);
+    if (newProjectDescription && newProjectDescription.length > 300) {
+        errors.push({ msg: 'La description de votre projet doit prendre moins de 300 caractères' });
+    }
+
+    if (errors.length === 0) {
+        ModelProject.updateOne({ _id: projectId }, { name: newProjectName, description: newProjectDescription })
+            .then(_ => renderProjectPage(res, projectId));
     }
     else {
         ModelProject.findOne({ _id: req.params.projectId }).then(project => {
@@ -73,15 +58,17 @@ router.post('/project/:projectId', ensureAuthenticated, (req, res) => {
 });
 
 router.get('/project/:projectId/delete', ensureAuthenticated, (req, res) => {
-    ModelProject.deleteOne({ _id: req.params.projectId }, function () { });
-    ModelProject.find({ 'users.email': req.user.email })
-        .then(projects => {
-            res.render('index', {
-                user: req.user,
-                projects: projects
-            });
-        })
-        .catch(err => console.log(err));
+    ModelProject.deleteOne({ _id: req.params.projectId }, function () { })
+        .then(_ => {
+            ModelProject.find({ 'users.email': req.user.email })
+            .then(projects => {
+                res.render('index', {
+                    user: req.user,
+                    projects: projects
+                });
+            })
+            .catch(err => console.log(err));
+        });
 
 });
 
@@ -106,22 +93,22 @@ router.post('/project/:projectId/addUser', ensureAuthenticated, (req, res) => {
                     .then(project => {
                         // Checking if user already assigned to the project
                         if (project.length > 0) {
-                            errors.push({ msg: 'l\'utilisateur est deja un collaborateurs du projet' });
+                            errors.push({ msg: 'L\'utilisateur est déjà un collaborateur du projet' });
                         } else {
                             ModelProject.updateOne({ _id: projectId },
                                 { $push: { users: userToadd } }, (succ, err) => {
                                     if (err) {
-                                        errors.push({ msg: 'Ajout non effectuer' + err });
+                                        errors.push({ msg: 'Ajout non effectué' + err });
                                     }
                                 }
                             );
                         }
-                    }).catch(err => errors.push({ msg: err }));
+                    }).catch(err => console.log("Couldn't find the project: " + err));
 
             } else {
-                errors.push({ msg: 'l\'utilisateur n\'existe pas' });
+                errors.push({ msg: 'L\'utilisateur n\'existe pas' });
             }
-        }).catch(err => errors.push({ msg: err }));
+        }).catch(err => console.log("Couldn't find the user: " + err));
     if (errors.length > 0) {
         res.render('/project/:projectId/addUser', {
             projectId: projectId,
@@ -134,17 +121,22 @@ router.post('/project/:projectId/addUser', ensureAuthenticated, (req, res) => {
 
 });
 
-function renderProjectPage(res, projectId) {
-    let noOrphanUs;
+router.get('/project/:projectId/createTask', ensureAuthenticated, (req, res) => {
+    ModelProject.findOne({ _id: req.params.projectId }).then(project => {
+        res.render('createTask', {
+            project: project,
+            user: req.user
+        });
+    }).catch(err => console.log(err));
 
-    ModelUserStory.countDocuments({isOrphan : true})
+});
+
+function renderProjectPage(res, projectId) {
+    let noOrphanUs = false;
+
+    ModelUserStory.countDocuments({projectId : projectId, isOrphan : true})
         .then(numberOfOrphanUs => {
-            if (numberOfOrphanUs === 0) {
-                noOrphanUs = true;
-            }
-            else {
-                noOrphanUs = false;
-            }
+            noOrphanUs = (numberOfOrphanUs === 0);
         });
 
     ModelProject.findOne({ _id: projectId })
@@ -166,15 +158,5 @@ function renderProjectPage(res, projectId) {
         })
         .catch(err => console.log("Couldn't find user stories: " + err));
 }
-
-router.get('/project/:projectId/createTask', ensureAuthenticated, (req, res) => {
-    ModelProject.findOne({ _id: req.params.projectId }).then(project => {
-        res.render('createTask', {
-            project: project,
-            user: req.user
-        });
-    }).catch(err => console.log(err));
-
-});
 
 module.exports = router;

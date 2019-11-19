@@ -205,16 +205,11 @@ router.post('/project/:projectId/addUs/:sprintId', ensureAuthenticated, (req, re
 
 function renderProjectPage(res, projectId)
 {
-    let noOrphanUs;
+    let noOrphanUs = false;
 
-    ModelUserStory.countDocuments({isOrphan : true})
+    ModelUserStory.countDocuments({projectId : projectId, isOrphan : true})
         .then(numberOfOrphanUs => {
-            if (numberOfOrphanUs === 0) {
-                noOrphanUs = true;
-            }
-            else {
-                noOrphanUs = false;
-            }
+            noOrphanUs = (numberOfOrphanUs === 0);
         });
 
     ModelProject.findOne({ _id: projectId })
