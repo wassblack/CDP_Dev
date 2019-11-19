@@ -40,7 +40,7 @@ router.post('/project/:projectId/createSprint', ensureAuthenticated, (req, res) 
         let sprint = { name: sprintName, startDate: new Date(startDate), endDate: new Date(endDate) };
 
         ModelProject.updateOne({ _id: projectId },
-            { $push: { sprints: sprint } },
+            { "$push": { sprints: sprint } },
             function(err) {
                 if (err) {
                     console.log("Coudn't create the sprint: " + err);
@@ -201,6 +201,36 @@ router.post('/project/:projectId/addUs/:sprintId', ensureAuthenticated, (req, re
     else {
         res.redirect('/project/' + projectId);
     }
+});
+
+router.get('/project/:projectId/removeUs/:sprintId/:userstoryId', ensureAuthenticated, (req, res) => {
+    const projectId = req.params.projectId;
+    const sprintId = req.params.sprintId;
+    const userstoryId = req.params.userstoryId;
+
+    ModelProject.updateOne(
+        { 'sprints._id' : sprintId },
+        { "$pull": { "sprints.$.userStories": { _id : userstoryId } } },
+        function(err) {
+            if (err) {
+                console.log("Could not remove this us from the sprint: " + err);
+            }
+            else {
+                ModelUserStory.updateOne(
+                    { '_id' : userstoryId },
+                    { "$set": { "isOrphan": true , "sprintId": "" } },
+                    function(err) {
+                        if (err) {
+                            console.log("Couldn't update the sprint: "+ err)
+                        }
+                        else {
+                            renderProjectPage(res, projectId);
+                        }
+                    }
+                );
+            }
+        }
+    );
 });
 
 function renderProjectPage(res, projectId)
