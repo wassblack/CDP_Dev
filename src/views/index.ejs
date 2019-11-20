@@ -1,55 +1,59 @@
-<%- include ./partials/navBar%>
-
 <% if(typeof projects == 'undefined' || projects.length == 0) { %>
-<div class="card-header">Projets</div>
-<div class="card-body">
-    <h4 class="card-title">Voulez-vous créer un projet ?</h4>
-    <form action="/createProject" method="GET">
-        <button type="submit" id="createFirstProjectButton" class="btn btn-outline-primary">Créer Projet</button>
-    </form>
+<div class="jumbotron vertical-ceneter">
+    <div class="card-header">Projets</div>
+    <div class="card-body">
+        <h4 class="card-title">Voulez-vous créer un projet ?</h4>
+        <form action="/createProject" method="GET">
+            <button type="submit" id="createFirstProjectButton" class="btn btn-outline-primary">Créer Projet</button>
+        </form>
+    </div>
 </div>
 <%} else {%>
 <%- include ./partials/message%>
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th scope="col">Nom du projet</th>
-            <th scope="col">Description</th>
-            <th scope="col">Collaborateurs</th>
-            <th scope="col">Operations</th>
-        </tr>
-    </thead>
-    <div class="jumbotron">
-        <h3>Vous avez <%= projects.length %> <% if (projects.length <= 1) { %> projet <% } else { %> projets <% } %>
-        </h3>
-        <tbody id="projectsList">
-            <% projects.forEach(function (project) { %>
-            <tr class="table-light">
-                <td><a href="/project/<%= project.id %>" id="projectPageLink"><%= project.name %></a></td>
-                <td><%= project.description  %></td>
-                <td>
-                    <ul>
-                        <% project.users.forEach(function (user) { %>
-                        <li><%= user.email %></li>
-                        <% });%>
-                    </ul>
-
-                </td>
-                <td>
-
-                    <a href="/project/<%= project.id %>/ModifyProject"><i class="fas fa-edit fa-lg"></i></a>
-                    <a href="/project/<%= project.id %>/delete"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
-                    <a href="/project/<%= project.id %>/addUser"><i id="<%= project.id %>" name="<%= project.id %>"
-                            class="fas fa-user-plus fa-lg"></i></a>
-                </td>
+<div class="jumbotron jumbotron-fluid">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Nom du projet</th>
+                <th scope="col">Description</th>
+                <th scope="col">Collaborateurs</th>
+                <th scope="col">Operations</th>
             </tr>
-            <% });%>
-        </tbody>
-        <tfoot>
-            <form action="/createProject" method="GET">
-                <button type="submit" class="btn btn-secondary" id="createProjectButton">Créer projet</button>
-            </form>
-        </tfoot>
-</table>
-<%}%>
+        </thead>
+        <div class="card-header">
+            <h3>vous contribuez à <%= projects.length %> <% if (projects.length <= 1) { %> projet <% } else { %> projets
+                <% } %>
+                <a class="float-right fas fa-sign-out-alt fa-lg" href="/users/logout"></a>
+            </h3>
+            
+            <tbody id="projectsList">
+                <% projects.forEach(function (project) { %>
+                <tr class="table-light">
+                    <td><a href="/project/<%= project.id %>" id="projectPageLink"><%= project.name %></a></td>
+                    <td><%= project.description  %></td>
+                    <td>
+                        <ul>
+                            <% project.users.forEach(function (user) { %>
+                            <li><%= user.email %></li>
+                            <% });%>
+                        </ul>
+
+                    </td>
+                    <td>
+
+                        <a href="/project/<%= project.id %>/ModifyProject"><i class="fas fa-edit fa-lg"></i></a>
+                        <a href="/project/<%= project.id %>/delete"><i class="fa fa-trash fa-lg"
+                                aria-hidden="true"></i></a>
+                        <a href="/project/<%= project.id %>/addUser"><i id="<%= project.id %>" name="<%= project.id %>"
+                                class="fas fa-user-plus fa-lg"></i></a>
+                    </td>
+                </tr>
+                <% });%>
+            </tbody>
+            
+    </table>
+    <form action="/createProject" method="GET">
+        <button type="submit" class="btn btn-outline-primary" id="createProjectButton">Créer projet</button>
+    </form>
+    <%}%>
 </div>
