@@ -131,13 +131,51 @@ router.get('/project/:projectId/createTask', ensureAuthenticated, (req, res) => 
 
 });
 
+router.get('/project/:projectId/modifyTask/:taskId', ensureAuthenticated, (req, res) => {
+    ModelProject.findOne({ _id: req.params.projectId }).then(project => {
+        ModelTask.findOne({ _id: req.params.taskId }).then(task => {
+            res.render('modifyTask', {
+                task: task,
+                project: project,
+                user: req.user
+            });
+        }).catch(err => console.log(err));
+    })
+});
+
+router.post('/project/:projectId/modifyTask/:taskId', ensureAuthenticated, (req, res) => {
+    const description = req.body.description;
+    const developerId = req.body.developerId;
+    const state = req.body.state;
+    let errors = [];
+
+    if (!state || !description || !developerId) {
+        errors.push({ msg: "Champ requis non remplis" })
+    }
+    if (state > 3 || state < 1) {
+        errors.push({ msg: "valeur non possible" });
+    }
+    if (description.length > 300) {
+        errors.push({ msg: "Description trop longue" });
+    }
+    ModelTask.updateOne({ _id: req.params.taskId },{
+        description: description,
+        developerId: developerId,
+        state: state
+    }).then(() => {
+        renderProjectPage(res,req.params.projectId);
+    }).catch(err => console.log(err));
+
+});
+
+
 router.post('/project/:projectId/createTask', ensureAuthenticated, (req, res) => {
     const dev = req.body.developerId;
     const description = req.body.description;
     const state = req.body.state;
     let errors = [];
 
-    if (!dev || !state) {
+    if (!description || !dev || !state) {
         errors.push({ msg: "champs requis non remplis" });
     }
     if (state > 3 || state < 1) {
