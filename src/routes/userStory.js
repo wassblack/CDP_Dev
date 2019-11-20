@@ -87,8 +87,10 @@ router.post('/project/:projectId/editUserStory', ensureAuthenticated, (req, res)
     }
 
     if (errors.length === 0) {
-        ModelUserStory.updateOne({ _id: req.body.userStoryId }, { description: newUserStoryDescription
-            , difficulty: newUserStoryDifficulty, priority: newUserStoryPriority })
+        ModelUserStory.updateOne({ _id: req.body.userStoryId }, {
+            description: newUserStoryDescription
+            , difficulty: newUserStoryDifficulty, priority: newUserStoryPriority
+        })
             .then(_ => renderProjectPage(res, projectId));
     }
     else {
@@ -99,7 +101,6 @@ router.post('/project/:projectId/editUserStory', ensureAuthenticated, (req, res)
         });
     }
 });
-
 
 router.get('/project/:projectId/editUserStory/:userStoryId', ensureAuthenticated, (req, res) => {
     ModelUserStory.findOne({ _id: req.params.userStoryId })
@@ -122,7 +123,7 @@ router.get('/project/:projectId/deleteUserStory/:userStoryId', ensureAuthenticat
 function renderProjectPage(res, projectId) {
     let noOrphanUs = false;
 
-    ModelUserStory.countDocuments({projectId : projectId, isOrphan : true})
+    ModelUserStory.countDocuments({ projectId: projectId, isOrphan: true })
         .then(numberOfOrphanUs => {
             noOrphanUs = (numberOfOrphanUs === 0);
         });

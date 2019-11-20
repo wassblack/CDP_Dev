@@ -168,7 +168,6 @@ router.post('/project/:projectId/modifyTask/:taskId', ensureAuthenticated, (req,
 
 });
 
-
 router.post('/project/:projectId/createTask', ensureAuthenticated, (req, res) => {
     const dev = req.body.developerId;
     const description = req.body.description;
@@ -205,6 +204,12 @@ router.post('/project/:projectId/createTask', ensureAuthenticated, (req, res) =>
 
     }
 
+});
+
+router.get('/project/:projectId/deleteTask/:taskId', ensureAuthenticated, (req, res) => {
+    ModelTask.deleteOne({ _id: req.params.taskId }).then(()=> {
+            renderProjectPage(res,req.params.projectId);
+        }).catch(err => console.log(err));
 });
 
 function renderProjectPage(res, projectId) {
