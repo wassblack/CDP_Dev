@@ -8,4 +8,4 @@ Pour lancer les tests, tapez la commande suivante :
 $ mvn clean test -U -Pselenium-tests
 ```
 
-Le résultat des tests sera stocké dans le dossier *test-output*
+Le résultat des tests sera stocké dans le dossier *target/surefire-reports*
