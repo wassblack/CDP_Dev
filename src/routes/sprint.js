@@ -233,6 +233,103 @@ router.get('/project/:projectId/removeUs/:sprintId/:userstoryId', ensureAuthenti
     );
 });
 
+router.get('/project/:projectId/editUserStory/:sprintId/:userstoryId', ensureAuthenticated, (req, res) => {
+    const projectId = req.params.projectId;
+    const sprintId = req.params.sprintId;
+
+    ModelUserStory.findOne({ _id: req.params.userStoryId })
+        .then(userStory => {
+            res.render('modifyUserStory', {
+                projectId: projectId,
+                userStory: userStory,
+                sprintId : sprintId
+            });
+        })
+        .catch(err => console.log("Couldn't find this user story: " + err));
+});
+
+router.post('/project/:projectId/editUserStory/:sprintId/:userstoryId', ensureAuthenticated, (req, res) => {
+    const projectId = req.params.projectId;
+    const sprintId = req.params.sprintId;
+    const userStory = JSON.parse(req.body.userStory);
+    const newUserStoryDescription = req.body.description;
+    const newUserStoryDifficulty = req.body.difficulty;
+    const newUserStoryPriority = req.body.priority;
+    const userStoryId = userStory._id;
+    let errors = [];
+
+    if (newUserStoryDescription) {
+        if (newUserStoryDescription.length > 300) {
+            errors.push({ msg: 'La description de votre user story doit prendre moins de 300 caracteres.' });
+        }
+    }
+    else {
+        errors.push({ msg: 'Vous devez renseigner une description pour la user story' });
+    }
+
+    if (newUserStoryDifficulty) {
+        if (newUserStoryDifficulty <= 0 || newUserStoryDifficulty > 10) {
+            errors.push({ msg: 'La difficulté doit être specifiée' });
+        }
+    }
+    else {
+        errors.push({ msg: 'Vous devez renseigner une difficulté pour la user story' });
+    }
+
+    if (newUserStoryPriority) {
+        if (newUserStoryPriority <= 0 || newUserStoryPriority > 3) {
+            errors.push({ msg: 'La priorité doit être comprise entre 1 et 3' });
+        }
+    }
+    else {
+        errors.push({ msg: 'Vous devez renseigner une priorité pour la user story' });
+    }
+
+    if (errors.length === 0) {
+
+        // Pull the outdated us
+        ModelProject.updateOne(
+            { 'sprints._id' : sprintId },
+            { "$pull": { "sprints.$.userStories": { _id : userStoryId } } },
+            function(err) {
+                if (err) {
+                    console.log("Could not remove this us from the sprint: " + err);
+                }
+                else {
+                    userStory.description = newUserStoryDescription;
+                    userStory.difficulty = newUserStoryDifficulty;
+                    userStory.priority = newUserStoryPriority;
+
+                    // Push the updated us
+                    ModelProject.updateOne(
+                        { 'sprints._id' : sprintId },
+                        { "$push": { "sprints.$.userStories": userStory } },
+                        function(err) {
+                            if (err) {
+                                console.log("Couldn't update the sprint: " + err)
+                            }
+                            else {
+                                // Update the us in the backlog
+                                ModelUserStory.updateOne({ _id: userStoryId },
+                                    { description: newUserStoryDescription, difficulty: newUserStoryDifficulty, priority: newUserStoryPriority })
+                                    .then(_ => renderProjectPage(res, projectId));
+                            }
+                        }
+                    );
+                }
+            }
+        );
+    }
+    else {
+        res.render('modifyUserStory', {
+            errors: errors,
+            projectId: projectId,
+            userStory: userStory,
+            sprintId : sprintId
+        });
+    } 
+});
+
 function renderProjectPage(res, projectId)
 {
     let noOrphanUs = false;

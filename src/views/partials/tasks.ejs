@@ -1,19 +1,19 @@
 <% if(typeof tasks == 'undefined' || tasks.length == 0) { %>
 <div class="card-header">Taches</div>
 <div class="card-body">
-    <h5 class="card-title">Vous n'avez pas de taches.</h5>
+    <h5 class="card-title">Vous n'avez pas de tâches.</h5>
     <form action="/project/<%= project.id %>/createTask" method="GET">
-        <button type="submit" class="btn btn-outline-primary">Ajouter une nouvelle tache</button>
+        <button type="submit" class="btn btn-outline-primary">Ajouter une nouvelle tâche</button>
     </form>
 </div>
 <%} else {%>
-    <h5 class="card-header">Taches existante</h5>
+    <h5 class="card-header">Tâches existantes</h5>
     <table class="table table-hover">
         <thead>
             <tr>
                 <th scope="col">Description</th>
                 <th scope="col">Développeur</th>
-                <th scope="col">Etat</th>
+                <th scope="col">État</th>
             </tr>
         </thead>
             <tbody>
@@ -32,7 +32,7 @@
             </tbody>
             <tfoot>
                 <form action="/project/<%= project.id %>/createTask" method="GET">
-                    <button type="submit" class="btn btn-secondary">Ajouter une nouvelle tache</button>
+                    <button type="submit" class="btn btn-secondary">Ajouter une nouvelle tâche</button>
                 </form>
             </tfoot>
     </table>

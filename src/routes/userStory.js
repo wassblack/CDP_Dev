@@ -52,11 +52,27 @@ router.post('/project/:projectId/createUserStory', ensureAuthenticated, (req, re
     }
 });
 
+router.get('/project/:projectId/editUserStory/:userStoryId', ensureAuthenticated, (req, res) => {
+    const projectId = req.params.projectId;
+    const userStoryId = req.params.userStoryId;
+
+    ModelUserStory.findOne({ _id: userStoryId })
+        .then(userStory => {
+            res.render('modifyUserStory', {
+                projectId: projectId,
+                userStory: userStory,
+                sprintId : userStory.sprintId
+            });
+        })
+        .catch(err => console.log("Couldn't find this user story: " + err));
+});
+
 router.post('/project/:projectId/editUserStory', ensureAuthenticated, (req, res) => {
+    const projectId = req.params.projectId;
     const newUserStoryDescription = req.body.description;
     const newUserStoryDifficulty = req.body.difficulty;
     const newUserStoryPriority = req.body.priority;
-    const projectId = req.params.projectId;
+    const newUserStoryId = req.body.userStoryId;
     let errors = [];
 
     if (newUserStoryDescription) {
@@ -87,7 +103,7 @@ router.post('/project/:projectId/editUserStory', ensureAuthenticated, (req, res)
     }
 
     if (errors.length === 0) {
-        ModelUserStory.updateOne({ _id: req.body.userStoryId }, {
+        ModelUserStory.updateOne({ _id: newUserStoryId }, {
             description: newUserStoryDescription
             , difficulty: newUserStoryDifficulty, priority: newUserStoryPriority
         })
@@ -96,22 +112,10 @@ router.post('/project/:projectId/editUserStory', ensureAuthenticated, (req, res)
     else {
         res.render('modifyUserStory', {
             errors: errors,
-            projectId: req.params.projectId,
-            userStory: req.params.userStoryId,
+            projectId: projectId,
+            userStoryId: newUserStoryId
         });
     }
-});
-
-router.get('/project/:projectId/editUserStory/:userStoryId', ensureAuthenticated, (req, res) => {
-    ModelUserStory.findOne({ _id: req.params.userStoryId })
-        .then(userStory => {
-            res.render('modifyUserStory', {
-                projectId: req.params.projectId,
-                userStoryId: req.params.userStoryId,
-                userStory: userStory
-            });
-        })
-        .catch(err => console.log("Couldn't find this user story: " + err));
 });
 
 router.get('/project/:projectId/deleteUserStory/:userStoryId', ensureAuthenticated, (req, res) => {
