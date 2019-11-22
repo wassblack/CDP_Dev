@@ -118,10 +118,33 @@ router.post('/project/:projectId/editUserStory', ensureAuthenticated, (req, res)
     }
 });
 
-router.get('/project/:projectId/deleteUserStory/:userStoryId', ensureAuthenticated, (req, res) => {
+router.get('/project/:projectId/deleteUserStory/:userStoryId/:sprintId', ensureAuthenticated, (req, res) => {
     const projectId = req.params.projectId;
-    ModelUserStory.deleteOne({ _id: req.params.userStoryId }, function () { })
-        .then(_ => renderProjectPage(res, projectId));
+    const userStoryId = req.params.userStoryId;
+    const sprintId = req.params.sprintId;
+
+    // Delete the us from the backlog
+    ModelUserStory.deleteOne({ _id: userStoryId }, function () { })
+        .then(_ => {
+            if (sprintId !== "0") {
+                // Remove the us from its sprint if it has one
+                ModelProject.updateOne(
+                    { 'sprints._id' : sprintId },
+                    { "$pull": { "sprints.$.userStories": { _id : userStoryId } } },
+                    function(err) {
+                        if (err) {
+                            console.log("Could not remove this us from the sprint: " + err);
+                        }
+                        else {
+                            renderProjectPage(res, projectId)
+                        }
+                    }
+                );
+            }
+            else {
+                renderProjectPage(res, projectId)
+            }
+    });
 });
 
 function renderProjectPage(res, projectId) {

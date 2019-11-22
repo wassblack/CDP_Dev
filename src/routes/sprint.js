@@ -203,21 +203,21 @@ router.post('/project/:projectId/addUs/:sprintId', ensureAuthenticated, (req, re
     }
 });
 
-router.get('/project/:projectId/removeUs/:sprintId/:userstoryId', ensureAuthenticated, (req, res) => {
+router.get('/project/:projectId/removeUs/:sprintId/:userStoryId', ensureAuthenticated, (req, res) => {
     const projectId = req.params.projectId;
     const sprintId = req.params.sprintId;
-    const userstoryId = req.params.userstoryId;
+    const userStoryId = req.params.userStoryId;
 
     ModelProject.updateOne(
         { 'sprints._id' : sprintId },
-        { "$pull": { "sprints.$.userStories": { _id : userstoryId } } },
+        { "$pull": { "sprints.$.userStories": { _id : userStoryId } } },
         function(err) {
             if (err) {
                 console.log("Could not remove this us from the sprint: " + err);
             }
             else {
                 ModelUserStory.updateOne(
-                    { '_id' : userstoryId },
+                    { '_id' : userStoryId },
                     { "$set": { "isOrphan": true , "sprintId": "" } },
                     function(err) {
                         if (err) {
@@ -233,11 +233,12 @@ router.get('/project/:projectId/removeUs/:sprintId/:userstoryId', ensureAuthenti
     );
 });
 
-router.get('/project/:projectId/editUserStory/:sprintId/:userstoryId', ensureAuthenticated, (req, res) => {
+router.get('/project/:projectId/editUserStory/:sprintId/:userStoryId', ensureAuthenticated, (req, res) => {
     const projectId = req.params.projectId;
     const sprintId = req.params.sprintId;
+    const userStoryId = req.params.userStoryId;
 
-    ModelUserStory.findOne({ _id: req.params.userStoryId })
+    ModelUserStory.findOne({ _id: userStoryId })
         .then(userStory => {
             res.render('modifyUserStory', {
                 projectId: projectId,
@@ -248,7 +249,7 @@ router.get('/project/:projectId/editUserStory/:sprintId/:userstoryId', ensureAut
         .catch(err => console.log("Couldn't find this user story: " + err));
 });
 
-router.post('/project/:projectId/editUserStory/:sprintId/:userstoryId', ensureAuthenticated, (req, res) => {
+router.post('/project/:projectId/editUserStory/:sprintId/:userStoryId', ensureAuthenticated, (req, res) => {
     const projectId = req.params.projectId;
     const sprintId = req.params.sprintId;
     const userStory = JSON.parse(req.body.userStory);
