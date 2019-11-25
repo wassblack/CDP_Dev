@@ -28,7 +28,7 @@
                 </tr>
             </thead>
             <div class="card-header">
-                <h3>vous contribuez à <%= projects.length %> <% if (projects.length <= 1) { %> projet <% } else { %>
+                <h3>vous contribuez à <%= projects.length %> <% if (projects.length <= 1) { %>projet<% } else { %>
                     projets
                     <% } %>
                     <a class="float-right fas fa-sign-out-alt fa-lg" href="/users/logout"></a>
@@ -52,7 +52,7 @@
                             <a href="/project/<%= project.id %>/ModifyProject"><i class="fas fa-edit fa-lg"></i></a>
                             <a href="/project/<%= project.id %>/delete"><i class="fa fa-trash fa-lg"
                                     aria-hidden="true"></i></a>
-                            <a href="/project/<%= project.id %>/addUser"><i id="<%= project.id %>"
+                            <a href="/project/<%= project.id %>/addUser" id="addContributorLink"><i id="<%= project.id %>"
                                     name="<%= project.id %>" class="fas fa-user-plus fa-lg"></i></a>
                         </td>
                     </tr>

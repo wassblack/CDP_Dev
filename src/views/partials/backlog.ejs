@@ -3,12 +3,12 @@
     <div class="card-body">
         <h5 class="card-title">Vous n'avez pas de user stories.</h5>
         <form action="/project/<%= project.id %>/createUserStory" method="GET">
-            <button type="submit" class="btn btn-outline-primary">Ajouter une user story</button>
+            <button type="submit" class="btn btn-outline-primary" id="addUserstoryButton">Ajouter une user story</button>
         </form>
     </div>
 <%} else {%>
     <h3 class="card-header">Backlog</h3>
-    <table class="table table-hover">
+    <table class="table table-hover" id="userstoriesTable">
         <thead>
             <tr>
                 <th scope="col">Description</th>
@@ -25,13 +25,13 @@
                     <td><%= userStory.difficulty %></td>
                     <td><%= userStory.priority %></td>
                     <td>
-                        <a href="/project/<%= project.id %>/editUserStory/<%= userStory.id %>"><i class="fas fa-edit fa-lg"></i></a>
+                        <a href="/project/<%= project.id %>/editUserStory/<%= userStory.id %>" class="modifyUserstory"><i class="fas fa-edit fa-lg"></i></a>
                         <% if(userStory.isOrphan) { %>
-                            <a href="/project/<%= project.id %>/deleteUserStory/<%= userStory.id %>/0">
+                            <a href="/project/<%= project.id %>/deleteUserStory/<%= userStory.id %>/0" class="deleteUserStory">
                                 <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
                             </a>
                         <%} else {%>
-                            <a href="/project/<%= project.id %>/deleteUserStory/<%= userStory.id %>/<%= userStory.sprintId %>">
+                            <a href="/project/<%= project.id %>/deleteUserStory/<%= userStory.id %>/<%= userStory.sprintId %>" class="deleteUserStory">
                                 <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
                             </a>
                         <%}%>
@@ -41,7 +41,7 @@
             </tbody>
             <tfoot>
                 <form action="/project/<%= project.id %>/createUserStory" method="GET">
-                    <button type="submit" class="btn btn-secondary">Ajouter une User Story</button>
+                    <button type="submit" class="btn btn-secondary" id="addUserstoryButton">Ajouter une User Story</button>
                 </form>
             </tfoot>
     </table>
