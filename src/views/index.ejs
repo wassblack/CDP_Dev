@@ -2,9 +2,13 @@
     <h1 class="display-4 text-center">SCRUM.iT</h1>
     <% if(typeof projects == 'undefined' || projects.length == 0) { %>
     <div class="jumbotron vertical-ceneter" style="background: none;">
-        <div class="card-header">Projets</div>
+        <div class="card-header">
+            <h3>Vous n'avez pas de projets.
+                 <a class="float-right fas fa-sign-out-alt fa-lg" href="/users/logout"></a>
+            </h3>
+        </div>
         <div class="card-body">
-            <h4 class="card-title">Voulez-vous créer un projet ?</h4>
+            <h5 class="card-title">Voulez-vous en créer un ?</h5>
             <form action="/createProject" method="GET">
                 <button type="submit" id="createFirstProjectButton" class="btn btn-outline-primary">Créer
                     Projet</button>
