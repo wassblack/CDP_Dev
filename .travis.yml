@@ -3,5 +3,7 @@ node_js:
   
 install: 
   - cd src && npm install
-  - cd ../ && docker-compose up
+
+script:
+  - npm run dev
  
