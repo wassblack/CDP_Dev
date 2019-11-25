@@ -160,8 +160,8 @@ public class Sprint2Test
 		
 		// Fill the form to add a sprint
 		String sprintName = "Sprint test";
-		String startDate = "03/30/2020";
-		String endDate = "08/31/2020";
+		String startDate = "30/03/2020";
+		String endDate = "31/08/2020";
 		driver.findElement(By.id("createSprintButton")).click();
 		driver.findElement(By.cssSelector("#name")).sendKeys(sprintName);
 		driver.findElement(By.cssSelector("#startDate")).sendKeys(startDate);
@@ -185,7 +185,7 @@ public class Sprint2Test
 		
 		// Fill the form to add a sprint
 		String sprintName = "Sprint test modifiée";
-		String startDate = "11/25/2019";
+		String startDate = "25/11/2019";
 		String endDate = "03/03/2045";
 		driver.findElement(By.className("modifySprintLink")).click();
 		driver.findElement(By.cssSelector("#name")).clear();
