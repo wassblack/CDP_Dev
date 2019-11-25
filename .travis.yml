@@ -5,5 +5,5 @@ install:
   - cd src && npm install
 
 script:
-  - npm run dev
+  - npm run start
  
