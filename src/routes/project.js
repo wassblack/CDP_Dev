@@ -104,7 +104,9 @@ router.post('/project/:projectId/addUser', ensureAuthenticated, (req, res) => {
                                         errors.push({ msg: 'Ajout non effectué' + err });
                                     }
                                 }
-                            );
+                            ).then(() => {
+                                res.redirect('/');
+                            })
                         }
                     }).catch(err => console.log("Couldn't find the project: " + err));
 
@@ -112,16 +114,14 @@ router.post('/project/:projectId/addUser', ensureAuthenticated, (req, res) => {
                 errors.push({ msg: 'L\'utilisateur n\'existe pas' });
             }
         }).catch(err => console.log("Couldn't find the user: " + err));
+
     if (errors.length > 0) {
         res.render('/project/:projectId/addUser', {
             projectId: projectId,
             errors: errors,
             user: req.user
         });
-    } else {
-        res.redirect('/');
-    }
-
+    } 
 });
 // Display create task form 
 router.get('/project/:projectId/createTask', ensureAuthenticated, controllerTask.displayCreateTask);

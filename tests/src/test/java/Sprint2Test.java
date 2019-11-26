@@ -1,6 +1,6 @@
 import org.bson.Document;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -8,7 +8,6 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
@@ -183,7 +182,7 @@ public class Sprint2Test
 		// Click on the project name
 		driver.findElement(By.cssSelector("#projectPageLink")).click();
 		
-		// Fill the form to add a sprint
+		// Fill the form to modify a sprint
 		String sprintName = "Sprint test modifiée";
 		String startDate = "25/11/2019";
 		String endDate = "03/03/2045";
@@ -216,14 +215,32 @@ public class Sprint2Test
 		
 		// Check if the sprint was deleted
 		WebElement sprintSection = driver.findElement(By.cssSelector("#sprintSection"));
-		Assert.assertEquals(true, sprintSection.getText().contains("Vous n'avez pas de sprints."));
+		Assert.assertEquals(true, sprintSection.getText().contains("VOUS N'AVEZ PAS DE SPRINTS."));
 	}
 
 	// Issue 12
 	@Test
 	public void testAddUserstoryToSprint() throws Exception
 	{
-
+		// Click on the project name
+		driver.findElement(By.cssSelector("#projectPageLink")).click();
+		
+		driver.findElement(By.cssSelector("#addUserstoryToSprintButton")).click();
+		
+		// Check the user story to add 
+		String jsCheckCode = "arguments[0].scrollIntoView(true); arguments[0].click();";
+		WebElement elementToCheck = driver.findElement(By.name("selectedUs"));
+	    ((JavascriptExecutor) driver).executeScript(jsCheckCode, elementToCheck);
+	    
+	    // Submit it
+	    driver.findElement(By.cssSelector("#submitAddUserstoriesToSprint")).click();
+	    
+	    // Check if the user story was added to the sprint
+	 	WebElement sprintUserstoriesTable = driver.findElement(By.cssSelector("#userstoriesSprintTable"));
+	 	Assert.assertEquals(true, 
+	 			sprintUserstoriesTable.getText().contains("Super description modifiée")
+	 			&& sprintUserstoriesTable.getText().contains("2"));
+		
 	}
 	
 	public void login()
