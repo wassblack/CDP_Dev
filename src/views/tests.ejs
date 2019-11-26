@@ -1,0 +1,40 @@
+    <h3 class="card-header">Tests</h3>
+<% if(typeof projectTests == 'undefined' || projectTests.length == 0) { %>
+    <div class="card-body">
+        <h5 class="card-title">Vous n'avez pas encore de tests.</h5>
+        <form action="/project/<%= project.id %>/createTest" method="GET">
+            <button type="submit" class="btn btn-outline-primary" id="addTestButton">Ajouter un test</button>
+        </form>
+    </div>
+<% } else { %>
+    <table class="table table-hover" id="testsTable">
+        <thead>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Description</th>
+                <th scope="col">User Stor</th>
+                <th scope="col">État</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="table-light">
+                <% projectTests.forEach(function (test) { %>
+                <td><%= test.name %></td>
+                <td><%= test.description %></td>
+                <td><%= test.issue %></td>
+                <td><%= test.state %></td>
+                <td>
+                    <a href="/project/<%= project.id %>/deleteTest/<%= test.id %>" class="deleteTest">
+                        <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
+                    </a>
+                </td>
+                <% }); %>
+            </tr>
+        </tbody>
+        <tfoot>
+            <form action="/project/<%= project.id %>/createTest" method="GET">
+                <button type="submit" class="btn btn-secondary" id="addTestButton">Ajouter un test</button>
+            </form>
+        </tfoot>
+    </table>
+<% } %>
