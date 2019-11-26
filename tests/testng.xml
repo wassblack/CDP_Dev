@@ -29,6 +29,7 @@
        
        <methods>
        		<include name="testAddUserstory" />
+       		<include name="testModifyUserstory" />
        		<include name="testAddSprint" />
        		<include name="testAddUserstoryToSprint" />	
        </methods>
