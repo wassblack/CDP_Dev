@@ -1,5 +1,6 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
+<!--
 <suite name="Sprint1">
 
   <test name="ChromeTest" >
@@ -15,5 +16,26 @@
        <class name="Sprint1Test" />
     </classes>
   </test>
+  
+</suite>
+-->
+
+<suite name="Sprint2">
+
+  <test name="ChromeTest" >
+  	<parameter name="browser" value="chrome" />
+    <classes>
+       <class name="Sprint2Test">
+       
+       <methods>
+       		<include name="testAddUserstory" />
+       		<include name="testAddSprint" />
+       		<include name="testAddUserstoryToSprint" />	
+       </methods>
+       
+       </class>
+    </classes>
+  </test>
+
   
 </suite>

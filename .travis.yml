@@ -1,1 +1,9 @@
-language: node_js
+node_js: 
+  -9
+  
+install: 
+  - cd src && npm install
+
+script:
+  - npm run start
+ 

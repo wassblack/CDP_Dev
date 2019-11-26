@@ -17,7 +17,7 @@
                                 <div class="form-group">
                                     <div class="input-group date" id="datepickerstart" data-target-input="nearest">
                                         <input type="text" id="startDate" name="startDate" class="form-control datetimepicker-input" data-target="#datepickerstart"
-                                            value="<%= moment(sprintStartDate).format('MM/DD/YYYY') %>" />
+                                            value="<%= moment(sprintStartDate).format('DD/MM/YYYY') %>" />
                                         <div class="input-group-append" data-target="#datepickerstart" data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                         </div>
@@ -40,7 +40,7 @@
                                 <div class="form-group">
                                     <div class="input-group date" id="datepickerend" data-target-input="nearest">
                                         <input type="text" id="endDate" name="endDate" class="form-control datetimepicker-input" data-target="#datepickerend"
-                                            value="<%= moment(sprintEndDate).format('MM/DD/YYYY') %>" />
+                                            value="<%= moment(sprintEndDate).format('DD/MM/YYYY') %>" />
                                         <div class="input-group-append" data-target="#datepickerend" data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                         </div>
@@ -56,7 +56,7 @@
                             </script>
                         </div>
                     </div>
-                    <button type="submit" id="submitCreate" class="btn btn-primary btn-block">Modifier le sprint</button>
+                    <button type="submit" id="submitModifySprint" class="btn btn-primary btn-block">Modifier le sprint</button>
                 </form>
             </div>
         </div>

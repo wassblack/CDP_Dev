@@ -37,7 +37,13 @@ router.post('/project/:projectId/createSprint', ensureAuthenticated, (req, res) 
     }
 
     if (errors.length === 0) {
-        let sprint = { name: sprintName, startDate: new Date(startDate), endDate: new Date(endDate) };
+        // Reformat the date in a understandable format
+        const startDateSplit = startDate.split('/');
+        const endDateSplit = endDate.split('/');
+        const reformatStartDate = new Date(startDateSplit[2], startDateSplit[1] - 1, startDateSplit[0]);
+        const reformatEndDate = new Date(endDateSplit[2], endDateSplit[1] - 1, endDateSplit[0]);
+
+        let sprint = { name: sprintName, startDate: reformatStartDate, endDate: reformatEndDate };
 
         ModelProject.updateOne({ _id: projectId },
             { "$push": { sprints: sprint } },
@@ -108,9 +114,15 @@ router.post('/project/:projectId/modifySprint/:sprintId', ensureAuthenticated, (
     }
 
     if (errors.length === 0) {
+        // Reformat the date in a understandable format
+        const startDateSplit = newSprintStartDate.split('/');
+        const endDateSplit = newSprintEndDate.split('/');
+        const reformatStartDate = new Date(startDateSplit[2], startDateSplit[1] - 1, startDateSplit[0]);
+        const reformatEndDate = new Date(endDateSplit[2], endDateSplit[1] - 1, endDateSplit[0]);
+
         ModelProject.updateOne(
             { 'sprints._id' : sprintId },
-            { "$set": { "sprints.$.name": newSprintName , "sprints.$.startDate": newSprintStartDate, "sprints.$.endDate":newSprintEndDate } },
+            { "$set": { "sprints.$.name": newSprintName , "sprints.$.startDate": reformatStartDate, "sprints.$.endDate":reformatEndDate } },
             function(err) {
                 if (err) {
                     console.log("Couldn't update the sprint: "+ err)
