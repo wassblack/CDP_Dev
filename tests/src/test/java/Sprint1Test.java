@@ -6,9 +6,9 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
@@ -23,7 +23,7 @@ public class Sprint1Test
 	private WebDriver driver;
 	
 	@Parameters("browser")
-	@BeforeMethod
+	@BeforeTest
 	public void setUp(String browser) throws Exception
 	{
 		if (browser.equals("chrome")) {
@@ -36,11 +36,32 @@ public class Sprint1Test
 		}
 	}
 	
-	@Test
-	public void testIssue1() throws Exception
+	@BeforeMethod
+	public void goHome() throws Exception
 	{
 		driver.get(BASE_URL);
+	}
+	
+	// Clean the database from the test documents
+	@AfterTest
+	public void cleanDatabase()
+	{
+		// Connection to MongoDB
+		MongoClient mongoClient = MongoClients.create("mongodb+srv://team:FRNK6OOMZq9PBdMq@cluster0-e1ewl.mongodb.net/scrumit?retryWrites=true&w=majority");
+		MongoDatabase database = mongoClient.getDatabase("scrumit");
+
+		// Delete the test documents
+		database.getCollection("users").deleteOne(Filters.eq("email", "selenium@auto.com"));
+		database.getCollection("projects").deleteOne(Filters.eq("name", "Worthless project"));
+		database.getCollection("projects").deleteOne(Filters.eq("name", "Selenium project v2"));
 		
+		driver.quit();
+	}
+	
+	// Issue 1
+	@Test
+	public void testRegister() throws Exception
+	{
 		// Click on the register button
 		driver.findElement(By.xpath("//a[@href='/users/register']")).click();
 		
@@ -59,11 +80,10 @@ public class Sprint1Test
 		wait.until(ExpectedConditions.urlContains(BASE_URL + "/users/login"));
 	}
 	
+	// Issue 2
 	@Test
-	public void testIssue2() throws Exception
+	public void testLogin() throws Exception
 	{
-		driver.get(BASE_URL);
-		
 		// Fill the login form
 		driver.findElement(By.cssSelector("#email")).sendKeys("selenium@auto.com");
 		driver.findElement(By.cssSelector("#password")).sendKeys("abcdef");
@@ -76,11 +96,10 @@ public class Sprint1Test
 		wait.until(ExpectedConditions.urlContains(BASE_URL + "/Projects"));
 	}
 	
+	// Issue 3
 	@Test
-	public void testIssue3() throws Exception
+	public void testLogout() throws Exception
 	{
-		login();
-		
 		// Click on the disconnect link
 		driver.findElement(By.xpath("//a[@href='/users/logout']")).click();
 		
@@ -90,11 +109,12 @@ public class Sprint1Test
 		
 		// Check if the user can't access its projects
 		driver.get(BASE_URL + "/Projects");
-		Assert.assertEquals(driver.getCurrentUrl(), BASE_URL + "/users/login");		
+		Assert.assertEquals(driver.getCurrentUrl(), BASE_URL + "/users/login");
 	}
 	
+	// Issue 4
 	@Test
-	public void testIssue4() throws Exception
+	public void testCreateProject() throws Exception
 	{
 		login();
 		
@@ -123,11 +143,10 @@ public class Sprint1Test
 		Assert.assertEquals(true, isDisplayed);
 	}
 	
+	// Issue 5
 	@Test
-	public void testIssue5Modification() throws Exception
+	public void testModifyProject() throws Exception
 	{
-		login();
-
 		// Click on the icon to modify a project
 		driver.findElement(By.cssSelector("#projectPageLink")).click();
 		
@@ -155,10 +174,10 @@ public class Sprint1Test
 		Assert.assertEquals(true, updated);
 	}
 	
+	// Issue 5
 	@Test
-	public void testIssue5Delete() throws Exception
+	public void testDeleteProject() throws Exception
 	{
-		login();
 		createWorthlessProject();
 		
 		// Click on the icon to modify a project
@@ -181,11 +200,10 @@ public class Sprint1Test
 		Assert.assertEquals(false, isDisplayed);
 	}
 
+	// Issue 6
 	@Test
-	public void testIssue6() throws Exception
+	public void testProjectsDisplay() throws Exception
 	{
-		login();
-		
 		boolean isDisplayed = false;
 		WebElement projectsList = driver.findElement(By.cssSelector("#projectsList"));
 		for (WebElement w : projectsList.findElements(By.tagName("tr"))) {
@@ -198,29 +216,8 @@ public class Sprint1Test
 		Assert.assertEquals(true, isDisplayed);
 	}
 	
-	@AfterMethod
-	public void tearDown() throws Exception
-	{
-		driver.quit();
-	}
-	
-	// Clean the database from the test documents
-	@AfterTest
-	public void cleanDatabase()
-	{
-		// Connection to MongoDB
-		MongoClient mongoClient = MongoClients.create("mongodb+srv://team:FRNK6OOMZq9PBdMq@cluster0-e1ewl.mongodb.net/scrumit?retryWrites=true&w=majority");
-		MongoDatabase database = mongoClient.getDatabase("scrumit");
-
-		// Delete the test documents
-		database.getCollection("users").deleteOne(Filters.eq("email", "selenium@auto.com"));
-		database.getCollection("projects").deleteOne(Filters.eq("name", "Worthless project"));
-		database.getCollection("projects").deleteOne(Filters.eq("name", "Selenium project v2"));
-	}
-	
 	public void login()
 	{
-		driver.get(BASE_URL);
 		driver.findElement(By.cssSelector("#email")).sendKeys("selenium@auto.com");
 		driver.findElement(By.cssSelector("#password")).sendKeys("abcdef");
 		driver.findElement(By.cssSelector("#submitLogin")).click();

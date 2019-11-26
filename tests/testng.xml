@@ -1,42 +1,71 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
-<!--
-<suite name="Sprint1">
+<suite name="ScrumtItValidation">
 
-  <test name="ChromeTest" >
-  	<parameter name="browser" value="chrome" />
-    <classes>
-       <class name="Sprint1Test" />
-    </classes>
-  </test>
+	<test name="Sprint1Chrome">
+		<parameter name="browser" value="chrome" />
+		<classes>
+			<class name="Sprint1Test">
+				<methods>
+					<include name="testRegister" />
+					<include name="testLogin" />
+					<include name="testLogout" />
+					<include name="testCreateProject" />
+					<include name="testModifyProject" />
+					<include name="testDeleteProject" />
+					<include name="testProjectsDisplay" />
+				</methods>
+			</class>
+		</classes>
+	</test>
+	<test name="Sprint1Firefox">
+		<parameter name="browser" value="firefox" />
+		<classes>
+			<class name="Sprint1Test">
+				<methods>
+					<include name="testRegister" />
+					<include name="testLogin" />
+					<include name="testLogout" />
+					<include name="testCreateProject" />
+					<include name="testModifyProject" />
+					<include name="testDeleteProject" />
+					<include name="testProjectsDisplay" />
+				</methods>
+			</class>
+		</classes>
+	</test>
+	
+	<test name="Sprint2Chrome">
+		<parameter name="browser" value="chrome" />
+		<classes>
+			<class name="Sprint2Test">
+				<methods>
+					<include name="testAddUserstory" />
+					<include name="testAddContributor" />
+					<include name="testModifyUserstory" />
+					<include name="testAddSprint" />
+					<include name="testModifySprint" />
+					<include name="testAddUserstoryToSprint" />
+					<include name="testDeleteSprint" />
+				</methods>
+			</class>
+		</classes>
+	</test>
 
-  <test name="FirefoxTest" >
-  	<parameter name="browser" value="firefox" />
-    <classes>
-       <class name="Sprint1Test" />
-    </classes>
-  </test>
-  
-</suite>
--->
-
-<suite name="Sprint2">
-
-  <test name="ChromeTest" >
-  	<parameter name="browser" value="chrome" />
-    <classes>
-       <class name="Sprint2Test">
-       
-       <methods>
-       		<include name="testAddUserstory" />
-       		<include name="testModifyUserstory" />
-       		<include name="testAddSprint" />
-       		<include name="testAddUserstoryToSprint" />	
-       </methods>
-       
-       </class>
-    </classes>
-  </test>
-
-  
+	<test name="Sprint2Firefox">
+		<parameter name="browser" value="firefox" />
+		<classes>
+			<class name="Sprint2Test">
+				<methods>
+					<include name="testAddUserstory" />
+					<include name="testAddContributor" />
+					<include name="testModifyUserstory" />
+					<include name="testAddSprint" />
+					<include name="testModifySprint" />
+					<include name="testAddUserstoryToSprint" />
+					<include name="testDeleteSprint" />
+				</methods>
+			</class>
+		</classes>
+	</test>
 </suite>

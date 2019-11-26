@@ -1,7 +1,6 @@
 import org.bson.Document;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -9,7 +8,6 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
@@ -217,7 +215,7 @@ public class Sprint2Test
 		
 		// Check if the sprint was deleted
 		WebElement sprintSection = driver.findElement(By.cssSelector("#sprintSection"));
-		Assert.assertEquals(true, sprintSection.getText().contains("Vous n'avez pas de sprints."));
+		Assert.assertEquals(true, sprintSection.getText().contains("VOUS N'AVEZ PAS DE SPRINTS."));
 	}
 
 	// Issue 12
