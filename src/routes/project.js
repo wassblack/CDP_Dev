@@ -5,6 +5,7 @@ const ModelProject = require('../models/project');
 const ModelUser = require('../models/user');
 const ModelUserStory = require('../models/userStory');
 const ModelTask = require('../models/task');
+const controllerTask = require('../controller/controller.task')
 const { ensureAuthenticated } = require('../config/authenticated');
 
 // Page displaying the main information about the selected project
@@ -22,6 +23,7 @@ router.get('/project/:projectId/ModifyProject', ensureAuthenticated, (req, res) 
     }).catch(err => console.log(err));
 
 });
+
 // Modification of the name or description of the selected project
 router.post('/project/:projectId', ensureAuthenticated, (req, res) => {
     const projectId = req.params.projectId;
@@ -57,6 +59,7 @@ router.post('/project/:projectId', ensureAuthenticated, (req, res) => {
     }
 });
 
+// Delete a project  
 router.get('/project/:projectId/delete', ensureAuthenticated, (req, res) => {
     ModelProject.deleteOne({ _id: req.params.projectId }, function () { })
         .then(_ => {
@@ -71,14 +74,14 @@ router.get('/project/:projectId/delete', ensureAuthenticated, (req, res) => {
         });
 
 });
-
+// Display add a user to a project form
 router.get('/project/:projectId/addUser', ensureAuthenticated, (req, res) => {
     res.render('addUser', {
         projectId: req.params.projectId,
         user: req.user
     });
 });
-
+// Add a user to an existing project 
 router.post('/project/:projectId/addUser', ensureAuthenticated, (req, res) => {
     const projectId = req.body.projectId;
     const newUser = req.body.newUser;
@@ -120,97 +123,20 @@ router.post('/project/:projectId/addUser', ensureAuthenticated, (req, res) => {
     }
 
 });
+// Display create task form 
+router.get('/project/:projectId/createTask', ensureAuthenticated, controllerTask.displayCreateTask);
 
-router.get('/project/:projectId/createTask', ensureAuthenticated, (req, res) => {
-    ModelProject.findOne({ _id: req.params.projectId }).then(project => {
-        res.render('createTask', {
-            project: project,
-            user: req.user
-        });
-    }).catch(err => console.log(err));
+// Display modify task form 
+router.get('/project/:projectId/modifyTask/:taskId', ensureAuthenticated, controllerTask.displayModifyTask);
 
-});
+// Modify an existing task 
+router.post('/project/:projectId/modifyTask/:taskId', ensureAuthenticated, controllerTask.modifyTask);
 
-router.get('/project/:projectId/modifyTask/:taskId', ensureAuthenticated, (req, res) => {
-    ModelProject.findOne({ _id: req.params.projectId }).then(project => {
-        ModelTask.findOne({ _id: req.params.taskId }).then(task => {
-            res.render('modifyTask', {
-                task: task,
-                project: project,
-                user: req.user
-            });
-        }).catch(err => console.log(err));
-    })
-});
+//Create a new task
+router.post('/project/:projectId/createTask', ensureAuthenticated, controllerTask.createTask);
 
-router.post('/project/:projectId/modifyTask/:taskId', ensureAuthenticated, (req, res) => {
-    const description = req.body.description;
-    const developerId = req.body.developerId;
-    const state = req.body.state;
-    let errors = [];
-
-    if (!state || !description || !developerId) {
-        errors.push({ msg: "Champ requis non remplis" })
-    }
-    if (state > 3 || state < 1) {
-        errors.push({ msg: "valeur non possible" });
-    }
-    if (description.length > 300) {
-        errors.push({ msg: "Description trop longue" });
-    }
-    ModelTask.updateOne({ _id: req.params.taskId },{
-        description: description,
-        developerId: developerId,
-        state: state
-    }).then(() => {
-        renderProjectPage(res,req.params.projectId);
-    }).catch(err => console.log(err));
-
-});
-
-router.post('/project/:projectId/createTask', ensureAuthenticated, (req, res) => {
-    const dev = req.body.developerId;
-    const description = req.body.description;
-    const state = req.body.state;
-    let errors = [];
-
-    if (!description || !dev || !state) {
-        errors.push({ msg: "champs requis non remplis" });
-    }
-    if (state > 3 || state < 1) {
-        errors.push({ msg: "valeur non possible" });
-    }
-    if (description.length > 300) {
-        errors.push({ msg: "Description trop longue" });
-    }
-
-    if (errors.length == 0) {
-        const newTask = new ModelTask({
-            projectId: req.params.projectId,
-            description,
-            developerId: dev,
-            state
-        });
-        newTask.save().then(task => {
-            renderProjectPage(res, req.params.projectId);
-        }).catch(err => console.log(err));
-    } else {
-        ModelProject.findOne({ _id: req.params.projectId }).then(project => {
-            res.render('createTask', {
-                errors,
-                project
-            });
-        })
-
-    }
-
-});
-
-router.get('/project/:projectId/deleteTask/:taskId', ensureAuthenticated, (req, res) => {
-    ModelTask.deleteOne({ _id: req.params.taskId }).then(()=> {
-            renderProjectPage(res,req.params.projectId);
-        }).catch(err => console.log(err));
-});
+//Delete a task
+router.get('/project/:projectId/deleteTask/:taskId', ensureAuthenticated, controllerTask.deleteTask);
 
 function renderProjectPage(res, projectId) {
     let noOrphanUs = false;
