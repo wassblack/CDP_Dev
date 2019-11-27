@@ -4,6 +4,7 @@ const router = express.Router();
 //Must add to every resource access page
 const { ensureAuthenticated } = require('../config/authenticated');
 
+//Display all the project in wich the is contributes
 router.get('/', ensureAuthenticated, (req, res) => {
     res.redirect('/Projects');
 });

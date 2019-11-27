@@ -1,12 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const moment = require('moment');
-const ModelProject = require('../models/project');
-const ModelUser = require('../models/user');
-const ModelUserStory = require('../models/userStory');
-const ModelTask = require('../models/task');
 const controllerTask = require('../controller/controller.task');
-const controllerProject = require('../controller/controller.project')
+const controllerProject = require('../controller/controller.project');
 
 const { ensureAuthenticated } = require('../config/authenticated');
 
