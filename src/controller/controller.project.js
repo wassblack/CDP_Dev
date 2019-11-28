@@ -68,7 +68,7 @@ function modifyProject(req,res){
 
     if (errors.length === 0) {
         ModelProject.updateOne({ _id: projectId }, { name: newProjectName, description: newProjectDescription })
-            .then(_ => renderProjectPage(res, projectId));
+            .then(() => renderProjectPage(res, projectId));
     }
     else {
         ModelProject.findOne({ _id: req.params.projectId }).then(project => {
@@ -82,7 +82,7 @@ function modifyProject(req,res){
 //Delete an existing project
 function deleteProject(req,res){
     ModelProject.deleteOne({ _id: req.params.projectId }, function () { })
-        .then(_ => {
+        .then(() => {
             ModelProject.find({ 'users.email': req.user.email })
                 .then(projects => {
                     res.render('index', {

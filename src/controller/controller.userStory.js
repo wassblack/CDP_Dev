@@ -55,7 +55,7 @@ function createUserStory(req, res) {
             priority: parseInt(userStoryPriority, 10),
             isOrphan: true
         });
-        newUserStory.save().then(_ => controllerProject.renderProjectPage(res, projectId));
+        newUserStory.save().then(() => controllerProject.renderProjectPage(res, projectId));
     } else {
         res.render('createUserStory', {
             projectId: projectId,
@@ -104,7 +104,7 @@ function editUserStory(req,res){
             description: newUserStoryDescription
             , difficulty: newUserStoryDifficulty, priority: newUserStoryPriority
         })
-            .then(_ => controllerProject.renderProjectPage(res, projectId));
+            .then(() => controllerProject.renderProjectPage(res, projectId));
     }
     else {
         res.render('modifyUserStory', {
@@ -122,7 +122,7 @@ function deleteUserStory(req,res){
 
     // Delete the us from the backlog
     ModelUserStory.deleteOne({ _id: userStoryId }, function () { })
-        .then(_ => {
+        .then(() => {
             if (sprintId !== "0") {
                 // Remove the us from its sprint if it has one
                 ModelProject.updateOne(

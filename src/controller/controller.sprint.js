@@ -1,7 +1,6 @@
 const moment = require('moment');
 const ModelProject = require('../models/project');
 const ModelUserStory = require('../models/userStory');
-const ModelTask = require('../models/task');
 const controllerProject = require('../controller/controller.project');
 
 //Display create sprint form
@@ -35,7 +34,7 @@ function displayEditSprint(req, res) {
             }
         });
 }
-//Create a sprint 
+//Create a sprint
 function createSprint(req, res) {
     const errors = [];
     const projectId = req.params.projectId;
@@ -87,7 +86,7 @@ function createSprint(req, res) {
         });
     }
 }
-//Modify an existing sprint 
+//Modify an existing sprint
 function editSprint(req, res) {
     const errors = [];
     const projectId = req.params.projectId;
@@ -144,7 +143,7 @@ function editSprint(req, res) {
         });
     }
 }
-//Delete a sprint 
+//Delete a sprint
 function deleteSprint(req, res) {
     const projectId = req.params.projectId;
     const sprintId = req.params.sprintId;
@@ -308,7 +307,7 @@ function editSprintUserStory(req, res) {
                                 // Update the us in the backlog
                                 ModelUserStory.updateOne({ _id: userStoryId },
                                     { description: newUserStoryDescription, difficulty: newUserStoryDifficulty, priority: newUserStoryPriority })
-                                    .then(_ => controllerProject.renderProjectPage(res, projectId));
+                                    .then(() => controllerProject.renderProjectPage(res, projectId));
                             }
                         }
                     );
@@ -323,7 +322,7 @@ function editSprintUserStory(req, res) {
             userStory: userStory,
             sprintId : sprintId
         });
-    } 
+    }
 }
 //Display edit user story form
 function displayEditSprintUserStory(req, res) {

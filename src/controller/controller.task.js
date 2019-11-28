@@ -72,7 +72,7 @@ function createTask(req, res) {
             developerId: dev,
             state
         });
-        newTask.save().then(task => {
+        newTask.save().then(() => {
             renderProjectPage(res, req.params.projectId);
         }).catch(err => console.log(err));
     } else {

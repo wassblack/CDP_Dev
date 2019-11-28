@@ -75,7 +75,7 @@ router.post('/register', (req, res) => {
                             //new password hashed
                             newUser.password = hash;
                             newUser.save()
-                                .then(user => {
+                                .then(() => {
                                     req.flash('success_msg', 'Votre compte a bien été créé !');
                                     res.redirect('/users/login');
 
