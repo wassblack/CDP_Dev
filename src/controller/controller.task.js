@@ -92,6 +92,18 @@ function deleteTask(req, res) {
         renderProjectPage(res, req.params.projectId);
     }).catch(err => console.log(err));
 }
+//Display link task form
+function displaylinkTask(req,res){
+    ModelProject.findOne({ _id: req.params.projectId }).then(project => {
+        ModelTask.findOne({ _id: req.params.taskId }).then(task => {
+            res.render('linkTask', {
+                task: task,
+                project: project,
+                user: req.user
+            });
+        }).catch(err => console.log(err));
+    })
+}
 function renderProjectPage(res, projectId) {
     let noOrphanUs = false;
 
@@ -124,5 +136,6 @@ module.exports = {
     displayModifyTask,
     modifyTask,
     createTask,
-    deleteTask
+    deleteTask,
+    displaylinkTask
 }
