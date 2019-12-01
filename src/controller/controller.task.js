@@ -93,7 +93,7 @@ function deleteTask(req, res) {
     }).catch(err => console.log(err));
 }
 //Display link task form
-function displaylinkTask(req,res){
+function displaylinkTask(req, res) {
     ModelProject.findOne({ _id: req.params.projectId }).then(project => {
         ModelTask.findOne({ _id: req.params.taskId }).then(task => {
             res.render('linkTask', {
@@ -103,6 +103,82 @@ function displaylinkTask(req,res){
             });
         }).catch(err => console.log(err));
     })
+}
+function linkTask(req, res) {
+    const projectId = req.params.projectId;
+    const taskId = req.params.taskId;
+    const selectedUsJSON = req.body.selectedUs;
+
+    // Translate the US in JSON format into objects and add them into the list of US that will be added in the sprint
+    let selectedUs;
+    console.log(selectedUsJSON)
+    if (selectedUsJSON !== undefined) {
+        // If the user selected only one user story
+        if (!Array.isArray(selectedUsJSON)) {
+            selectedUs = JSON.parse(selectedUsJSON);
+            ModelTask.findOne({ _id: taskId }).then(task => {
+                selectedUs.tasks.push(task);
+                //to delete
+                ModelProject.findOne(
+                    {
+                        '_id': projectId,
+                        'sprints.userStories.$._id': selectedUs.id
+                    }).then(project => {
+                        console.log(project.sprints.userStories);
+                    });
+                ModelProject.updateOne({
+                    '_id': projectId,
+                    'sprints.userStories.$._id': selectedUs.id
+                }, {
+                    "$pull": { "sprints.$.userStories": { _id: selectedUs.id } },
+                    "$push": { "sprints.$.userStories": selectedUs }
+                },
+                    function (err) {
+                        if (err) {
+                            console.log("Couldn't update the sprint: " + err)
+                        }
+                        else {
+                            renderProjectPage(res, projectId);
+                        }
+                    }
+                );
+            })
+
+
+        }
+        // Else ...
+        else if (selectedUsJSON.length > 1) {
+            selectedUs = [];
+            let myTask;
+            ModelTask.findOne({ _id: taskId }).then(task => {
+                myTask = task;
+            });
+            for (let i = 0; i < selectedUsJSON.length; i++) {
+                const us = JSON.parse(selectedUsJSON[i]);
+                us.tasks.push(myTask);
+                selectedUs.push(us);
+            }
+            // Update the database with the added user stories
+            ModelProject.updateOne(
+                {
+                    '_id': projectId,
+                    sprints: { $elemMatch: { "userStories._id": selectedUs.id } }
+                },
+                { "$push": { "sprints.$.userStories": selectedUs } },
+                function (err) {
+                    if (err) {
+                        console.log("Couldn't update the sprint: " + err)
+                    }
+                    else {
+                        renderProjectPage(res, projectId);
+                    }
+                }
+            );
+        }
+        else {
+            res.redirect('/project/' + projectId);
+        }
+    }
 }
 function renderProjectPage(res, projectId) {
     let noOrphanUs = false;
@@ -137,5 +213,6 @@ module.exports = {
     modifyTask,
     createTask,
     deleteTask,
-    displaylinkTask
+    displaylinkTask,
+    linkTask
 }
