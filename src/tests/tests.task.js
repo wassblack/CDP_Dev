@@ -11,9 +11,9 @@ const mochaCredentials = input.mochaCredentials;
 chai.use(chaiHTTP);
 process.env.NODE_ENV = 'test';
 
-describe('controller.userStory', function() {
+describe('controller.task', function() {
     let mochaSession;
-    describe('Testing User Stories', function() {
+    describe('Testing Tasks', function() {
         it('/POST /users/login', function(done) {
             request.post('/users/login')
             .set('content-type', 'application/x-www-form-urlencoded')
@@ -26,25 +26,37 @@ describe('controller.userStory', function() {
             });
         });
         const projectId = input.projectId;
+        const taskId = input.taskId;
         const userStoryId = input.userStoryId;
-        it('/GET /project/projectId + userStory route', function(done) {
+        it('/GET /project/projectId + tasks routes', function(done) {
             request.get('/project/' + projectId)
             .set('Cookie', mochaSession)
             .end((err, res) => {
                 res.should.have.status(200);
-                expect(res.text).to.nested.include('/editUserStory/'+userStoryId);
+                expect(res.text).to.nested.include('/project/'+projectId+'/createTask');
+                expect(res.text).to.nested.include('/modifyTask/'+taskId);
+                expect(res.text).to.nested.include('/deleteTask/'+taskId);
+                expect(res.text).to.nested.include('/linkTask/'+taskId);
                 done();
             });
         });
-        it('/GET /project/projectId/editUserStory/userStoryId', function(done) {
-            request.get('/project/'+projectId+'/editUserStory/'+userStoryId)
+        it('/GET /project/projectId/modifyTask/taskId', function(done) {
+            request.get('/project/'+projectId+'/modifyTask/'+taskId)
             .set('Cookie', mochaSession)
             .end((err, res) => {
                 res.should.have.status(200);
-                expect(res.text).to.nested.include('value=\"first orphan us of mocha\"');
-                expect(res.text)
-                .to.nested.include('name=\"difficulty\" class=\"form-control\" min=\"1\" max=\"10\" value=\"4\"');
-                expect(res.text).to.nested.include('name=\"priority\" class=\"form-control\" value=\"3\"');
+                expect(res.text).to.nested.include('<option>Mocha@auto.com</option>');
+                expect(res.text).to.nested.include('min=\"1\" max=\"3\" value=\"1\"');
+                expect(res.text).to.nested.include('première tâche</textarea>');
+                done();
+            });
+        });
+        it('/GET /project/projectId/linkTask/taskId', function(done) {
+            request.get('/project/'+projectId+'/linkTask/'+taskId)
+            .set('Cookie', mochaSession)
+            .end((err, res) => {
+                expect(res.text).to.nested.include('first orphan us of mocha');
+                expect(res.text).to.nested.include(userStoryId);
                 done();
             });
         });

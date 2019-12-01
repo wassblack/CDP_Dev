@@ -11,9 +11,9 @@ const mochaCredentials = input.mochaCredentials;
 chai.use(chaiHTTP);
 process.env.NODE_ENV = 'test';
 
-describe('controller.project', function() {
+describe('controller.sprint', function() {
     let mochaSession;
-    describe('Testing Projects', function() {
+    describe('Testing Sprints', function() {
         it('/POST /users/login', function(done) {
             request.post('/users/login')
             .set('content-type', 'application/x-www-form-urlencoded')
@@ -26,20 +26,25 @@ describe('controller.project', function() {
             });
         });
         const projectId = input.projectId;
-        it('/GET /Projects', function(done) {
-            request.get('/Projects')
-            .set('Cookie', mochaSession)
-            .set('Content-Type', 'text/plain')
-            .end((err, res) => {
-                expect(res.text).to.nested.include('href=\"/project/'+projectId+'\"');
-                done();
-            });
-        });
-        it('/GET /project/projectId', function(done) {
+        const sprintId = input.sprintId;
+        it('/GET /project/projectId + sprint routes', function(done) {
             request.get('/project/' + projectId)
             .set('Cookie', mochaSession)
             .end((err, res) => {
                 res.should.have.status(200);
+                expect(res.text).to.nested.include('/modifySprint/'+sprintId);
+                expect(res.text).to.nested.include('/deleteSprint/'+sprintId);
+                done();
+            });
+        });
+        it('/GET /project/projectId/modifySprint/sprintId', function(done) {
+            request.get('/project/'+projectId+'/modifySprint/'+sprintId)
+            .set('Cookie', mochaSession)
+            .end((err, res) => {
+                res.should.have.status(200);
+                expect(res.text).to.nested.include('value=\"sprint1\"');
+                expect(res.text).to.nested.include('value=\"25/11/2019\"');
+                expect(res.text).to.nested.include('value=\"28/11/2019\"');
                 done();
             });
         });
