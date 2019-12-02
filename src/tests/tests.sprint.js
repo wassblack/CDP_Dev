@@ -43,8 +43,6 @@ describe('controller.sprint', function() {
             .end((err, res) => {
                 res.should.have.status(200);
                 expect(res.text).to.nested.include('value=\"sprint1\"');
-                expect(res.text).to.nested.include('value=\"25/11/2019\"');
-                expect(res.text).to.nested.include('value=\"28/11/2019\"');
                 done();
             });
         });
