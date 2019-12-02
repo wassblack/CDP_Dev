@@ -104,7 +104,6 @@ function displayAddUser(req,res){
 function addUserToProject(req,res){
     const projectId = req.body.projectId;
     const newUser = req.body.newUser;
-    const errors = [];
 
     ModelUser.findOne({ email: newUser })
         .then(user => {
@@ -115,12 +114,23 @@ function addUserToProject(req,res){
                     .then(project => {
                         // Checking if user already assigned to the project
                         if (project) {
-                            errors.push({ msg: 'L\'utilisateur est déjà un collaborateur du projet' });
+                            res.render('addUser', {
+                                projectId: projectId,
+                                errors: [{ msg: 'L\'utilisateur est déjà un collaborateur du projet' }],
+                                user: req.user
+                            });
                         } else {
                             ModelProject.updateOne({ _id: projectId },
-                                { $push: { users: userToadd } }, (succ, err) => {
+                                { $push: { users: userToadd } }, (err) => {
                                     if (err) {
-                                        errors.push({ msg: 'Ajout non effectué' + err });
+                                        res.render('addUser', {
+                                            projectId: projectId,
+                                            errors: [{ msg: 'Une erreur est survenue lors de l\'ajout du collaborateur: ' + err }],
+                                            user: req.user
+                                        });
+                                    }
+                                    else {
+                                        res.redirect('/');
                                     }
                                 }
                             )
@@ -128,20 +138,15 @@ function addUserToProject(req,res){
                     }).catch(err => console.log("Couldn't find the project: " + err));
 
             } else {
-                errors.push({ msg: 'L\'utilisateur n\'existe pas' });
+                res.render('addUser', {
+                    projectId: projectId,
+                    errors: [{ msg: 'L\'utilisateur n\'existe pas' }],
+                    user: req.user
+                });
             }
         }).catch(err => console.log("Couldn't find the user: " + err));
-
-    if (errors.length > 0) {
-        res.render('/project/:projectId/addUser', {
-            projectId: projectId,
-            errors: errors,
-            user: req.user
-        });
-    }else{
-        res.redirect('/');
-    }
 }
+
 module.exports = {
     renderProjectPage,
     displayProject,
