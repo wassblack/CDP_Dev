@@ -58,13 +58,18 @@ function createSprint(req, res) {
         errors.push({ msg: 'Vous devez donner une date de fin à votre sprint' });
     }
 
-    if (errors.length === 0) {
-        // Reformat the date in a understandable format
-        const startDateSplit = startDate.split('/');
-        const endDateSplit = endDate.split('/');
-        const reformatStartDate = new Date(startDateSplit[2], startDateSplit[1] - 1, startDateSplit[0]);
-        const reformatEndDate = new Date(endDateSplit[2], endDateSplit[1] - 1, endDateSplit[0]);
+    const startDateSplit = startDate.split('/');
+    const endDateSplit = endDate.split('/');
 
+    // Reformat the date in a understandable format
+    const reformatStartDate = new Date(startDateSplit[2], startDateSplit[1] - 1, startDateSplit[0]);
+    const reformatEndDate = new Date(endDateSplit[2], endDateSplit[1] - 1, endDateSplit[0]);
+
+    if (reformatStartDate > reformatEndDate) {
+        errors.push({ msg: 'Votre date de fin doit être postérieure à votre date de début' });
+    }
+
+    if (errors.length === 0) {
         let sprint = { name: sprintName, startDate: reformatStartDate, endDate: reformatEndDate };
 
         ModelProject.updateOne({ _id: projectId },
@@ -111,13 +116,18 @@ function editSprint(req, res) {
         errors.push({ msg: 'Vous devez donner une date de fin à votre sprint' });
     }
 
-    if (errors.length === 0) {
-        // Reformat the date in a understandable format
-        const startDateSplit = newSprintStartDate.split('/');
-        const endDateSplit = newSprintEndDate.split('/');
-        const reformatStartDate = new Date(startDateSplit[2], startDateSplit[1] - 1, startDateSplit[0]);
-        const reformatEndDate = new Date(endDateSplit[2], endDateSplit[1] - 1, endDateSplit[0]);
+    const startDateSplit = newSprintStartDate.split('/');
+    const endDateSplit = newSprintEndDate.split('/');
 
+    // Reformat the date in a understandable format
+    const reformatStartDate = new Date(startDateSplit[2], startDateSplit[1] - 1, startDateSplit[0]);
+    const reformatEndDate = new Date(endDateSplit[2], endDateSplit[1] - 1, endDateSplit[0]);
+
+    if (reformatStartDate > reformatEndDate) {
+        errors.push({ msg: 'Votre date de fin doit être postérieure à votre date de début' });
+    }
+
+    if (errors.length === 0) {
         ModelProject.updateOne(
             { 'sprints._id': sprintId },
             { "$set": { "sprints.$.name": newSprintName, "sprints.$.startDate": reformatStartDate, "sprints.$.endDate": reformatEndDate } },

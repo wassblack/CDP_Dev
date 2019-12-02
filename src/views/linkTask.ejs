@@ -1,6 +1,6 @@
 <% include ./partials/navBar%>
 <div class="jumbotron jumbotron-fluid" style="background: none;">
-            <h1 class="text-center mb-3">Ajouter tache a user story</h1>
+            <h1 class="text-center mb-3">Lier une tâche à une user story</h1>
             <form action="/project/<%= project.id %>/linkTask/<%= task.id %>" method="POST" class="mr-auto">
                 <table class="table table-hover">
                     <thead>
@@ -8,7 +8,7 @@
                             <th scope="col">Description</th>
                             <th scope="col">Difficulté</th>
                             <th scope="col">Priorité</th>
-                            <th scope="col">Selection</th>
+                            <th scope="col">Sélection</th>
                         </tr>
                     </thead>
                     <tbody>
