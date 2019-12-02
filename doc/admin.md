@@ -12,7 +12,7 @@ Sous Linux, vous pouvez installer les deux en tapant `apt install nodejs`.
 
 ### Avec Docker
 
-Vous devez avoir `docker` d'installé.  Vous pouvez l'installer en cliquant [ici](https://hub.docker.com/?overlay=onboarding) sous Windows ou en tapant `apt install docker-ce` sous Linux.
+Vous devez avoir `docker` d'installé.  Vous pouvez l'installer en suivant la procédure d'installation décrite [ici](https://docs.docker.com/install/linux/docker-ce/ubuntu/) pour les systèmes Linux et [ici](https://docs.docker.com/docker-for-windows/install/) pour Windows.
 
 * Placez-vous dans le répertoire contenant le fichier *docker-compose.yml* et taper `docker-compose up`
-* Vous pouvez ensuite ouvrir un navigateur Web et entrer l'IP de votre machine docker, ce qui vous affichera la page de connexion.
+* Vous pouvez ensuite ouvrir un navigateur Web et aller à l'adresse `localhost:3000` qui vous affichera la page de connexion.
