@@ -4,6 +4,55 @@ const ModelUserStory = require('../models/userStory');
 const ModelUser = require('../models/user');
 const moment = require('moment');
 
+function displayCreateProject(req, res)  {
+    res.render('createProject');
+}
+
+function createProject(req, res) {
+    const projectName = req.body.name;
+    const projectDescription = req.body.description;
+
+    let errors = [];
+
+    if (!projectName) {
+        errors.push({ msg: 'Vous devez donner un nom à votre projet' });
+    }
+
+    if (projectName && projectName.length > 40) {
+        errors.push({ msg: 'Le nom de votre projet doit être inférieur à 40 caractères' });
+    }
+
+    if (projectDescription && projectDescription.length > 300) {
+        errors.push({ msg: 'La description de votre projet doit prendre moins de 300 caractères' });
+    }
+
+    if (errors.length === 0) {
+        const newProject = new ModelProject({
+            name: projectName,
+            description: projectDescription,
+            users: [{
+                email : req.user.email
+            }],
+            sprints: [],
+            releases: []
+        });
+
+        newProject.save()
+            .then(() => {
+                res.redirect('/Projects');
+            })
+            .catch(err => console.log(err));
+        
+    }
+    else {
+        res.render('createProject', {
+            errors,
+            projectName,
+            projectDescription
+        });
+    }
+}
+
 //Display detail project page
 function displayProject(req, res) {
     let projectId = req.params.projectId;
@@ -148,6 +197,8 @@ function addUserToProject(req,res){
 }
 
 module.exports = {
+    displayCreateProject,
+    createProject,
     renderProjectPage,
     displayProject,
     displayModifyProject,

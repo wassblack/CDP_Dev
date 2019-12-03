@@ -17,7 +17,6 @@ router.get('/Projects', ensureAuthenticated, (req, res) => {
                 projects: projects
             });
         }).catch(err => console.log(err));
-
-
 });
+
 module.exports = router;
