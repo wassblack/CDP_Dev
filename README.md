@@ -15,7 +15,7 @@ Réaliser un outil pour gérer la production logicielle (à la Scrum)
 * Backend :
     * Express / Node.js
 * SGBD :
-    * MongoDB
+    * MongoDB / Mongoose
 
 # Backlog
 | ID | Description | Priorité | Difficulté | Sprint |
