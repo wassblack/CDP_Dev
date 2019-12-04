@@ -6,7 +6,7 @@ const expressLay = require('express-ejs-layouts');
 const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport');
-
+const PORT = process.env.PORT || 3000;
 require('./config/passport-config')(passport);
 env.config();
 app.use(express.static("public"));
@@ -35,7 +35,7 @@ app.use('/', require('./routes/index'), require('./routes/createProject'), requi
 app.use('/users', require('./routes/users'));
 
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
-    app.listen(3000, () => console.log('Server started on port 3000'));
+    app.listen(PORT, () => console.log('Server started on port 3000'));
 });
 
 module.exports = app;
