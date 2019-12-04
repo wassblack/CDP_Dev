@@ -10,12 +10,12 @@ Réaliser un outil pour gérer la production logicielle (à la Scrum)
 # Technologies
 * Frontend :
     * HTML/CSS
-    * JavaScript
+    * EJS
     * Bootstrap
 * Backend :
-    * Node.js
+    * Express / Node.js
 * SGBD :
-    * MongoDB
+    * MongoDB / Mongoose
 
 # Backlog
 | ID | Description | Priorité | Difficulté | Sprint |

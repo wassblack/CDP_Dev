@@ -9,7 +9,6 @@ const passport = require('passport');
 const PORT = process.env.PORT || 3000;
 require('./config/passport-config')(passport);
 env.config();
-app.use(express.static("public"));
 app.use(flash());
 app.use(expressLay);
 app.set('view engine', 'ejs');
