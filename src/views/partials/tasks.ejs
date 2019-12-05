@@ -19,8 +19,9 @@
         </thead>
         <tbody>
 
-            <tr class="table-light">
-                <% tasks.forEach(function (task) { %>
+            <% tasks.forEach(function (task) { %>
+            <% let classCss = parseInt(task.state) > 2 ? "table-success" : "table-danger" ;%>
+            <tr class=<%= classCss %>>
                 <td><%= task.description %></td>
                 <td><%= task.developerId %></td>
                 <td><%= task.state %></td>
