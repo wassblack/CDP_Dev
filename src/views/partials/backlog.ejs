@@ -17,32 +17,31 @@
                 <th scope="col">Actions</th>
             </tr>
         </thead>
-            <tbody>
-                
-                <tr class="table-light">
-                    <% orphanUs.forEach(function (userStory) { %>
-                    <td><%= userStory.description %></td>
-                    <td><%= userStory.difficulty %></td>
-                    <td><%= userStory.priority %></td>
-                    <td>
-                        <a href="/project/<%= project.id %>/editUserStory/<%= userStory.id %>" class="modifyUserstory"><i class="fas fa-edit fa-lg"></i></a>
-                        <% if(userStory.isOrphan) { %>
-                            <a href="/project/<%= project.id %>/deleteUserStory/<%= userStory.id %>/0" class="deleteUserStory">
-                                <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
-                            </a>
-                        <%} else {%>
-                            <a href="/project/<%= project.id %>/deleteUserStory/<%= userStory.id %>/<%= userStory.sprintId %>" class="deleteUserStory">
-                                <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
-                            </a>
-                        <%}%>
-                    </td>
-                </tr>
+        <tbody>
+            <tr class="table-light">
+                <% orphanUs.forEach(function (userStory) { %>
+                <td><%= userStory.description %></td>
+                <td><%= userStory.difficulty %></td>
+                <td><%= userStory.priority %></td>
+                <td>
+                    <a href="/project/<%= project.id %>/editUserStory/<%= userStory.id %>" class="modifyUserstory"><i class="fas fa-edit fa-lg"></i></a>
+                    <% if(userStory.isOrphan) { %>
+                        <a href="/project/<%= project.id %>/deleteUserStory/<%= userStory.id %>/0" class="deleteUserStory">
+                            <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
+                        </a>
+                    <%} else {%>
+                        <a href="/project/<%= project.id %>/deleteUserStory/<%= userStory.id %>/<%= userStory.sprintId %>" class="deleteUserStory">
+                            <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
+                        </a>
+                    <%}%>
+                </td>
+            </tr>
                 <% });%>
-            </tbody>
-            <tfoot>
-                <form action="/project/<%= project.id %>/createUserStory" method="GET">
-                    <button type="submit" class="btn btn-secondary" id="addUserstoryButton">Ajouter une User Story</button>
-                </form>
-            </tfoot>
+        </tbody>
+        <tfoot>
+            <form action="/project/<%= project.id %>/createUserStory" method="GET">
+                <button type="submit" class="btn btn-outline-secondary" id="addUserstoryButton">Ajouter une User Story</button>
+            </form>
+        </tfoot>
     </table>
     <%}%>

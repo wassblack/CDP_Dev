@@ -1,5 +1,5 @@
 <% if(typeof tasks == 'undefined' || tasks.length == 0) { %>
-<div class="card-header">Tâches</div>
+<h3 class="card-header">Liste des tâches</h3>
 <div class="card-body">
     <h5 class="card-title">Vous n'avez pas de tâches.</h5>
     <form action="/project/<%= project.id %>/createTask" method="GET">
@@ -7,8 +7,12 @@
     </form>
 </div>
 <%} else {%>
+<h3 class="card-header">Liste des tâches</h3>
+<form action="/project/<%= project.id %>/createTask" method="GET">
+    <button type="submit" class="btn btn-outline-secondary" style="width:100%;">Ajouter une nouvelle tâche</button>
+</form>
+
 <div class="jumbotron" id="taskSection">
-    <h5 class="card-header">Tâches existantes</h5>
     <table class="table table-hover">
         <thead>
             <tr>
@@ -24,7 +28,7 @@
             <tr class=<%= classCss %>>
                 <td><%= task.description %></td>
                 <td><%= task.developerId %></td>
-                <td><%= task.state %></td>
+                <td><% if (task.state === 1) {%>TODO<%} else if (task.state === 2) {%>ON GOING<%} else {%> DONE<%}%>  </td>
                 <td>
                     <a href="/project/<%= project.id %>/modifyTask/<%= task.id %>"><i class="fas fa-edit fa-lg"></i></a>
                     <a href="/project/<%= project.id %>/deleteTask/<%= task.id %>"><i class="fa fa-trash fa-lg"
@@ -35,11 +39,6 @@
             </tr>
             <% });%>
         </tbody>
-        <tfoot>
-            <form action="/project/<%= project.id %>/createTask" method="GET">
-                <button type="submit" class="btn btn-secondary">Ajouter une nouvelle tâche</button>
-            </form>
-        </tfoot>
     </table>
 </div>
 
