@@ -1,4 +1,4 @@
-# Architecture de l'application (v0.2.0)
+# Architecture de l'application (v0.3.0)
 
 Scrum It contient un front-end et un back-end.
 La partie front-end se trouve dans le dossier *src/views/*. Il contient les fichiers EJS et CSS.

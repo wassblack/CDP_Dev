@@ -1,4 +1,4 @@
-# Documentation administrateur (v0.2.0)
+# Documentation administrateur (v0.3.0)
 
 ## Installation et lancement de ScrumIt
 

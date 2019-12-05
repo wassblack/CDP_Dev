@@ -39,7 +39,7 @@ function modifyTask(req, res) {
     if (state > 3 || state < 1) {
         errors.push({ msg: "valeur non possible" });
     }
-    if (description.length > 300) {
+    if (description.length > 3000) {
         errors.push({ msg: "Description trop longue" });
     }
     ModelTask.updateOne({ _id: req.params.taskId }, {
@@ -64,7 +64,7 @@ function createTask(req, res) {
     if (state > 3 || state < 1) {
         errors.push({ msg: "valeur non possible" });
     }
-    if (description.length > 300) {
+    if (description.length > 3000) {
         errors.push({ msg: "Description trop longue" });
     }
 

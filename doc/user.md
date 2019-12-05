@@ -1,4 +1,4 @@
-# Documentation utilisateur (v0.2.0)
+# Documentation utilisateur (v0.3.0)
 
 ## Créer un compte et se connecter
 
@@ -93,9 +93,24 @@ Vous pouvez également modifier une user story depuis le sprint où elle est aff
 
 Depuis la page principale du projet, vous pouvez retirer une user story d'un sprint en cliquant sur l'icône ![](icons/remove.jpg) qui est sur la même ligne que la user story que vous souhaitez retirer.
 
-### *TODO: les tâches*
+## Créer une tâche
 
+Depuis la page principale du projet, cliquer sur le bouton "Ajouter une nouvelle tâche" dans la section "Tâches". Vous pourrez ensuite remplir le formulaire et cliquer sur "Créer une tâche" pour créer votre tâche.
 
+#### TODO: screenshot
 
+## Modifier une tâche
 
+Depuis la page principale du projet, vous pouvez modifier une tâche en cliquant sur l'icône ![](icons/edit.jpg) qui est sur la même ligne que la tâche que vous souhaitez modifier.
+
+## Supprimer une tâche
+
+Depuis la page principale du projet, vous pouvez modifier une tâche en cliquant sur l'icône ![](icons/delete.jpg), qui est sur la même ligne que la tâche que vous souhaitez supprimer.
+
+## Lier une tâche à une ou plusieurs issues
+
+Depuis la page principale du projet, vous pouvez lier une tâche à une ou plusieurs issues en cliquant sur l'icône ![](icons/link.jpg).
+Vous pourrez ensuite sélectionner les user stories auxquelles vous voulez que votre tâche soit liée, puis cliquer sur "Lier les tâches sélectionnées pour cette tâche" pour effectuer la liaison.
+
+![](screenshots/linktask.jpg)
 
