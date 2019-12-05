@@ -9,16 +9,20 @@
             <li class="nav-item active">
                 <a class="nav-link" href="/Projects">Projets <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Documentations</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Releases</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link"
-                    href=<% if (typeof project == 'undefined') { %>"#"<% } else { %>"/project/<%= project.id %>/tests"<% } %>>Tests
-                    </a> </li> </ul> </div> <div class="nav navbar-nav navbar-righ">
-                    <a class="nav-link" href="/users/logout">Déconnexion</a>
+            <% if (typeof project !== 'undefined') { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Documentations</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Releases</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/project/<%= project.id %>/tests">Tests</a>
+                </li> 
+            <%}%>
+        </ul> 
+    </div> 
+    <div class="nav navbar-nav navbar-righ">
+        <a class="nav-link" href="/users/logout">Déconnexion</a>
     </div>
 </nav>

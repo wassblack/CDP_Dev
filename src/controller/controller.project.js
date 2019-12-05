@@ -58,6 +58,7 @@ function displayProject(req, res) {
     let projectId = req.params.projectId;
     renderProjectPage(res, projectId);
 }
+
 //Display project page
 function renderProjectPage(res, projectId) {
     let noOrphanUs = false;
@@ -86,6 +87,7 @@ function renderProjectPage(res, projectId) {
         })
         .catch(err => console.log("Couldn't find user stories: " + err));
 }
+
 //Display modify project page
 function displayModifyProject(req,res){
     ModelProject.findOne({ _id: req.params.projectId }).then(project => {
@@ -94,6 +96,7 @@ function displayModifyProject(req,res){
         });
     }).catch(err => console.log(err));
 }
+
 //Modify an existing project
 function modifyProject(req,res){
     const projectId = req.params.projectId;
@@ -128,6 +131,7 @@ function modifyProject(req,res){
         });
     }
 }
+
 //Delete an existing project
 function deleteProject(req,res){
     ModelProject.deleteOne({ _id: req.params.projectId }, function () { })
@@ -142,13 +146,18 @@ function deleteProject(req,res){
                 .catch(err => console.log(err));
         });
 }
+
 //Display add user to project page
-function displayAddUser(req,res){
-    res.render('addUser', {
-        projectId: req.params.projectId,
-        user: req.user
+function displayAddUser(req,res) {
+    ModelProject.findOne({ _id: req.params.projectId }).then(project => {
+        res.render('addUser', {
+            projectId: project.id,
+            projectName: project.name,
+            user: req.user
+        });
     });
 }
+
 //Add an existing user to an existing project
 function addUserToProject(req,res){
     const projectId = req.body.projectId;
@@ -164,8 +173,9 @@ function addUserToProject(req,res){
                         // Checking if user already assigned to the project
                         if (project) {
                             res.render('addUser', {
-                                projectId: projectId,
                                 errors: [{ msg: 'L\'utilisateur est déjà un collaborateur du projet' }],
+                                projectId: project.id,
+                                projectName: project.name,
                                 user: req.user
                             });
                         } else {
@@ -173,8 +183,9 @@ function addUserToProject(req,res){
                                 { $push: { users: userToadd } }, (err) => {
                                     if (err) {
                                         res.render('addUser', {
-                                            projectId: projectId,
                                             errors: [{ msg: 'Une erreur est survenue lors de l\'ajout du collaborateur: ' + err }],
+                                            projectId: projectId,
+                                            projectName: project.name,
                                             user: req.user
                                         });
                                     }
@@ -187,10 +198,13 @@ function addUserToProject(req,res){
                     }).catch(err => console.log("Couldn't find the project: " + err));
 
             } else {
-                res.render('addUser', {
-                    projectId: projectId,
-                    errors: [{ msg: 'L\'utilisateur n\'existe pas' }],
-                    user: req.user
+                ModelProject.findOne({ _id: projectId }).then(project => {
+                    res.render('addUser', {
+                        errors: [{ msg: 'Cet\'utilisateur n\'existe pas' }],
+                        projectId: project.id,
+                        projectName: project.name,
+                        user: req.user
+                    });
                 });
             }
         }).catch(err => console.log("Couldn't find the user: " + err));
