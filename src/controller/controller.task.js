@@ -12,6 +12,7 @@ function displayCreateTask(req, res) {
         });
     }).catch(err => console.log(err));
 }
+
 // Display modify task
 function displayModifyTask(req, res) {
     ModelProject.findOne({ _id: req.params.projectId }).then(project => {
@@ -24,6 +25,7 @@ function displayModifyTask(req, res) {
         }).catch(err => console.log(err));
     })
 }
+
 //Modify an existing task
 function modifyTask(req, res) {
     const description = req.body.description;
@@ -48,6 +50,7 @@ function modifyTask(req, res) {
         renderProjectPage(res, req.params.projectId);
     }).catch(err => console.log(err));
 }
+
 //Create a new Task
 function createTask(req, res) {
     const dev = req.body.developerId;
@@ -86,12 +89,14 @@ function createTask(req, res) {
     }
 
 }
+
 //Delete an existing task
 function deleteTask(req, res) {
     ModelTask.deleteOne({ _id: req.params.taskId }).then(() => {
         renderProjectPage(res, req.params.projectId);
     }).catch(err => console.log(err));
 }
+
 //Display link task form
 function displaylinkTask(req, res) {
     ModelProject.findOne({ _id: req.params.projectId }).then(project => {
@@ -104,6 +109,7 @@ function displaylinkTask(req, res) {
         }).catch(err => console.log(err));
     })
 }
+
 function linkTask(req, res) {
     const projectId = req.params.projectId;
     const taskId = req.params.taskId;
@@ -116,36 +122,43 @@ function linkTask(req, res) {
         // If the user selected only one user story
         if (!Array.isArray(selectedUsJSON)) {
             selectedUs = JSON.parse(selectedUsJSON);
-            ModelTask.findOne({ _id: taskId }).then(task => {
-                selectedUs.tasks.push(task);
-                //to delete
-                ModelProject.findOne(
-                    {
-                        '_id': projectId,
-                        'sprints.userStories.$._id': selectedUs.id
-                    }).then(project => {
-                        console.log(project.sprints.userStories);
-                    });
-                ModelProject.updateOne({
-                    '_id': projectId,
-                    'sprints.userStories.$._id': selectedUs.id
-                }, {
-                    "$pull": { "sprints.$.userStories": { _id: selectedUs.id } },
-                    "$push": { "sprints.$.userStories": selectedUs }
-                },
-                    function (err) {
-                        if (err) {
-                            console.log("Couldn't update the sprint: " + err)
+            const selectedUsId = selectedUs._id;
+
+            // Get the selected us's sprint id
+            ModelUserStory.findOne({ _id: selectedUsId }).then(us => {
+                const sprintId = us.sprintId;
+
+                ModelTask.findOne({ _id: taskId }).then(task => {
+                    selectedUs.tasks.push(task);
+      
+                    ModelProject.updateOne(
+                        { 'sprints._id' : sprintId },
+                        { "$pull": { "sprints.$.userStories": { _id: selectedUsId } } },
+                        function (err) {
+                            if (err) {
+                                console.log("Couldn't update the sprint: " + err)
+                            }
+                            else {
+                                ModelProject.updateOne(
+                                    { 'sprints._id' : sprintId },
+                                    { "$push": { "sprints.$.userStories": selectedUs } },
+                                    function (err) {
+                                        if (err) {
+                                            console.log("Couldn't update the sprint: " + err)
+                                        }
+                                        else {
+                                            renderProjectPage(res, projectId);
+                                        }
+                                    }
+                                );
+                            }
                         }
-                        else {
-                            renderProjectPage(res, projectId);
-                        }
-                    }
-                );
+                    );
+                });
             })
-
-
+            .catch(err => console.log(err));
         }
+
         // Else ...
         else if (selectedUsJSON.length > 1) {
             selectedUs = [];
@@ -180,6 +193,7 @@ function linkTask(req, res) {
         }
     }
 }
+
 function renderProjectPage(res, projectId) {
     let noOrphanUs = false;
 
@@ -207,6 +221,8 @@ function renderProjectPage(res, projectId) {
         })
         .catch(err => console.log("Couldn't find user stories: " + err));
 }
+
+
 module.exports = {
     displayCreateTask,
     displayModifyTask,
