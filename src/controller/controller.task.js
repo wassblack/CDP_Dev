@@ -97,19 +97,6 @@ function deleteTask(req, res) {
     }).catch(err => console.log(err));
 }
 
-//Display link task form
-function displaylinkTask(req, res) {
-    ModelProject.findOne({ _id: req.params.projectId }).then(project => {
-        ModelTask.findOne({ _id: req.params.taskId }).then(task => {
-            res.render('linkTask', {
-                task: task,
-                project: project,
-                user: req.user
-            });
-        }).catch(err => console.log(err));
-    })
-}
-
 function linkTask(req, res) {
     const projectId = req.params.projectId;
     const taskId = req.params.taskId;
@@ -117,7 +104,7 @@ function linkTask(req, res) {
 
     // Translate the US in JSON format into objects and add them into the list of US that will be added in the sprint
     let selectedUs;
-    console.log(selectedUsJSON)
+
     if (selectedUsJSON !== undefined) {
         // If the user selected only one user story
         if (!Array.isArray(selectedUsJSON)) {
@@ -229,6 +216,5 @@ module.exports = {
     modifyTask,
     createTask,
     deleteTask,
-    displaylinkTask,
     linkTask
 }

@@ -37,9 +37,6 @@ router.post('/project/:projectId/createTask', ensureAuthenticated, controllerTas
 //Delete a task
 router.get('/project/:projectId/deleteTask/:taskId', ensureAuthenticated, controllerTask.deleteTask);
 
-//Display form link a task
-router.get('/project/:projectId/linkTask/:taskId', ensureAuthenticated, controllerTask.displaylinkTask);
-
 //link a task
 router.post('/project/:projectId/linkTask/:taskId', ensureAuthenticated, controllerTask.linkTask);
 

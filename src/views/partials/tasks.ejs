@@ -29,7 +29,7 @@
                     <a href="/project/<%= project.id %>/modifyTask/<%= task.id %>"><i class="fas fa-edit fa-lg"></i></a>
                     <a href="/project/<%= project.id %>/deleteTask/<%= task.id %>"><i class="fa fa-trash fa-lg"
                             aria-hidden="true"></i></a>
-                    <a href="/project/<%= project.id %>/linkTask/<%= task.id %>"><i class="fa fa-link fa-lg"
+                    <a href data-toggle="modal" data-target="#modalTask<%= task.id %>"><i class="fa fa-link fa-lg"
                             aria-hidden="true"></i></a>
                 </td>
             </tr>
@@ -42,4 +42,57 @@
         </tfoot>
     </table>
 </div>
+
+<% tasks.forEach(function (task) { %>
+<div class="modal" id="modalTask<%= task.id %>">
+    <div class="modal-dialog modal-lg" role="document">
+        <form action="/project/<%= project.id %>/linkTask/<%= task.id %>" method="POST" class="mr-auto">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Lier une tâche à une user story</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Description</th>
+                                <th scope="col">Difficulté</th>
+                                <th scope="col">Priorité</th>
+                                <th scope="col">Sélection</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="table-light">
+                                <% project.sprints.forEach(function (sprint) { %>
+                                <% sprint.userStories.forEach(function (userStory) { %>
+                                    <td><%= userStory.description %></td>
+                                    <td><%= userStory.difficulty %></td>
+                                    <td><%= userStory.priority %></td>
+                                    <td>
+                                        <div class="custom-control custom-checkbox" id="checkBoxAddUserstory">
+                                            <input type="checkbox" class="custom-control-input"
+                                                id="customCheck<%= sprint.id %><%= userStory.id %>" name="selectedUs"
+                                                value="<%= JSON.stringify(userStory) %>" unchecked>
+                                            <label class="custom-control-label"
+                                                for="customCheck<%= sprint.id %><%= userStory.id %>"></label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <% });%>
+                                <% });%>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Lier les tâches sélectionnées à cette tâche</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<% });%>
+
 <%}%>
