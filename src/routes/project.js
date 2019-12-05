@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const controllerTask = require('../controller/controller.task');
 const controllerProject = require('../controller/controller.project');
+const controllerTests = require('../controller/controller.tests');
 const { ensureAuthenticated } = require('../config/authenticated');
 
 // Page displaying the main information about the selected project
@@ -40,5 +41,22 @@ router.get('/project/:projectId/deleteTask/:taskId', ensureAuthenticated, contro
 //link a task
 router.post('/project/:projectId/linkTask/:taskId', ensureAuthenticated, controllerTask.linkTask);
 
+// Page displaying the project's tests
+router.get('/project/:projectId/tests', ensureAuthenticated, controllerTests.displayTests);
+
+// Display create test form
+router.get('/project/:projectId/createTest', ensureAuthenticated, controllerTests.displayCreateTest);
+
+// Create a new test
+router.post('/project/:projectId/createTest', ensureAuthenticated, controllerTests.createTest);
+
+// Display modify test form
+router.get('/project/:projectId/modifyTest/:testId', ensureAuthenticated, controllerTests.displayModifyTest);
+
+// Modify a test
+router.post('/project/:projectId/modifyTest/:testId', ensureAuthenticated, controllerTests.modifyTest);
+
+// Delete a test
+router.get('/project/:projectId/deleteTest/:testId', ensureAuthenticated, controllerTests.deleteTest);
 
 module.exports = router;

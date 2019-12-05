@@ -1,0 +1,69 @@
+<% include ./partials/navBar %>
+
+<div class="row mt-5">
+    <div class="col-md-6 m-auto">
+        <div class="card card-body">
+            <h1 class="text-center mb-3">Modifier test</h1>
+            <% include ./partials/message %>
+            <form action="/project/<%= project.id %>/modifyTest/<%= test.id %>" method="POST">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" value="<%= test.name %>">
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea class="form-control" id="description" rows="3" name="description" class="form-control"
+                        placeholder="Décrivez votre test en quelques lignes"><%= test.description %></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="state">Etat</label>
+                    <select class="form-control" id="state" name="state">
+                        <option <% if (test.state == "TODO") { %>selected<% } %>>TODO</option>
+                        <option <% if (test.state == "ONGOING") { %>selected<% } %>>ONGOING</option>
+                        <option <% if (test.state == "DONE") { %>selected<% } %>>DONE</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="userStoryId">User Story</label>
+                    <fieldset class="form-group">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Description</th>
+                                    <th scope="col">Difficulté</th>
+                                    <th scope="col">Priorité</th>
+                                    <th scope="col">Sélection</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-light">
+                                    <% project.sprints.forEach(function (sprint) { %>
+                                    <% sprint.userStories.forEach(function (userStory) { %>
+                                    <td><%= userStory.description %></td>
+                                    <td><%= userStory.difficulty %></td>
+                                    <td><%= userStory.priority %></td>
+                                    <td>
+                                        <div class="custom-control custom-checkbox" id="checkBoxAddUserstory">
+                                            <input type="radio" class="custom-control-input"
+                                                id="customCheck<%= sprint.id %><%= userStory.id %>" name="selectedUs"
+                                                value="<%= JSON.stringify(userStory) %>"
+                                                <% if (test.userStoryId == userStory.id) { %>checked
+                                                <% } else { %>unchecked<% } %>>
+                                            <label class="custom-control-label"
+                                                for="customCheck<%= sprint.id %><%= userStory.id %>"></label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <% });%>
+                                <% });%>
+                            </tbody>
+                        </table>
+                    </fieldset>
+                </div>
+                <div class="form-group">
+                    <button type="submit" id="submitCreate" class="btn btn-primary btn-block">Modifier test</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
