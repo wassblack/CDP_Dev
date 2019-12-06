@@ -1,0 +1,19 @@
+<%- include ./partials/navBar %>
+
+<% if( project.releases.length == 0) { %>
+<div class="jumbotron" style="background: none;">
+    <h3 class="card-header">Liste des release</h3>
+    <div class="card-body" id="releaseSection">
+        <div class="card-body" style="min-height: 10rem;" id="releaseSection">
+            <h4 class="text-muted">Vous n'avez pas de release</h3>
+        </div>
+        <form action="" method="GET">
+            <button type="submit" class="btn btn-outline-primary pull-right" id="createReleaseButton">Créer une nouvelle
+                release</button>
+        </form>
+    </div>
+
+
+    <%} else {%>
+    <h1>Releases</h1>
+    <% } %>
