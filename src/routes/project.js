@@ -41,6 +41,9 @@ router.get('/project/:projectId/deleteTask/:taskId', ensureAuthenticated, contro
 //link a task
 router.post('/project/:projectId/linkTask/:taskId', ensureAuthenticated, controllerTask.linkTask);
 
+//unlink a user story from a task
+router.post('/project/:projectId/unlinkTask/:sprintId/:taskId/:userStoryId', ensureAuthenticated, controllerTask.unlinkTask);
+
 // Page displaying the project's tests
 router.get('/project/:projectId/tests', ensureAuthenticated, controllerTests.displayTests);
 

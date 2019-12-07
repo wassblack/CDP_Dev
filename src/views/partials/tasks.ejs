@@ -36,7 +36,14 @@
                         sprint.userStories.forEach(function(userStory) {
                             userStory.tasks.forEach(function(linkedTask) {
                                 if (linkedTask.id === task.id) { %>
-                                    <%= userStory._id %> <br>
+                                    <form action="/project/<%= project.id %>/unlinkTask/<%= sprint.id %>/<%= task.id %>/<%= userStory.id %>" 
+                                        method="POST" style="display: inline;">
+                                        <input type="hidden" name="linkedUserstory" value="<%= JSON.stringify(userStory) %>">
+                                        <%= userStory.id %>
+                                        <button type="submit" style="background: none; padding: 0px; border: none;">
+                                            <i class="fa fa-unlink fa-lg"></i>
+                                        </button>                                      
+                                    </form>
                             <% }
                             })
                         })
@@ -81,20 +88,29 @@
                             <tr class="table-light">
                                 <% project.sprints.forEach(function (sprint) { %>
                                 <% sprint.userStories.forEach(function (userStory) { %>
-                                    <td><%= userStory._id %></td>
-                                    <td><%= userStory.description %></td>
-                                    <td><%= userStory.difficulty %></td>
-                                    <td><%= userStory.priority %></td>
-                                    <td>
-                                        <div class="custom-control custom-checkbox" id="checkBoxAddUserstory">
-                                            <input type="checkbox" class="custom-control-input"
-                                                id="customCheck<%= task.id %><%= userStory.id %>" name="selectedUs"
-                                                value="<%= JSON.stringify(userStory) %>" unchecked>
-                                            <label class="custom-control-label"
-                                                for="customCheck<%= task.id %><%= userStory.id %>"></label>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    <% let alreadyLinked = false;
+                                        for (let linkedTask of userStory.tasks) {
+                                            if (linkedTask.id === task.id) {
+                                                alreadyLinked = true;
+                                                break;
+                                            }
+                                        }
+                                        if (!alreadyLinked) { %>
+                                            <td><%= userStory._id %></td>
+                                            <td><%= userStory.description %></td>
+                                            <td><%= userStory.difficulty %></td>
+                                            <td><%= userStory.priority %></td>
+                                            <td>
+                                                <div class="custom-control custom-checkbox" id="checkBoxAddUserstory">
+                                                    <input type="checkbox" class="custom-control-input"
+                                                        id="customCheck<%= task.id %><%= userStory.id %>" name="selectedUs"
+                                                        value="<%= JSON.stringify(userStory) %>" unchecked>
+                                                    <label class="custom-control-label"
+                                                        for="customCheck<%= task.id %><%= userStory.id %>"></label>
+                                                </div>                                   
+                                            </td>
+                                     <% } %>
+                            </tr>
                                 <% });%>
                                 <% });%>
                         </tbody>

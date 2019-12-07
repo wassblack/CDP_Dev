@@ -181,6 +181,42 @@ function linkTask(req, res) {
     }
 }
 
+function unlinkTask(req, res) {
+    const projectId = req.params.projectId;
+    const sprintId = req.params.sprintId;
+    const taskId = req.params.taskId;
+    const userStoryId = req.params.userStoryId;
+
+    let unlinkedUserstory = JSON.parse(req.body.linkedUserstory);
+
+    const taskIndex = unlinkedUserstory.tasks.findIndex(t => t._id === taskId);
+    if (taskIndex !== undefined) unlinkedUserstory.tasks.splice(taskIndex, 1);
+
+    ModelProject.updateOne(
+        { 'sprints._id' : sprintId },
+        { "$pull": { "sprints.$.userStories": { _id: userStoryId } } },
+        function (err) {
+            if (err) {
+                console.log("Couldn't update the sprint: " + err)
+            }
+            else {
+                ModelProject.updateOne(
+                    { 'sprints._id' : sprintId },
+                    { "$push": { "sprints.$.userStories": unlinkedUserstory } },
+                    function (err) {
+                        if (err) {
+                            console.log("Couldn't update the sprint: " + err)
+                        }
+                        else {
+                            renderProjectPage(res, projectId);
+                        }
+                    }
+                );
+            }
+        }
+    );
+}
+
 function renderProjectPage(res, projectId) {
     let noOrphanUs = false;
 
@@ -216,5 +252,6 @@ module.exports = {
     modifyTask,
     createTask,
     deleteTask,
-    linkTask
+    linkTask,
+    unlinkTask
 }
