@@ -117,9 +117,9 @@ function linkTask(req, res) {
 
                 ModelTask.findOne({ _id: taskId }).then(task => {
                     selectedUs.tasks.push(task);
-      
+
                     ModelProject.updateOne(
-                        { 'sprints._id' : sprintId },
+                        { 'sprints._id': sprintId },
                         { "$pull": { "sprints.$.userStories": { _id: selectedUsId } } },
                         function (err) {
                             if (err) {
@@ -127,7 +127,7 @@ function linkTask(req, res) {
                             }
                             else {
                                 ModelProject.updateOne(
-                                    { 'sprints._id' : sprintId },
+                                    { 'sprints._id': sprintId },
                                     { "$push": { "sprints.$.userStories": selectedUs } },
                                     function (err) {
                                         if (err) {
@@ -143,7 +143,7 @@ function linkTask(req, res) {
                     );
                 });
             })
-            .catch(err => console.log(err));
+                .catch(err => console.log(err));
         }
 
         // Else ...
@@ -152,31 +152,29 @@ function linkTask(req, res) {
             let myTask;
             ModelTask.findOne({ _id: taskId }).then(task => {
                 myTask = task;
-            });
-            for (let i = 0; i < selectedUsJSON.length; i++) {
-                const us = JSON.parse(selectedUsJSON[i]);
-                us.tasks.push(myTask);
-                selectedUs.push(us);
-            }
-            // Update the database with the added user stories
-            ModelProject.updateOne(
-                {
-                    '_id': projectId,
-                    sprints: { $elemMatch: { "userStories._id": selectedUs.id } }
-                },
-                { "$push": { "sprints.$.userStories": selectedUs } },
-                function (err) {
-                    if (err) {
-                        console.log("Couldn't update the sprint: " + err)
-                    }
-                    else {
-                        renderProjectPage(res, projectId);
-                    }
+                for (let i = 0; i < selectedUsJSON.length; i++) {
+                    let us = JSON.parse(selectedUsJSON[i]);
+                    us.tasks.push(myTask);
+                    selectedUs.push(us);
+                    const selectedUsId = selectedUs[i]._id;
+                    ModelUserStory.findOne({ _id: selectedUsId }).then(us => {
+                        const sprintId = us.sprintId;
+                        ModelProject.updateOne(
+                            { 'sprints._id': sprintId },
+                            { "$pull": { "sprints.$.userStories": { _id: selectedUsId } } }).then(_ => {
+                                ModelProject.updateOne(
+                                    { 'sprints._id': sprintId },
+                                    { "$push": { "sprints.$.userStories": selectedUs[i] } }
+                                ).then(err => {
+                                    if (err) {
+                                        console.log(err)
+                                    }
+                                    renderProjectPage(res, projectId);
+                                });
+                            });
+                    });
                 }
-            );
-        }
-        else {
-            res.redirect('/project/' + projectId);
+            });
         }
     }
 }
@@ -193,7 +191,7 @@ function unlinkTask(req, res) {
     if (taskIndex !== undefined) unlinkedUserstory.tasks.splice(taskIndex, 1);
 
     ModelProject.updateOne(
-        { 'sprints._id' : sprintId },
+        { 'sprints._id': sprintId },
         { "$pull": { "sprints.$.userStories": { _id: userStoryId } } },
         function (err) {
             if (err) {
@@ -201,7 +199,7 @@ function unlinkTask(req, res) {
             }
             else {
                 ModelProject.updateOne(
-                    { 'sprints._id' : sprintId },
+                    { 'sprints._id': sprintId },
                     { "$push": { "sprints.$.userStories": unlinkedUserstory } },
                     function (err) {
                         if (err) {
