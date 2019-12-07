@@ -44,7 +44,7 @@ describe('controller.task', function() {
             .end((err, res) => {
                 res.should.have.status(200);
                 expect(res.text).to.nested.include('<option>Mocha@auto.com</option>');
-                expect(res.text).to.nested.include('min=\"1\" max=\"3\" value=\"1\"');
+                expect(res.text).to.nested.include('selectTaskState');
                 expect(res.text).to.nested.include('première tâche</textarea>');
                 done();
             });
