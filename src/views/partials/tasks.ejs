@@ -26,35 +26,37 @@
         <tbody>
 
             <% tasks.forEach(function (task) { %>
-            <% let classCss = parseInt(task.state) > 2 ? "table-success" : "table-danger" ;%>
+            <% let classCss = parseInt(task.state) <= 2 ? (parseInt(task.state) == 1 ? "table-danger" : "table-info") : "table-success" ;%>
             <tr class=<%= classCss %>>
                 <td><%= task.description %></td>
                 <td><%= task.developerId %></td>
                 <td><% if (task.state === 1) {%>TODO<%} else if (task.state === 2) {%>ON GOING<%} else {%> DONE<%}%>  </td>
-                <td>
+                <td style="background: none; min-width: 290px">
                     <% project.sprints.forEach(function(sprint) {
                         sprint.userStories.forEach(function(userStory) {
                             userStory.tasks.forEach(function(linkedTask) {
                                 if (linkedTask.id === task.id) { %>
-                                    <form action="/project/<%= project.id %>/unlinkTask/<%= sprint.id %>/<%= task.id %>/<%= userStory.id %>" 
-                                        method="POST" style="display: inline;">
-                                        <input type="hidden" name="linkedUserstory" value="<%= JSON.stringify(userStory) %>">
-                                        <%= userStory.id %>
-                                        <button type="submit" style="background: none; padding: 0px; border: none;">
-                                            <i class="fa fa-unlink fa-lg"></i>
-                                        </button>                                      
-                                    </form>
-                            <% }
+                    <form
+                        action="/project/<%= project.id %>/unlinkTask/<%= sprint.id %>/<%= task.id %>/<%= userStory.id %>"
+                        method="POST" style="display: inline;">
+                        <input type="hidden" name="linkedUserstory" value="<%= JSON.stringify(userStory) %>">
+                        <%= userStory.id %>
+                        <button type="submit" style=" padding: 0px; border: none; background: none; ">
+                            <small><i class="fa fa-unlink fa-lg"></i></small>
+                        </button>
+                    </form>
+                    <% }
                             })
                         })
                     }); %>
                 </td>
                 <td>
-                    <a href="/project/<%= project.id %>/modifyTask/<%= task.id %>"><i class="fas fa-edit fa-lg"></i></a>
-                    <a href="/project/<%= project.id %>/deleteTask/<%= task.id %>"><i class="fa fa-trash fa-lg"
-                            aria-hidden="true"></i></a>
-                    <a href data-toggle="modal" data-target="#modalTask<%= task.id %>"><i class="fa fa-link fa-lg"
-                            aria-hidden="true"></i></a>
+                    <a href="/project/<%= project.id %>/modifyTask/<%= task.id %>"><small><i class="fas fa-edit fa-lg"></i></small></a>
+                    <a href="/project/<%= project.id %>/deleteTask/<%= task.id %>"><small><i class="fa fa-trash fa-lg" aria-hidden="true"></i></small>
+                           </a>
+                    <a href data-toggle="modal" data-target="#modalTask<%= task.id %>">
+                        <small><i class="fa fa-link fa-lg"aria-hidden="true"></i></small></a>
+                          
                 </td>
             </tr>
             <% });%>
@@ -88,7 +90,7 @@
                             <tr class="table-light">
                                 <% project.sprints.forEach(function (sprint) { %>
                                 <% sprint.userStories.forEach(function (userStory) { %>
-                                    <% let alreadyLinked = false;
+                                <% let alreadyLinked = false;
                                         for (let linkedTask of userStory.tasks) {
                                             if (linkedTask.id === task.id) {
                                                 alreadyLinked = true;
@@ -96,23 +98,23 @@
                                             }
                                         }
                                         if (!alreadyLinked) { %>
-                                            <td><%= userStory._id %></td>
-                                            <td><%= userStory.description %></td>
-                                            <td><%= userStory.difficulty %></td>
-                                            <td><%= userStory.priority %></td>
-                                            <td>
-                                                <div class="custom-control custom-checkbox" id="checkBoxAddUserstory">
-                                                    <input type="checkbox" class="custom-control-input"
-                                                        id="customCheck<%= task.id %><%= userStory.id %>" name="selectedUs"
-                                                        value="<%= JSON.stringify(userStory) %>" unchecked>
-                                                    <label class="custom-control-label"
-                                                        for="customCheck<%= task.id %><%= userStory.id %>"></label>
-                                                </div>                                   
-                                            </td>
-                                     <% } %>
+                                <td><%= userStory._id %></td>
+                                <td><%= userStory.description %></td>
+                                <td><%= userStory.difficulty %></td>
+                                <td><%= userStory.priority %></td>
+                                <td>
+                                    <div class="custom-control custom-checkbox" id="checkBoxAddUserstory">
+                                        <input type="checkbox" class="custom-control-input"
+                                            id="customCheck<%= task.id %><%= userStory.id %>" name="selectedUs"
+                                            value="<%= JSON.stringify(userStory) %>" unchecked>
+                                        <label class="custom-control-label"
+                                            for="customCheck<%= task.id %><%= userStory.id %>"></label>
+                                    </div>
+                                </td>
+                                <% } %>
                             </tr>
-                                <% });%>
-                                <% });%>
+                            <% });%>
+                            <% });%>
                         </tbody>
                     </table>
                 </div>
