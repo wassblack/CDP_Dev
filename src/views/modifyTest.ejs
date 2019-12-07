@@ -18,9 +18,8 @@
                 <div class="form-group">
                     <label for="state">Etat</label>
                     <select class="form-control" id="state" name="state">
-                        <option <% if (test.state == "TODO") { %>selected<% } %>>TODO</option>
-                        <option <% if (test.state == "ONGOING") { %>selected<% } %>>ONGOING</option>
-                        <option <% if (test.state == "DONE") { %>selected<% } %>>DONE</option>
+                        <option <% if (test.state == "FAILED") { %>selected<% } %>>FAILED</option>
+                        <option <% if (test.state == "PASSED") { %>selected<% } %>>PASSED</option>
                     </select>
                 </div>
                 <div class="form-group">

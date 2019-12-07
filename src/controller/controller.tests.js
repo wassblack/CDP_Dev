@@ -69,8 +69,12 @@ function createTest(req, res) {
     if (!name || !state || !description || !userStory) {
         errors.push({ msg: "Champ requis non rempli" });
     }
-    if (!description.length > 3000) {
+    if (description.length > 3000) {
         errors.push({ msg: "Description trop longue" });
+    }
+
+    if (name.length == 0) {
+        errors.push({ msg: "Nom trop court" });
     }
 
     if (errors.length == 0) {
