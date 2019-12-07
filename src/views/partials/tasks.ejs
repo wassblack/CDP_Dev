@@ -19,6 +19,8 @@
                 <th scope="col">Description</th>
                 <th scope="col">Développeur</th>
                 <th scope="col">État</th>
+                <th scope="col">Issues liées</th>
+                <th scope="col">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -29,6 +31,17 @@
                 <td><%= task.description %></td>
                 <td><%= task.developerId %></td>
                 <td><% if (task.state === 1) {%>TODO<%} else if (task.state === 2) {%>ON GOING<%} else {%> DONE<%}%>  </td>
+                <td>
+                    <% project.sprints.forEach(function(sprint) {
+                        sprint.userStories.forEach(function(userStory) {
+                            userStory.tasks.forEach(function(linkedTask) {
+                                if (linkedTask.id === task.id) { %>
+                                    <%= userStory._id %> <br>
+                            <% }
+                            })
+                        })
+                    }); %>
+                </td>
                 <td>
                     <a href="/project/<%= project.id %>/modifyTask/<%= task.id %>"><i class="fas fa-edit fa-lg"></i></a>
                     <a href="/project/<%= project.id %>/deleteTask/<%= task.id %>"><i class="fa fa-trash fa-lg"
@@ -57,6 +70,7 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
+                                <th scope="col">Identifiant</th>
                                 <th scope="col">Description</th>
                                 <th scope="col">Difficulté</th>
                                 <th scope="col">Priorité</th>
@@ -67,6 +81,7 @@
                             <tr class="table-light">
                                 <% project.sprints.forEach(function (sprint) { %>
                                 <% sprint.userStories.forEach(function (userStory) { %>
+                                    <td><%= userStory._id %></td>
                                     <td><%= userStory.description %></td>
                                     <td><%= userStory.difficulty %></td>
                                     <td><%= userStory.priority %></td>

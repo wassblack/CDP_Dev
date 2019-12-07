@@ -11,6 +11,7 @@
     <table class="table table-hover" id="userstoriesTable">
         <thead>
             <tr>
+                <th scope="col">Identifiant</th>
                 <th scope="col">Description</th>
                 <th scope="col">Difficulté</th>
                 <th scope="col">Priorité</th>
@@ -20,6 +21,7 @@
         <tbody>
             <tr class="table-light">
                 <% orphanUs.forEach(function (userStory) { %>
+                <td><%= userStory._id %></td>
                 <td><%= userStory.description %></td>
                 <td><%= userStory.difficulty %></td>
                 <td><%= userStory.priority %></td>
