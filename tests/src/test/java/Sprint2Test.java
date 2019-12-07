@@ -96,9 +96,9 @@ public class Sprint2Test
 		WebElement userstoryLine = userstoriesList.findElements(By.tagName("tr")).get(1);
 		
 		Assert.assertEquals(true, 
-				userstoryLine.findElements(By.tagName("td")).get(0).getText().contains(usDescription)
-			 && userstoryLine.findElements(By.tagName("td")).get(1).getText().contains(usDifficulty)
-			 && userstoryLine.findElements(By.tagName("td")).get(2).getText().contains(usPriority));
+				userstoryLine.findElements(By.tagName("td")).get(1).getText().contains(usDescription)
+			 && userstoryLine.findElements(By.tagName("td")).get(2).getText().contains(usDifficulty)
+			 && userstoryLine.findElements(By.tagName("td")).get(3).getText().contains(usPriority));
 	}
 	
 	// Issue 9
@@ -145,9 +145,9 @@ public class Sprint2Test
 		WebElement userstoryLine = userstoriesList.findElements(By.tagName("tr")).get(1);
 
 		Assert.assertEquals(true, 
-				userstoryLine.findElements(By.tagName("td")).get(0).getText().contains(usDescription)
-				&& userstoryLine.findElements(By.tagName("td")).get(1).getText().contains(usDifficulty)
-				&& userstoryLine.findElements(By.tagName("td")).get(2).getText().contains(usPriority));
+				userstoryLine.findElements(By.tagName("td")).get(1).getText().contains(usDescription)
+				&& userstoryLine.findElements(By.tagName("td")).get(2).getText().contains(usDifficulty)
+				&& userstoryLine.findElements(By.tagName("td")).get(3).getText().contains(usPriority));
 	}
 
 	// Issue 11

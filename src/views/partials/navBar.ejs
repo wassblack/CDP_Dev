@@ -1,3 +1,6 @@
+<% if (typeof project !== 'undefined') { var projectIdentifier = project.id; } 
+  else { var projectIdentifier = projectId } %>
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <a class="navbar-brand" href="#">Scrum it</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
@@ -6,20 +9,15 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="/Projects">Projets <span class="sr-only">(current)</span></a>
+            <li class="nav-item">
+                <a class="nav-link" href="/project/<%= projectIdentifier %>">Page principale</a>
             </li>
-            <% if (typeof project !== 'undefined') { %>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Documentations</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/release/<%= project.id %>/">Releases</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/project/<%= project.id %>/tests">Tests</a>
-                </li> 
-            <%}%>
+            <li class="nav-item">
+                <a class="nav-link" href="/project/<%= projectIdentifier %>/tests">Tests</a>
+            </li> 
+            <li class="nav-item">
+                <a class="nav-link" href="/Projects">Retourner à la liste des projets</a>
+            </li>
         </ul> 
     </div> 
     <div class="nav navbar-nav navbar-righ">

@@ -1,4 +1,20 @@
-<% include ./partials/navBar%>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="#">Scrum it</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
+        aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/Projects">Retourner à la liste des projets</a>
+            </li>
+        </ul>
+    </div>
+    <div class="nav navbar-nav navbar-righ">
+        <a class="nav-link" href="/users/logout">Déconnexion</a>
+    </div>
+</nav>
 
 <div class="row mt-5">
     <div class="col-md-6 m-auto">
@@ -8,7 +24,8 @@
             <form action="/createProject" method="POST">
                 <div class="form-group">
                     <label for="name">Nom</label>
-                    <input type="text" id="name" name="name" class="form-control" placeholder="Entrez le nom de votre projet" />
+                    <input type="text" id="name" name="name" class="form-control"
+                        placeholder="Entrez le nom de votre projet" />
                 </div>
                 <div class="form-group">
                     <label for="description">Description</label>
