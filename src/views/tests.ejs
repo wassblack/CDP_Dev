@@ -1,44 +1,61 @@
 <%- include ./partials/navBar %>
+<div class="jumbotron" style="background: none;"></div>
 <h3 class="card-header">Tests</h3>
 <% if(typeof projectTests == 'undefined' || projectTests.length == 0) { %>
-    <div class="card-body">
-        <h5 class="card-title">Vous n'avez pas encore de tests.</h5>
-        <form action="/project/<%= project.id %>/createTest" method="GET">
-            <button type="submit" class="btn btn-outline-primary" id="addTestButton">Ajouter un test</button>
-        </form>
-    </div>
+
+<div class="card-body">
+    <h5 class="card-title">Vous n'avez pas encore de tests.</h5>
+    <form action="/project/<%= project.id %>/createTest" method="GET">
+        <button type="submit" class="btn btn-outline-primary" id="addTestButton">Ajouter un test</button>
+    </form>
+</div>
 <% } else { %>
-    <table class="table table-hover" id="testsTable">
-        <thead>
-            <tr>
-                <th scope="col">Nom</th>
-                <th scope="col">Description</th>
-                <th scope="col">User Story</th>
-                <th scope="col">État</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="table-light">
-                <% projectTests.forEach(function (test) { %>
-                <td><%= test.name %></td>
-                <td><%= test.description %></td>
-                <td><%= test.userStoryId %></td>
-                <td><%= test.state %></td>
-                <td>
-                    <a href="/project/<%= project.id %>/modifyTest/<%= test.id %>" class="modifyTest">
-                        <i class="fas fa-edit fa-lg"></i>
-                    </a>
-                    <a href="/project/<%= project.id %>/deleteTest/<%= test.id %>" class="deleteTest">
-                        <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
-                    </a>
-                </td>
-            </tr>
-            <% }); %>
-        </tbody>
-        <tfoot>
-            <form action="/project/<%= project.id %>/createTest" method="GET">
-                <button type="submit" class="btn btn-secondary" id="addTestButton">Ajouter un test</button>
-            </form>
-        </tfoot>
-    </table>
+<% let passedTests = 0;  %>
+<% projectTests.forEach(function (test) { %> <% if(test.state === "PASSED"){ passedTests++; }});%>
+<% let perc = parseInt(passedTests/projectTests.length) * 100; %>
+<% let percString = "width : "+perc+"%;";%>
+<% let percFailed = 100 - perc; %>
+<% let percStringFailed = "width : "+percFailed+"%;";%>
+<div class="progress">
+    <div class="progress-bar bg-success" role="progressbar" style="<%= percString %>" aria-valuenow="30"
+        aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="progress-bar bg-danger" role="progressbar" style="<%= percStringFailed %>" aria-valuenow="20"
+        aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+
+
+<table class="table table-hover" id="testsTable">
+    <thead>
+        <tr>
+            <th scope="col">Nom</th>
+            <th scope="col">Description</th>
+            <th scope="col">User Story</th>
+            <th scope="col">État</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="table-light">
+            <% projectTests.forEach(function (test) { %>
+            <td><%= test.name %></td>
+            <td><%= test.description %></td>
+            <td><%= test.userStoryId %></td>
+            <td><%= test.state %></td>
+            <td>
+                <a href="/project/<%= project.id %>/modifyTest/<%= test.id %>" class="modifyTest">
+                    <i class="fas fa-edit fa-lg"></i>
+                </a>
+                <a href="/project/<%= project.id %>/deleteTest/<%= test.id %>" class="deleteTest">
+                    <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
+                </a>
+            </td>
+        </tr>
+        <% }); %>
+    </tbody>
+    <tfoot>
+        <form action="/project/<%= project.id %>/createTest" method="GET">
+            <button type="submit" class="btn btn-secondary" id="addTestButton">Ajouter un test</button>
+        </form>
+    </tfoot>
+</table>
+</div>
 <% } %>
