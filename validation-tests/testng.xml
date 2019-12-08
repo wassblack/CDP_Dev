@@ -68,4 +68,17 @@
 			</class>
 		</classes>
 	</test>
+	
+	<!-- 
+	<test name="Sprint3Chrome">
+		<parameter name="browser" value="chrome" />
+		<classes>
+			<class name="Sprint3Test">
+				<methods>
+					
+				</methods>
+			</class>
+		</classes>
+	</test>
+	-->
 </suite>
