@@ -1,19 +1,19 @@
 <% if(typeof tasks == 'undefined' || tasks.length == 0) { %>
 <h3 class="card-header">Liste des tâches</h3>
-<div class="card-body">
+<div class="card-body" id="taskSection">
     <h5 class="card-title">Vous n'avez pas de tâches.</h5>
     <form action="/project/<%= project.id %>/createTask" method="GET">
-        <button type="submit" class="btn btn-outline-primary">Ajouter une nouvelle tâche</button>
+        <button type="submit" class="btn btn-outline-primary" id="createTaskButton">Ajouter une nouvelle tâche</button>
     </form>
 </div>
 <%} else {%>
 <h3 class="card-header">Liste des tâches</h3>
 <form action="/project/<%= project.id %>/createTask" method="GET">
-    <button type="submit" class="btn btn-outline-secondary" style="width:100%;">Ajouter une nouvelle tâche</button>
+    <button type="submit" class="btn btn-outline-secondary" style="width:100%;"id="createTaskButton" >Ajouter une nouvelle tâche</button>
 </form>
 
 <div class="jumbotron" id="taskSection">
-    <table class="table table-hover">
+    <table class="table table-hover" id="tasksTable">
         <thead>
             <tr>
                 <th scope="col">Description</th>
@@ -41,7 +41,7 @@
                         method="POST" style="display: inline;">
                         <input type="hidden" name="linkedUserstory" value="<%= JSON.stringify(userStory) %>">
                         <%= userStory.id %>
-                        <button type="submit" style=" padding: 0px; border: none; background: none; ">
+                        <button type="submit" class="unlinkTask" style=" padding: 0px; border: none; background: none;">
                             <small><i class="fa fa-unlink fa-lg"></i></small>
                         </button>
                     </form>
@@ -51,10 +51,10 @@
                     }); %>
                 </td>
                 <td>
-                    <a href="/project/<%= project.id %>/modifyTask/<%= task.id %>"><small><i class="fas fa-edit fa-lg"></i></small></a>
-                    <a href="/project/<%= project.id %>/deleteTask/<%= task.id %>"><small><i class="fa fa-trash fa-lg" aria-hidden="true"></i></small>
+                    <a href="/project/<%= project.id %>/modifyTask/<%= task.id %>" class="modifyTaskLink"><small><i class="fas fa-edit fa-lg"></i></small></a>
+                    <a href="/project/<%= project.id %>/deleteTask/<%= task.id %>" class="deleteTaskLink"><small><i class="fa fa-trash fa-lg" aria-hidden="true"></i></small>
                            </a>
-                    <a href data-toggle="modal" data-target="#modalTask<%= task.id %>">
+                    <a href data-toggle="modal" data-target="#modalTask<%= task.id %>" class="linkTask">
                         <small><i class="fa fa-link fa-lg"aria-hidden="true"></i></small></a>
                           
                 </td>
@@ -119,7 +119,7 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Lier les tâches sélectionnées à cette tâche</button>
+                    <button type="submit" class="btn btn-primary" id="submitLinkTask">Lier les tâches sélectionnées à cette tâche</button>
                 </div>
             </div>
         </form>

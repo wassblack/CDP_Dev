@@ -1,12 +1,11 @@
 import org.bson.Document;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
@@ -41,6 +40,9 @@ public class Sprint3Test
 		login();
 		createWorthlessProject();
 		createWorthlessUserDB();
+		createWorthlessUserstory();
+		createWorthlessSprint();
+		addUserstoryToSprint();
 	}
 	
 	@BeforeMethod
@@ -63,7 +65,7 @@ public class Sprint3Test
 		database.getCollection("projects").deleteOne(Filters.and(Filters.eq("name", "Worthless project")
 				, Filters.eq("description", "This project is meant to be deleted")));
 		database.getCollection("userstories").deleteOne(Filters.eq("description", "Super description"));
-		database.getCollection("userstories").deleteOne(Filters.eq("description", "Super description modifiée"));
+		//database.getCollection("userstories").deleteOne(Filters.eq("description", "Super description modifiée"));
 		
 		driver.quit();
 	}
@@ -72,8 +74,109 @@ public class Sprint3Test
 	@Test
 	public void testAddTask() throws Exception
 	{
-		
+		// Click on the project name
+		driver.findElement(By.cssSelector("#projectPageLink")).click();
+
+		// Fill the form to add a task
+		String taskDesc = "Cette tâche va être supprimée parce qu'elle sert seulement de test.";
+		String developer = "selenium@auto.com";
+		String state = "TODO";
+		driver.findElement(By.id("createTaskButton")).click();
+		driver.findElement(By.cssSelector("#description")).sendKeys(taskDesc);
+		driver.findElement(By.cssSelector("#submitCreateTask")).click();
+
+		// Check if the task was added
+		WebElement taskSection = driver.findElement(By.cssSelector("#taskSection"));
+		Assert.assertEquals(true, 
+				taskSection.getText().contains(taskDesc)
+				&& taskSection.getText().contains(developer)
+				&& taskSection.getText().contains(state));
 	}
+	
+	// Issue 13
+	@Test
+	public void testLinkTask() throws Exception
+	{
+		// Click on the project name
+		driver.findElement(By.cssSelector("#projectPageLink")).click();
+
+		driver.findElement(By.className("linkTask")).click();
+
+		// Check the user story to link 
+		String jsCheckCode = "arguments[0].scrollIntoView(true); arguments[0].click();";
+		WebElement elementToCheck = driver.findElement(By.name("selectedUs"));
+		((JavascriptExecutor) driver).executeScript(jsCheckCode, elementToCheck);
+
+		// Submit it
+		Thread.sleep(500);
+		driver.findElement(By.cssSelector("#submitLinkTask")).click();
+
+		// Check if the user story was linked to the task
+		WebElement tasksTable = driver.findElement(By.cssSelector("#tasksTable"));
+		
+		WebElement unlinkButton = tasksTable.findElement(By.className("unlinkTask"));
+		Assert.assertEquals(true, unlinkButton != null);
+	}
+	
+	// Issue 13
+	@Test
+	public void testUnlinkTask() throws Exception
+	{
+		// Click on the project name
+		driver.findElement(By.cssSelector("#projectPageLink")).click();
+		
+		driver.findElement(By.className("unlinkTask")).click();
+		
+		// Check if the user story was unlinked from the task
+		WebElement tasksTable = driver.findElement(By.cssSelector("#tasksTable"));
+		
+		try {
+			 tasksTable.findElement(By.className("unlinkTask"));
+			 Assert.fail();
+		}
+		catch(NoSuchElementException e) {}
+	}
+	
+	// Issue 14
+	@Test
+	public void testModifyTask() throws Exception
+	{
+		// Click on the project name
+		driver.findElement(By.cssSelector("#projectPageLink")).click();
+
+		// Fill the form to add a task
+		String taskDesc = "Cette tâche va être supprimée parce qu'elle sert seulement de test. Par contre elle a aussi été modifiée";
+		String developer = "selenium@auto.com";
+		String state = "TODO";
+		driver.findElement(By.className("modifyTaskLink")).click();
+		driver.findElement(By.cssSelector("#description")).clear();
+		driver.findElement(By.cssSelector("#description")).sendKeys(taskDesc);
+		driver.findElement(By.cssSelector("#submitModifyTask")).click();
+
+		// Check if the task was added
+		WebElement taskSection = driver.findElement(By.cssSelector("#taskSection"));
+		Assert.assertEquals(true, 
+				taskSection.getText().contains(taskDesc)
+				&& taskSection.getText().contains(developer)
+				&& taskSection.getText().contains(state));
+	}
+	
+	// Issue 14
+	@Test
+	public void testDeleteTask() throws Exception
+	{
+		// Click on the project name
+		driver.findElement(By.cssSelector("#projectPageLink")).click();
+
+		// Click on the icon to delete a task
+		driver.findElement(By.className("deleteTaskLink")).click();
+
+		// Check if the task was deleted
+		WebElement taskSection = driver.findElement(By.cssSelector("#taskSection"));
+		Assert.assertEquals(true, taskSection.getText().contains("VOUS N'AVEZ PAS DE TÂCHES."));
+	}
+	
+	
 	
 	public void login()
 	{
@@ -117,4 +220,41 @@ public class Sprint3Test
 		database.getCollection("users").insertOne(user);
 	}
 	
+	public void createWorthlessUserstory()
+	{
+		driver.findElement(By.cssSelector("#projectPageLink")).click();
+		
+		String usDescription = "Super description";
+		String usDifficulty = "3";
+		String usPriority = "1";
+		driver.findElement(By.cssSelector("#addUserstoryButton")).click();
+		driver.findElement(By.cssSelector("#description")).sendKeys(usDescription);
+		driver.findElement(By.cssSelector("#difficulty")).sendKeys(usDifficulty);
+		driver.findElement(By.cssSelector("#priority")).sendKeys(usPriority);
+		driver.findElement(By.cssSelector("#submitAddUserstory")).click();
+	}
+	
+	public void createWorthlessSprint()
+	{
+		String sprintName = "Sprint test";
+		String startDate = "30/03/2020";
+		String endDate = "31/08/2020";
+		driver.findElement(By.id("createSprintButton")).click();
+		driver.findElement(By.cssSelector("#name")).sendKeys(sprintName);
+		driver.findElement(By.cssSelector("#startDate")).sendKeys(startDate);
+		driver.findElement(By.cssSelector("#endDate")).sendKeys(endDate);
+		driver.findElement(By.cssSelector("#submitCreateSprint")).click();
+	}
+	
+	public void addUserstoryToSprint() throws Exception
+	{
+		driver.findElement(By.cssSelector("#addUserstoryToSprintButton")).click();
+ 
+		String jsCheckCode = "arguments[0].scrollIntoView(true); arguments[0].click();";
+		WebElement elementToCheck = driver.findElement(By.name("selectedUs"));
+		((JavascriptExecutor) driver).executeScript(jsCheckCode, elementToCheck);
+		Thread.sleep(500);
+		driver.findElement(By.cssSelector("#submitAddUserstoriesToSprint")).click();
+	}
+
 }

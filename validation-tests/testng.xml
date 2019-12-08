@@ -69,16 +69,19 @@
 		</classes>
 	</test>
 	
-	<!-- 
 	<test name="Sprint3Chrome">
 		<parameter name="browser" value="chrome" />
 		<classes>
 			<class name="Sprint3Test">
 				<methods>
-					
+					<include name="testAddTask" />
+					<include name="testLinkTask" />
+					<include name="testUnlinkTask" />
+					<include name="testModifyTask" />
+					<include name="testDeleteTask" />
 				</methods>
 			</class>
 		</classes>
 	</test>
-	-->
+	
 </suite>
