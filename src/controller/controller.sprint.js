@@ -3,6 +3,11 @@ const ModelProject = require('../models/project');
 const ModelUserStory = require('../models/userStory');
 const controllerProject = require('../controller/controller.project');
 
+function checkIfDateInString(text) {
+    var re = /[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9]/;
+    return re.test(text);
+}
+
 //Display create sprint form
 function displayCreateSprint(req, res) {
     res.render('createSprint', {
@@ -56,6 +61,14 @@ function createSprint(req, res) {
 
     if (!endDate) {
         errors.push({ msg: 'Vous devez donner une date de fin à votre sprint' });
+    }
+
+    if (startDate && !checkIfDateInString(startDate)) {
+        errors.push({ msg: 'La date de début n\'est pas conforme' });
+    }
+
+    if (endDate && !checkIfDateInString(endDate)) {
+        errors.push({ msg: 'La date de fin n\'est pas conforme' });
     }
 
     const startDateSplit = startDate.split('/');
@@ -116,6 +129,14 @@ function editSprint(req, res) {
         errors.push({ msg: 'Vous devez donner une date de fin à votre sprint' });
     }
 
+    if (newSprintStartDate && !checkIfDateInString(newSprintStartDate)) {
+        errors.push({ msg: 'La date de début n\'est pas conforme' });
+    }
+
+    if (newSprintEndDate && !checkIfDateInString(newSprintEndDate)) {
+        errors.push({ msg: 'La date de fin n\'est pas conforme' });
+    }
+
     const startDateSplit = newSprintStartDate.split('/');
     const endDateSplit = newSprintEndDate.split('/');
 
@@ -142,15 +163,25 @@ function editSprint(req, res) {
         );
     }
     else {
-        res.render('modifySprint', {
-            errors: errors,
-            projectId: projectId,
-            sprintId: sprintId,
-            sprintName: newSprintName,
-            sprintStartDate: new Date(newSprintStartDate),
-            sprintEndDate: new Date(newSprintEndDate),
-            moment: moment
-        });
+        ModelProject.findOne(
+            { 'sprints._id': sprintId },
+            { 'sprints.$': 1 },
+            function (err, project) {
+                if (err) {
+                    console.log("Couldn't find the sprint: " + err)
+                }
+                else {
+                    res.render('modifySprint', {
+                        errors: errors,
+                        projectId: projectId,
+                        sprintId: sprintId,
+                        sprintName: project.sprints[0].name,
+                        sprintStartDate: project.sprints[0].startDate,
+                        sprintEndDate: project.sprints[0].endDate,
+                        moment: moment
+                    });
+                }
+            });
     }
 }
 //Delete a sprint

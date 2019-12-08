@@ -3,6 +3,7 @@
 <div class="row mt-5">
     <div class="col-md-6 m-auto">
         <div class="card card-body">
+            <h1 class="text-center mb-3">Modification d'une user story</h1>
             <% if(userStory.isOrphan) { %>
             <form action="/project/<%= projectId %>/editUserStory" method="POST">
             <%} else {%>
@@ -11,7 +12,8 @@
 
                 <div class="form-group">
                     <label class="col-form-label" for="inputDefault">Description de la user story</label>
-                    <textarea type="text" value="<%= userStory.description %>" id="description" name="description" style="width:100%"><%= userStory.description %></textarea>
+                    <textarea class="form-control" value="<%= userStory.description %>" 
+                        id="description" name="description" rows="4"><%= userStory.description %></textarea>
                 </div>
                 <div class="form-group">
                     <label class="col-form-label" for="inputDefault">Difficulté de la user story</label>

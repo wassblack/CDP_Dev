@@ -31,12 +31,13 @@ function createUserStory(req, res) {
     const projectId = req.params.projectId;
 
     let errors = [];
-    if (!projectId) {
-        errors.push({ msg: 'L\'id du projet n\'est pas définie' });
-    }
 
     if (userStoryDescription && userStoryDescription.length > 300) {
         errors.push({ msg: 'La description de votre user story doit prendre moins de 300 caracteres.' });
+    }
+
+    if (!userStoryDescription) {
+        errors.push({ msg: 'La description doit être spécifiée' });
     }
 
     if (!userStoryDifficulty || userStoryDifficulty <= 0) {
@@ -47,7 +48,7 @@ function createUserStory(req, res) {
         errors.push({ msg: 'La priorité doit être spécifiée' });
     }
 
-    if (errors.length == 0) {
+    if (errors.length === 0) {
         const newUserStory = new ModelUserStory({
             projectId: projectId,
             description: userStoryDescription,
