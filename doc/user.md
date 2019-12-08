@@ -39,14 +39,15 @@ Vous pouvez également modifier un projet depuis la page principale du projet, e
 
 ## Supprimer un projet
 
-Depuis la page d'accueil, vous pouvez facilement supprimer un projet en cliquant sur l'icône ![](icons/delete.jpg) qui est sur la même ligne que le projet que vous souhaitez supprimer.<br>
-Vous pouvez également supprimer un projet depuis la page principale du projet, en cliquant sur le bouton "Supprimer le projet" en bas de la page.
+Depuis le page principale du projet, vous pouvez supprimer le projet en cliquant sur le bouton "Supprimer le projet" en bas de la page. Cela affichera une pop-up de confirmation avant la suppression définitive.
 
 ## Accéder à la page principale d'un projet
 
 Vous pouvez accéder à la page principale d'un projet en cliquant sur le nom de ce dernier dans la liste des projets, dans la page d'accueil.
 
 ![](screenshots/projectPageEmpty.jpg)
+
+Vous pouvez retourner à la liste de vos projets en cliquant sur le bouton du menu du haut "Retourner à la liste des projets".
 
 ## Ajouter une user story
 
@@ -63,7 +64,7 @@ Depuis le backlog de la page principale du projet, vous pouvez facilement suppri
 Depuis la page principale du projet, vous pouvez créer un nouveau sprint en cliquant sur le bouton "Créer un nouveau sprint" dans la section "Sprints".
 Vous pourrez ensuite remplir le formulaire de création et cliquer sur "Créer un sprint" pour créer votre sprint.
 
-![](screenshots/backlogSprints.jpg)
+![](screenshots/sprints.jpg)
 
 ## Modifier un sprint
 
@@ -72,7 +73,7 @@ Vous pourrez ensuite remplir le formulaire de modification et cliquer sur "Modif
 
 ## Supprimer un sprint
 
-Depuis la page principale du projet, vous pouvez modifier un sprint en cliquant sur l'icône ![](icons/delete.jpg), à côté du nom du sprint que vous souhaitez supprimer.
+Depuis la page principale du projet, vous pouvez supprimer un sprint en cliquant sur l'icône ![](icons/delete.jpg), à côté du nom du sprint que vous souhaitez supprimer.
 
 ## Ajouter une user story à un sprint
 
@@ -97,7 +98,7 @@ Depuis la page principale du projet, vous pouvez retirer une user story d'un spr
 
 Depuis la page principale du projet, cliquer sur le bouton "Ajouter une nouvelle tâche" dans la section "Tâches". Vous pourrez ensuite remplir le formulaire et cliquer sur "Créer une tâche" pour créer votre tâche.
 
-#### TODO: screenshot
+![](screenshots/task.jpg)
 
 ## Modifier une tâche
 
@@ -105,7 +106,7 @@ Depuis la page principale du projet, vous pouvez modifier une tâche en cliquant
 
 ## Supprimer une tâche
 
-Depuis la page principale du projet, vous pouvez modifier une tâche en cliquant sur l'icône ![](icons/delete.jpg), qui est sur la même ligne que la tâche que vous souhaitez supprimer.
+Depuis la page principale du projet, vous pouvez supprimer une tâche en cliquant sur l'icône ![](icons/delete.jpg), qui est sur la même ligne que la tâche que vous souhaitez supprimer.
 
 ## Lier une tâche à une ou plusieurs issues
 
@@ -114,3 +115,21 @@ Vous pourrez ensuite sélectionner les user stories auxquelles vous voulez que v
 
 ![](screenshots/linktask.jpg)
 
+## Délier une tâche d'une issue
+
+Depuis la page principale du projet, vous pouvez délier une tâche d'une issue en cliquant sur l'icône ![](icons/unlink.jpg) à côté de l'issue que vous souhaitez délier.
+
+## Créer un test
+
+Pour créer un test, vous devez vous rendre dans l'onglet des tests. Pour cela, cliquer le bouton "Tests" dans le menu du haut.
+Ensuite vous pouvez cliquer sur le bouton "Ajouter un test" puis remplir le formulaire et sélectionner l'issue testée.
+
+![](screenshots/testList.jpg)
+
+## Modifier un test
+
+Depuis l'onglet test, vous pouvez modifier un test en cliquant sur l'icône ![](icons/edit.jpg) qui est sur la même ligne que le test que vous souhaitez modifier.
+
+## Supprimer un test
+
+Depuis l'onglet test, vous pouvez supprimer un test en cliquant sur l'icône ![](icons/delete.jpg), qui est sur la même ligne que le test que vous souhaitez supprimer.
