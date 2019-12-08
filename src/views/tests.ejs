@@ -1,12 +1,12 @@
 <%- include ./partials/navBar %>
 <div class="jumbotron" style="background: none;"></div>
-<h3 class="card-header">Tests</h3>
+<h3 class="card-header">Liste des tests</h3>
 <% if(typeof projectTests == 'undefined' || projectTests.length == 0) { %>
 
 <div class="card-body">
     <h5 class="card-title">Vous n'avez pas encore de tests.</h5>
     <form action="/project/<%= project.id %>/createTest" method="GET">
-        <button type="submit" class="btn btn-outline-primary" id="addTestButton">Ajouter un test</button>
+        <button type="submit" class="btn btn-outline-secondary" id="addTestButton">Ajouter un test</button>
     </form>
 </div>
 <% } else { %>
@@ -23,7 +23,9 @@
         aria-valuemin="0" aria-valuemax="100"></div>
 </div>
 
-
+<form action="/project/<%= project.id %>/createTest" method="GET">
+    <button type="submit" class="btn btn-outline-secondary" id="addTestButton" style="width:100%;">Ajouter un test</button>
+</form>
 <table class="table table-hover" id="testsTable">
     <thead>
         <tr>
@@ -51,11 +53,6 @@
         </tr>
         <% }); %>
     </tbody>
-    <tfoot>
-        <form action="/project/<%= project.id %>/createTest" method="GET">
-            <button type="submit" class="btn btn-secondary" id="addTestButton">Ajouter un test</button>
-        </form>
-    </tfoot>
 </table>
 </div>
 <% } %>

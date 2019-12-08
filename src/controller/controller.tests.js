@@ -66,18 +66,14 @@ function createTest(req, res) {
     const state = req.body.state;
     let errors = [];
 
-    if (!name || !state || !description || !userStory) {
+    if (!name || !state  || !userStory) {
         errors.push({ msg: "Champ requis non rempli" });
     }
     if (description.length > 3000) {
         errors.push({ msg: "Description trop longue" });
     }
 
-    if (description.length == 0) {
-        errors.push({ msg: "Description vide"});
-    }
-
-    if (name.length == 0) {
+    if (name.length === 0) {
         errors.push({ msg: "Nom du test vide" });
     }
 

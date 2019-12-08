@@ -65,7 +65,7 @@
 </div>
 
 <% tasks.forEach(function (task) { %>
-<div class="modal" id="modalTask<%= task.id %>">
+<div class="modal fade" id="modalTask<%= task.id %>">
     <div class="modal-dialog modal-lg" role="document">
         <form action="/project/<%= project.id %>/linkTask/<%= task.id %>" method="POST" class="mr-auto">
             <div class="modal-content">
