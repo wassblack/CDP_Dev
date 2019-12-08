@@ -33,6 +33,7 @@
                     </thead>
                     <tbody>
                         <tr class="table-light">
+                            <% let firstSelected = false; %>
                             <% project.sprints.forEach(function (sprint) { %>
                             <% sprint.userStories.forEach(function (userStory) { %>
                             <td><%= userStory.description %></td>
@@ -42,7 +43,7 @@
                                 <div class="custom-control custom-radio" id="checkBoxAddUserstory">
                                     <input type="radio" class="custom-control-input"
                                         id="customCheck<%= sprint.id %><%= userStory.id %>" name="selectedUs"
-                                        value="<%= JSON.stringify(userStory) %>" unchecked>
+                                        value="<%= JSON.stringify(userStory) %>" <% if (firstSelected == false) {%>checked<%; firstSelected = true; } else { %>unchecked<% } %>>
                                     <label class="custom-control-label"
                                         for="customCheck<%= sprint.id %><%= userStory.id %>"></label>
                                 </div>

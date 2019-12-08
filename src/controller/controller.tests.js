@@ -73,8 +73,12 @@ function createTest(req, res) {
         errors.push({ msg: "Description trop longue" });
     }
 
+    if (description.length == 0) {
+        errors.push({ msg: "Description vide"});
+    }
+
     if (name.length == 0) {
-        errors.push({ msg: "Nom trop court" });
+        errors.push({ msg: "Nom du test vide" });
     }
 
     if (errors.length == 0) {
