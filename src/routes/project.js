@@ -11,54 +11,52 @@ const { ensureAuthenticated } = require('../config/authenticated');
  *  get:
  *    description: Page displaying the main information about the selected project
  *  parameters:
- *      - in: query
+ *      - in: path
  *        name: projectId
  *        schema: 
  *          type: string
- *        description: id search query 
+ *        description: Id of the project
  *  responses:
  *    200':
  *      description: display success
  */
 router.get('/project/:projectId', ensureAuthenticated, controllerProject.displayProject);
 
-// Modify Project
 /**
  * @swagger
  * /project/{projectId}/ModifyProject:
  *  get:
  *    description: Page displaying the modification form of the selected project
  *  parameters:
- *      - in: query
- *        name: id
+ *      - in: path
+ *        name: projectId
  *        schema: 
  *          type: string
- *        description: id search query 
+ *        description: Id of the project
  *  responses:
  *    200':
  *      description: display success
  */
 router.get('/project/:projectId/ModifyProject', ensureAuthenticated, controllerProject.displayModifyProject);
 
-// Modification of the name or description of the selected project
 /**
  * @swagger
- * /project/{projectId}/:
+ * /project/{projectId}:
  *  post:
  *    description: Update project name or description
  *  parameters:
- *      - in: query
- *        name: id
+ *      - in: path
+ *        name: projectId
  *        schema: 
  *          type: string
- *        description: id project search query 
- *      - in: query
- *        name: Project name
+ *        description: Id of the project
+ *      - in: formData
+ *        name: projectName
  *        schema: 
  *          type: string
  *        description:  New project name
- *      - in: query
- *        name: Project description
+ *      - in: formData
+ *        name: projectDesc
  *        schema: 
  *          type: string
  *        description:  New project description
@@ -68,18 +66,17 @@ router.get('/project/:projectId/ModifyProject', ensureAuthenticated, controllerP
  */
 router.post('/project/:projectId', ensureAuthenticated, controllerProject.modifyProject);
 
-// Delete a project
 /**
  * @swagger
  * /project/{projectId}/delete:
  *  get:
  *    description: Deletes the selected project
  *  parameters:
- *      - in: query
- *        name: id
+ *      - in: path
+ *        name: projectId
  *        schema: 
  *          type: string
- *        description: id search query 
+ *        description: Id of the project
  *  responses:
  *    200':
  *      description: display the main page
@@ -92,11 +89,11 @@ router.get('/project/:projectId/delete', ensureAuthenticated, controllerProject.
  *  get:
  *    description: Display add a user to a project form
  *  parameters:
- *      - in: query
- *        name: id
+ *      - in: path
+ *        name: projectId
  *        schema: 
  *          type: string
- *        description: id search query 
+ *        description: Id of the project
  *  responses:
  *    200':
  *      description: displays the add user to project page
@@ -109,16 +106,16 @@ router.get('/project/:projectId/addUser', ensureAuthenticated, controllerProject
  *  post:
  *    description:  Adds a user to a project 
  *  parameters:
- *      - in: query
+ *      - in: path
  *        name: projectId
  *        schema: 
  *          type: string
- *        description: id search query 
- *      - in: query
- *        name: userId
+ *        description: Id of the project
+ *      - in: formData
+ *        name: newUser
  *        schema: 
  *          type: string
- *        description: id of the user to add 
+ *        description: email of the user to add 
  *  responses:
  *    200':
  *      description: displays the add user to project page
@@ -131,11 +128,11 @@ router.post('/project/:projectId/addUser', ensureAuthenticated, controllerProjec
  *  get:
  *    description:  Display create task form
  *  parameters:
- *      - in: query
+ *      - in: path
  *        name: projectId
  *        schema: 
  *          type: string
- *        description: id search query 
+ *        description: Id of the project
  *  responses:
  *    200':
  *      description: displays the create task page
@@ -148,12 +145,12 @@ router.get('/project/:projectId/createTask', ensureAuthenticated, controllerTask
  *  get:
  *    description: Display modify task form
  *  parameters:
- *      - in: query
+ *      - in: path
  *        name: projectId
  *        schema: 
  *          type: string
- *        description: id search query 
- *      - in: query
+ *        description: Id of the project
+ *      - in: path
  *        name: taskId
  *        schema: 
  *          type: string
@@ -164,31 +161,34 @@ router.get('/project/:projectId/createTask', ensureAuthenticated, controllerTask
  */
 router.get('/project/:projectId/modifyTask/:taskId', ensureAuthenticated, controllerTask.displayModifyTask);
 
-// Modify an existing task
-
 /**
  * @swagger
  * /project/{projectId}/modifyTask/{taskId}:
  *  post:
  *    description: Updates an existing task
  *  parameters:
- *      - in: query
+ *      - in: path
  *        name: projectId
  *        schema: 
  *          type: string
- *        description: id search query 
- *      - in: query
- *        name: task description
+ *        description: Id of the project
+ *      - in: path
+ *        name: taskId
+ *        schema: 
+ *          type: string
+ *        description: Id of the task
+ *      - in: formData
+ *        name: description
  *        schema: 
  *          type: string
  *        description:  New task description
- *      - in: query
- *        name: task Developer
+ *      - in: formData
+ *        name: developerId
  *        schema: 
  *          type: string
  *        description:  New task developer
- *      - in: query
- *        name: task state
+ *      - in: formData
+ *        name: state
  *        schema: 
  *          type: number
  *        description:  New task state        
@@ -198,76 +198,78 @@ router.get('/project/:projectId/modifyTask/:taskId', ensureAuthenticated, contro
  */
 router.post('/project/:projectId/modifyTask/:taskId', ensureAuthenticated, controllerTask.modifyTask);
 
-//Create a new task
 /**
  * @swagger
  * /project/{projectId}/createTask:
  *  post:
  *    description: Creates a new task
  *  parameters:
- *      - in: query
+ *      - in: path
  *        name: projectId
  *        schema: 
  *          type: string
- *        description: id search query 
- *      - in: query
- *        name: task description
+ *        description: Id of the project
+ *      - in: formData
+ *        name: description
  *        schema: 
  *          type: string
- *        description:   task description
- *      - in: query
- *        name: task Developer
+ *        description: task description
+ *      - in: formData
+ *        name: developerId
  *        schema: 
  *          type: string
- *        description:   task developer
- *      - in: query
+ *        description: task developer id
+ *      - in: formData
  *        name: task state
  *        schema: 
  *          type: number
- *        description:   task state        
+ *        description: task state        
  *  responses:
  *    200':
  *      description: displays the main project page
  */
 router.post('/project/:projectId/createTask', ensureAuthenticated, controllerTask.createTask);
 
-//Delete a task
 /**
  * @swagger
  * /project/{projectId}/deleteTask/{taskId}:
  *  get:
  *    description:  Deletes the selected task
  *  parameters:
- *      - in: query
+ *      - in: path
  *        name: projectId
  *        schema: 
  *          type: string
- *        description: id search query 
- *      - in: query
+ *        description: Id of the project
+ *      - in: path
  *        name: taskId
  *        schema: 
  *          type: string
- *        description: id search query 
+ *        description: Id of the task
  *  responses:
  *    200':
  *      description: displays the main project page
  */
 router.get('/project/:projectId/deleteTask/:taskId', ensureAuthenticated, controllerTask.deleteTask);
 
-//link a task
 /**
  * @swagger
  * /project/{projectId}/linkTask/{taskId}:
  *  post:
  *    description: link a task to an existing userStory
  *  parameters:
- *      - in: query
+ *      - in: path
  *        name: projectId
  *        schema: 
  *          type: string
- *        description: id search query 
- *      - in: query
- *        name: task description
+ *        description: Id of the project
+ *      - in: path
+ *        name: taskId
+ *        schema: 
+ *          type: string
+ *        description: Id of the task
+ *      - in: formData
+ *        name: selectedUs
  *        schema: 
  *          type: json
  *        description: User story to link 
@@ -277,29 +279,28 @@ router.get('/project/:projectId/deleteTask/:taskId', ensureAuthenticated, contro
  */
 router.post('/project/:projectId/linkTask/:taskId', ensureAuthenticated, controllerTask.linkTask);
 
-//unlink a user story from a task
 /**
  * @swagger
  * /project/{projectId}/unlinkTask/{sprintId}/{taskId}/{userStoryId}:
  *  post:
  *    description: unlink a userStory from a task
  *  parameters:
- *      - in: query
+ *      - in: path
  *        name: projectId
  *        schema: 
  *          type: string
- *        description: id search query 
- *      - in: query
+ *        description: Id of the project
+ *      - in: path
  *        name: sprintId
  *        schema: 
  *          type: string
- *        description: sprint id of the userStory t unlink 
- *      - in: query
+ *        description: Sprint id of the userStory to unlink 
+ *      - in: path
  *        name: taskId
  *        schema: 
  *          type: string
- *        description: task id of the linked user story
- *      - in: query
+ *        description: Task id of the linked user story
+ *      - in: path
  *        name: userStoryId
  *        schema: 
  *          type: string
@@ -316,125 +317,126 @@ router.post('/project/:projectId/unlinkTask/:sprintId/:taskId/:userStoryId', ens
  *  get:
  *    description: Page displaying the tests related to the selected project
  *  parameters:
- *      - in: query
+ *      - in: path
  *        name: projectId
  *        schema:
  *          type: string
- *        description: id search query
+ *        description: Id of the project
  *  responses:
  *    200':
  *      description: display success
  */
 router.get('/project/:projectId/tests', ensureAuthenticated, controllerTests.displayTests);
 
-// Display create test form
 /**
  * @swagger
  * /project/{projectId}/createTest:
  *  get:
  *    description: Display create test for a project form
  *  parameters:
- *      - in: query
+ *      - in: path
  *        name: id
  *        schema:
  *          type: string
- *        description: id search query
+ *        description: Id of the project
  *  responses:
  *    200':
  *      description: displays the create test for a project page
  */
 router.get('/project/:projectId/createTest', ensureAuthenticated, controllerTests.displayCreateTest);
 
-// Create a new test
 /**
  * @swagger
  * /project/{projectId}/createTest:
  *  post:
  *    description: Create a test for a project
  *  parameters:
- *      - in: query
+ *      - in: path
  *        name: projectId
  *        schema:
  *          type: string
- *        description: id search query
- *      - in: query
- *        name: test name
+ *        description: Id of the project
+ *      - in: formData
+ *        name: name
  *        schema:
  *          type: string
  *        description: test name
- *      - in: query
- *        name: test description
+ *      - in: formData
+ *        name: description
  *        schema:
  *          type: string
  *        description: test description
- *      - in: query
- *        name: test state
+ *      - in: formData
+ *        name: state
  *        schema:
  *          type: string
  *        description: test state
- *      - in: query
- *        name: test user story
+ *      - in: formData
+ *        name: selectedUs
  *        schema:
  *          type: string
- *        description: user story id
+ *        description: user story to link with the test
  *  responses:
  *    200':
  *      description: displays the current project's tests page
  */
 router.post('/project/:projectId/createTest', ensureAuthenticated, controllerTests.createTest);
 
-// Display modify test form
 /**
  * @swagger
  * /project/{projectId}/modifyTest/{testId}:
  *  get:
  *    description: Display modify test form
  *  parameters:
- *      - in: query
+ *      - in: path
  *        name: projectId
  *        schema:
  *          type: string
- *        description: id search query
- *      - in: query
+ *        description: Id of the project
+ *      - in: path
  *        name: testId
  *        schema:
  *          type: string
- *        description: id of the test to modify
+ *        description: Id of the test to modify
  *  responses:
  *    200':
  *      description: displays the update test page
  */
 router.get('/project/:projectId/modifyTest/:testId', ensureAuthenticated, controllerTests.displayModifyTest);
 
-// Modify a test
 /**
  * @swagger
  * /project/{projectId}/modifyTest/{testId}:
  *  post:
  *    description: Updates an existing test
  *  parameters:
- *      - in: query
+ *      - in: path
  *        name: projectId
  *        schema:
  *          type: string
- *        description: id search query
- *      - in: query
- *        name: test name
+ *        description: Id of the project
+ *      - in: path
+ *        name: taskId
+ *        schema:
+ *          type: string
+ *        description: Id of the task
+ *      - in: formData
+ *        name: name
  *        schema:
  *          type: string
  *        description: new test name
- *      - in: query
- *        name: test description
+ *      - in: formData
+ *        name: description
  *        schema:
  *          type: string
  *        description: new test description
- *      - in: query
- *        name: test state
+ *      - in: formData
+ *        name: state
  *        schema:
  *          type: string
  *        description: new test state
- *      - in: query
- *        name: test user story
+ *      - in: formData
+ *        name: selectedUs
  *        schema:
  *          type: string
  *        description: new user story id
@@ -445,23 +447,22 @@ router.get('/project/:projectId/modifyTest/:testId', ensureAuthenticated, contro
  */
 router.post('/project/:projectId/modifyTest/:testId', ensureAuthenticated, controllerTests.modifyTest);
 
-// Delete a test
 /**
  * @swagger
  * /project/{projectId}/deleteTest/{testId}:
  *  get:
  *    description: Deletes the selected test
  *  parameters:
- *      - in: query
+ *      - in: path
  *        name: projectId
  *        schema:
  *          type: string
- *        description: id search query
- *      - in: query
+ *        description: Id of the project
+ *      - in: path
  *        name: testId
  *        schema:
  *          type: string
- *        description: id search query
+ *        description: Id of the test
  *  responses:
  *    200':
  *      description: displays the current project's tests page
