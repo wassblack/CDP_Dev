@@ -16,10 +16,10 @@
 <div class="jumbotron" id="sprintSection">
     <h3 class="display-5">
         <%= sprint.name %>
-        <small class="float-right"><a href="/project/<%= project.id %>/modifySprint/<%= sprint.id %>" class="modifySprintLink"><i
-                    class="fas fa-edit fa"></i></a></small>
         <small class="float-right"><a href="/project/<%= project.id %>/deleteSprint/<%= sprint.id %>" class="deleteSprintLink"><i
                     class="fas fa-trash fa"></i></a></small>
+        <small class="float-right"><a href="/project/<%= project.id %>/modifySprint/<%= sprint.id %>" class="modifySprintLink"><i
+                    class="fas fa-edit fa"></i></a></small>
     </h3>
 
     <p class="text-muted"><i class="fas fa-stopwatch fa-lg"></i> <%= moment(sprint.startDate).format('DD MMM YYYY') %> -> <%= moment(sprint.endDate).format('DD MMM YYYY') %></p>
