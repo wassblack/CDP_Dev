@@ -108,7 +108,6 @@ function editUserStory(req,res){
                 .then(() => controllerProject.renderProjectPage(res, projectId));
         }
         else {
-            console.log("ICI");
             // Pull the outdated us
             ModelProject.updateOne(
                 { 'sprints._id' : sprintId },
@@ -135,7 +134,7 @@ function editUserStory(req,res){
                                     ModelUserStory.updateOne({ _id: userStoryId },
                                         { description: newUserStoryDescription, difficulty: newUserStoryDifficulty, priority: newUserStoryPriority })
                                         .then(() => controllerProject.renderProjectPage(res, projectId))
-                                        .catch(err => console.log("merde: " + err));
+                                        .catch(err => console.log(err));
                                 }
                             }
                         );
