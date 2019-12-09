@@ -4,6 +4,7 @@
     <div class="col-md-6 m-auto">
         <div class="card card-body">
             <h1 class="text-center mb-3">Modification d'une user story</h1>
+            <% include ./partials/message%>
             <% if(userStory.isOrphan) { %>
             <form action="/project/<%= projectId %>/editUserStory" method="POST">
             <%} else {%>

@@ -30,6 +30,8 @@ function displayModifyTask(req, res) {
 function modifyTask(req, res) {
     const description = req.body.description;
     const developerId = req.body.developerId;
+    const taskId = req.params.taskId;
+    const projectId = req.params.projectId;
     const state = req.body.state;
     let errors = [];
 
@@ -42,13 +44,28 @@ function modifyTask(req, res) {
     if (description.length > 3000) {
         errors.push({ msg: "Description trop longue" });
     }
-    ModelTask.updateOne({ _id: req.params.taskId }, {
-        description: description,
-        developerId: developerId,
-        state: state
-    }).then(() => {
-        renderProjectPage(res, req.params.projectId);
-    }).catch(err => console.log(err));
+
+    if (errors.length === 0) {
+        ModelTask.updateOne({ _id: taskId }, {
+            description: description,
+            developerId: developerId,
+            state: state
+        }).then(() => {
+            renderProjectPage(res, projectId);
+        }).catch(err => console.log(err));
+    }
+    else {
+        ModelProject.findOne({ _id: projectId }).then(project => {
+            ModelTask.findOne({ _id: taskId }).then(task => {
+                res.render('modifyTask', {
+                    errors: errors,
+                    task: task,
+                    project: project,
+                    user: req.user
+                });
+            }).catch(err => console.log(err));
+        })
+    }
 }
 
 //Create a new Task
@@ -161,16 +178,16 @@ function linkTask(req, res) {
                         const sprintId = us.sprintId;
                         ModelProject.updateOne(
                             { 'sprints._id': sprintId },
-                            { "$pull": { "sprints.$.userStories": { _id: selectedUsId } } }).then(_ => {
+                            { "$pull": { "sprints.$.userStories": { _id: selectedUsId } } }).then(() => {
                                 ModelProject.updateOne(
                                     { 'sprints._id': sprintId },
                                     { "$push": { "sprints.$.userStories": selectedUs[i] } }
-                                ).then(err => {
-                                    if (err) {
-                                        console.log(err)
+                                ).then(() => {
+                                    if (i === selectedUsJSON.length - 1) {
+                                        renderProjectPage(res, projectId);
                                     }
-                                    renderProjectPage(res, projectId);
-                                });
+                                })
+                                .catch(err => console.log(err));
                             });
                     });
                 }

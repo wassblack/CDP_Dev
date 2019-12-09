@@ -42,7 +42,6 @@ function createProject(req, res) {
                 res.redirect('/Projects');
             })
             .catch(err => console.log(err));
-        
     }
     else {
         res.render('createProject', {

@@ -1,12 +1,16 @@
 const express = require('express');
 const app = express();
+
 const env = require('dotenv');
 const mongoose = require('mongoose');
+
 const expressLay = require('express-ejs-layouts');
 const session = require('express-session');
+
 const flash = require('connect-flash');
 const passport = require('passport');
 const PORT = process.env.PORT || 3000;
+
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerui = require('swagger-ui-express');
 const swaggerOptions = {
@@ -23,7 +27,9 @@ const swaggerOptions = {
     apis:['./routes/*.js']
 };
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
+
 app.use('/api-docs',swaggerui.serve, swaggerui.setup(swaggerDocs));
+
 require('./config/passport-config')(passport);
 env.config();
 app.use(flash());
@@ -37,7 +43,8 @@ app.use(session({
 }))
 app.use(passport.initialize());
 app.use(passport.session());
-//global messages for use if redirect 
+
+//global messages for use if redirect
 app.use((req, res, next) => {
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
@@ -45,8 +52,10 @@ app.use((req, res, next) => {
 
     next();
 });
+
 //Routes
-app.use('/', require('./routes/index'), require('./routes/createProject'), require('./routes/project'), require('./routes/userStory'), require('./routes/sprint'), require('./routes/release.route'));
+app.use('/', require('./routes/index'), require('./routes/createProject'), require('./routes/project'), require('./routes/userStory'), 
+             require('./routes/sprint'), require('./routes/release.route'));
 app.use('/users', require('./routes/users'));
 
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
