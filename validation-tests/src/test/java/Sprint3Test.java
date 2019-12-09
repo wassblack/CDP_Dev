@@ -70,6 +70,66 @@ public class Sprint3Test
 		driver.quit();
 	}
 
+	// Issue ??
+	@Test
+	public void testCreateTest() throws Exception
+	{
+		// Click on the project name
+		driver.findElement(By.cssSelector("#projectPageLink")).click();
+
+		// Click on the tests url
+
+		// Fill the form to create a test
+		String testName = "Test_Selenium";
+		String testDesc = "Ce test va être supprimé à l'issue de l'exécution parce qu'il sert seulement de test.";
+		String testState = "PASSED";
+
+		driver.findElement(By.id("testsPageLink")).click();
+		driver.findElement(By.cssSelector("#name")).sendKeys(testName);
+		driver.findElement(By.cssSelector("#description")).sendKeys(testDesc);
+		driver.findElement(By.cssSelector("#state")).sendKeys(testState);
+
+		String jsCheckCode = "arguments[0].scrollIntoView(true); arguments[0].click();";
+		WebElement elementToCheck = driver.findElement(By.name("selectedUs"));
+		((JavascriptExecutor) driver).executeScript(jsCheckCode, elementToCheck);
+
+		driver.findElement(By.cssSelector("#submitCreate")).click();
+
+		
+		// Check if the task was added
+		WebElement taskSection = driver.findElement(By.cssSelector("#testsTable"));
+		Assert.assertEquals(true, 
+				taskSection.getText().contains(testName)
+				&& taskSection.getText().contains(testDesc)
+				&& taskSection.getText().contains(testState));
+	}
+
+	// Issue ??
+	@Test
+	public void testModifyTest() throws Exception
+	{
+		// Click on the project name
+		driver.findElement(By.cssSelector("#projectPageLink")).click();
+	
+		// Fill the form to modify a test
+		String newTestDesc = "Ceci est une nouvelle description";
+	
+		driver.findElement(By.id("testsPageLink")).click();
+		driver.findElement(By.cssSelector("modifyTest")).click();
+	
+		String jsCheckCode = "arguments[0].scrollIntoView(true); arguments[0].click();";
+		WebElement elementToCheck = driver.findElement(By.name("selectedUs"));
+		((JavascriptExecutor) driver).executeScript(jsCheckCode, elementToCheck);
+	
+		// Submit it
+		Thread.sleep(500);
+		driver.findElement(By.cssSelector("#submitCreate")).click();
+	
+		// Check if the task was added
+		WebElement testsSection = driver.findElement(By.cssSelector("#testsTable"));
+		Assert.assertEquals(true, testsSection.getText().contains(newTestDesc));
+	}
+
 	// Issue 13
 	@Test
 	public void testAddTask() throws Exception

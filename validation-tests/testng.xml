@@ -74,6 +74,8 @@
 		<classes>
 			<class name="Sprint3Test">
 				<methods>
+					<include name="testCreateTest" />
+					<include name="testModifyTest" />
 					<include name="testAddTask" />
 					<include name="testLinkTask" />
 					<include name="testUnlinkTask" />
