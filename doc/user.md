@@ -115,6 +115,8 @@ Vous pourrez ensuite sélectionner les user stories auxquelles vous voulez que v
 
 ![](screenshots/linktask.jpg)
 
+Notez que l'issue doit être assignée à un sprint pour être liée à une tâche.
+
 ## Délier une tâche d'une issue
 
 Depuis la page principale du projet, vous pouvez délier une tâche d'une issue en cliquant sur l'icône ![](icons/unlink.jpg) à côté de l'issue que vous souhaitez délier.
