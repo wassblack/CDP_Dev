@@ -310,22 +310,162 @@ router.post('/project/:projectId/linkTask/:taskId', ensureAuthenticated, control
  */
 router.post('/project/:projectId/unlinkTask/:sprintId/:taskId/:userStoryId', ensureAuthenticated, controllerTask.unlinkTask);
 
-// Page displaying the project's tests
+/**
+ * @swagger
+ * /project/{projectId}/tests:
+ *  get:
+ *    description: Page displaying the tests related to the selected project
+ *  parameters:
+ *      - in: query
+ *        name: projectId
+ *        schema:
+ *          type: string
+ *        description: id search query
+ *  responses:
+ *    200':
+ *      description: display success
+ */
 router.get('/project/:projectId/tests', ensureAuthenticated, controllerTests.displayTests);
 
 // Display create test form
+/**
+ * @swagger
+ * /project/{projectId}/createTest:
+ *  get:
+ *    description: Display create test for a project form
+ *  parameters:
+ *      - in: query
+ *        name: id
+ *        schema:
+ *          type: string
+ *        description: id search query
+ *  responses:
+ *    200':
+ *      description: displays the create test for a project page
+ */
 router.get('/project/:projectId/createTest', ensureAuthenticated, controllerTests.displayCreateTest);
 
 // Create a new test
+/**
+ * @swagger
+ * /project/{projectId}/createTest:
+ *  post:
+ *    description: Create a test for a project
+ *  parameters:
+ *      - in: query
+ *        name: projectId
+ *        schema:
+ *          type: string
+ *        description: id search query
+ *      - in: query
+ *        name: test name
+ *        schema:
+ *          type: string
+ *        description: test name
+ *      - in: query
+ *        name: test description
+ *        schema:
+ *          type: string
+ *        description: test description
+ *      - in: query
+ *        name: test state
+ *        schema:
+ *          type: string
+ *        description: test state
+ *      - in: query
+ *        name: test user story
+ *        schema:
+ *          type: string
+ *        description: user story id
+ *  responses:
+ *    200':
+ *      description: displays the current project's tests page
+ */
 router.post('/project/:projectId/createTest', ensureAuthenticated, controllerTests.createTest);
 
 // Display modify test form
+/**
+ * @swagger
+ * /project/{projectId}/modifyTest/{testId}:
+ *  get:
+ *    description: Display modify test form
+ *  parameters:
+ *      - in: query
+ *        name: projectId
+ *        schema:
+ *          type: string
+ *        description: id search query
+ *      - in: query
+ *        name: testId
+ *        schema:
+ *          type: string
+ *        description: id of the test to modify
+ *  responses:
+ *    200':
+ *      description: displays the update test page
+ */
 router.get('/project/:projectId/modifyTest/:testId', ensureAuthenticated, controllerTests.displayModifyTest);
 
 // Modify a test
+/**
+ * @swagger
+ * /project/{projectId}/modifyTest/{testId}:
+ *  post:
+ *    description: Updates an existing test
+ *  parameters:
+ *      - in: query
+ *        name: projectId
+ *        schema:
+ *          type: string
+ *        description: id search query
+ *      - in: query
+ *        name: test name
+ *        schema:
+ *          type: string
+ *        description: new test name
+ *      - in: query
+ *        name: test description
+ *        schema:
+ *          type: string
+ *        description: new test description
+ *      - in: query
+ *        name: test state
+ *        schema:
+ *          type: string
+ *        description: new test state
+ *      - in: query
+ *        name: test user story
+ *        schema:
+ *          type: string
+ *        description: new user story id
+ *  responses:
+ *    200':
+ *      description: displays the current project's tests page
+ * 
+ */
 router.post('/project/:projectId/modifyTest/:testId', ensureAuthenticated, controllerTests.modifyTest);
 
 // Delete a test
+/**
+ * @swagger
+ * /project/{projectId}/deleteTest/{testId}:
+ *  get:
+ *    description: Deletes the selected test
+ *  parameters:
+ *      - in: query
+ *        name: projectId
+ *        schema:
+ *          type: string
+ *        description: id search query
+ *      - in: query
+ *        name: testId
+ *        schema:
+ *          type: string
+ *        description: id search query
+ *  responses:
+ *    200':
+ *      description: displays the current project's tests page
+ */
 router.get('/project/:projectId/deleteTest/:testId', ensureAuthenticated, controllerTests.deleteTest);
 
 module.exports = router;
