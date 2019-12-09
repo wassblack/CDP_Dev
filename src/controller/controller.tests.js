@@ -40,7 +40,7 @@ function modifyTest(req, res) {
     const state = req.body.state;
     let errors = [];
 
-    if (!state || !userStoryId || !description || !name) {
+    if (!state || !userStoryId || !name) {
         errors.push({ msg: "Champ requis non rempli" });
     }
     if (description.length > 3000) {
