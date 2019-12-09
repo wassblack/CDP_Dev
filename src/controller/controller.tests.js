@@ -1,5 +1,4 @@
 const ModelProject = require('../models/project');
-const ModelUserStory = require('../models/userStory');
 const ModelTest = require('../models/test');
 const moment = require('moment');
 
@@ -17,7 +16,7 @@ function displayCreateTest(req, res) {
             user: req.user
         });
     }).catch(err => console.log(err));
-};
+}
 
 // Display modify test
 function displayModifyTest(req, res) {
@@ -30,7 +29,7 @@ function displayModifyTest(req, res) {
             });
         }).catch(err => console.log(err));
     });
-};
+}
 
 //Modify an existing test
 function modifyTest(req, res) {
@@ -47,15 +46,30 @@ function modifyTest(req, res) {
     if (description.length > 3000) {
         errors.push({ msg: "Description trop longue" });
     }
-    ModelTest.updateOne({ _id: req.params.testId }, {
-        name: name,
-        description: description,
-        userStoryId: userStoryId,
-        state: state
-    }).then(() => {
-        renderTestsPage(res, req.params.projectId);
-    }).catch(err => console.log(err));
-};
+
+    if (errors.length === 0) {
+        ModelTest.updateOne({ _id: req.params.testId }, {
+            name: name,
+            description: description,
+            userStoryId: userStoryId,
+            state: state
+        }).then(() => {
+            renderTestsPage(res, req.params.projectId);
+        }).catch(err => console.log(err));
+    }
+    else {
+        ModelProject.findOne({ _id: req.params.projectId }).then(project => {
+            ModelTest.findOne({ _id: req.params.testId }).then(test => {
+                res.render('modifyTest', {
+                    errors: errors,
+                    test: test,
+                    project: project,
+                    user: req.user
+                });
+            }).catch(err => console.log(err));
+        });
+    }
+}
 
 //Create a new Test
 function createTest(req, res) {
@@ -77,7 +91,7 @@ function createTest(req, res) {
         errors.push({ msg: "Nom du test vide" });
     }
 
-    if (errors.length == 0) {
+    if (errors.length === 0) {
         const newTest = new ModelTest({
             projectId: req.params.projectId,
             name,

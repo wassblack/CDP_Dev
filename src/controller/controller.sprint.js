@@ -294,31 +294,28 @@ function editSprintUserStory(req, res) {
     const userStoryId = userStory._id;
     let errors = [];
 
-    if (newUserStoryDescription) {
-        if (newUserStoryDescription.length > 300) {
-            errors.push({ msg: 'La description de votre user story doit prendre moins de 300 caracteres.' });
-        }
-    }
-    else {
+    if (!newUserStoryDescription) {
         errors.push({ msg: 'Vous devez renseigner une description pour la user story' });
     }
 
-    if (newUserStoryDifficulty) {
-        if (newUserStoryDifficulty <= 0 || newUserStoryDifficulty > 10) {
-            errors.push({ msg: 'La difficulté doit être specifiée' });
-        }
+    if (newUserStoryDescription && newUserStoryDescription.length > 300) {
+        errors.push({ msg: 'La description de votre user story doit prendre moins de 300 caracteres.' });
     }
-    else {
+
+    if (!newUserStoryDifficulty) {
         errors.push({ msg: 'Vous devez renseigner une difficulté pour la user story' });
     }
 
-    if (newUserStoryPriority) {
-        if (newUserStoryPriority <= 0 || newUserStoryPriority > 3) {
-            errors.push({ msg: 'La priorité doit être comprise entre 1 et 3' });
-        }
+    if (newUserStoryDifficulty && (newUserStoryDifficulty <= 0 || newUserStoryDifficulty > 10)) {
+        errors.push({ msg: 'La difficulté doit être comprise entre 1 et 10' });
     }
-    else {
+
+    if(!newUserStoryPriority) {
         errors.push({ msg: 'Vous devez renseigner une priorité pour la user story' });
+    }
+
+    if (newUserStoryPriority && (newUserStoryPriority <= 0 || newUserStoryPriority > 3)) {
+        errors.push({ msg: 'La priorité doit être comprise entre 1 et 3' });
     }
 
     if (errors.length === 0) {
