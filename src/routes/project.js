@@ -6,6 +6,15 @@ const controllerTests = require('../controller/controller.tests');
 const { ensureAuthenticated } = require('../config/authenticated');
 
 // Page displaying the main information about the selected project
+/**
+ * @swagger
+ * /project/ptojectId:
+ *  get:
+ *    description: Page displaying the main information about the selected project
+ *    responses: 
+ *      '200': 
+ *          description: display success
+ */
 router.get('/project/:projectId', ensureAuthenticated, controllerProject.displayProject);
 
 // Modify Project

@@ -7,6 +7,23 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport');
 const PORT = process.env.PORT || 3000;
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerui = require('swagger-ui-express');
+const swaggerOptions = {
+    swaggerDefinition: {
+        info: {
+            title: 'Scrum it API',
+            description: 'Scrum it API',
+            constact: {
+                name : 'Grp2-eq5'
+            },
+            servers: ["http://localhost:3000"]
+      }
+    },
+    apis:['./routes/*.js']
+};
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use('/api-docs',swaggerui.serve, swaggerui.setup(swaggerDocs));
 require('./config/passport-config')(passport);
 env.config();
 app.use(flash());
@@ -28,9 +45,8 @@ app.use((req, res, next) => {
 
     next();
 });
-
 //Routes
-app.use('/', require('./routes/index'), require('./routes/createProject'), require('./routes/project'), require('./routes/userStory'), require('./routes/sprint'),require('./routes/release.route'));
+app.use('/', require('./routes/index'), require('./routes/createProject'), require('./routes/project'), require('./routes/userStory'), require('./routes/sprint'), require('./routes/release.route'));
 app.use('/users', require('./routes/users'));
 
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
