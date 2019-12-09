@@ -1,4 +1,6 @@
-# Architecture de l'application (v0.3.0)
+# Documentation du code (v0.3.0)
+
+## Architecture de l'application
 
 Scrum It contient un front-end et un back-end.
 La partie front-end se trouve dans le dossier *src/views/*. Il contient les fichiers EJS et CSS.
@@ -17,4 +19,8 @@ Nous avons utilisé les technologies suivantes pour développer l'application :
     * Express / Node.js
 * SGBD :
     * MongoDB / Mongoose
+
+## Swagger
+
+La documentation Swagger est accessible à l'adresse `localhost:3000/api-docs`.
 
