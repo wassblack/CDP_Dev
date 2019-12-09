@@ -17,9 +17,5 @@ router.post('/project/:projectId/addUs/:sprintId', ensureAuthenticated, controll
 
 router.get('/project/:projectId/removeUs/:sprintId/:userStoryId', ensureAuthenticated, controllerSprint.removeUserStory);
 
-router.get('/project/:projectId/editUserStory/:sprintId/:userStoryId', ensureAuthenticated, controllerSprint.displayEditSprintUserStory);
-
-router.post('/project/:projectId/editUserStory/:sprintId/:userStoryId', ensureAuthenticated, controllerSprint.editSprintUserStory);
-
 
 module.exports = router;

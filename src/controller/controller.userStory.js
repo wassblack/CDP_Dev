@@ -67,11 +67,12 @@ function createUserStory(req, res) {
 //Edit an existing user story
 function editUserStory(req,res){
     const projectId = req.params.projectId;
-    const userStoryId = req.params.userStoryId;
+    const userStory = JSON.parse(req.body.userStory);
+    const userStoryId = userStory._id;
+    const sprintId = userStory.sprintId;
     const newUserStoryDescription = req.body.description;
     const newUserStoryDifficulty = req.body.difficulty;
     const newUserStoryPriority = req.body.priority;
-    const newUserStoryId = req.body.userStoryId;
     let errors = [];
 
     if (!newUserStoryDescription) {
@@ -99,20 +100,59 @@ function editUserStory(req,res){
     }
 
     if (errors.length === 0) {
-        ModelUserStory.updateOne({ _id: newUserStoryId }, {
-            description: newUserStoryDescription
-            , difficulty: newUserStoryDifficulty, priority: newUserStoryPriority
-        })
-            .then(() => controllerProject.renderProjectPage(res, projectId));
+        if (userStory.isOrphan) {
+            ModelUserStory.updateOne({ _id: userStoryId }, {
+                description: newUserStoryDescription
+                , difficulty: newUserStoryDifficulty, priority: newUserStoryPriority
+            })
+                .then(() => controllerProject.renderProjectPage(res, projectId));
+        }
+        else {
+            console.log("ICI");
+            // Pull the outdated us
+            ModelProject.updateOne(
+                { 'sprints._id' : sprintId },
+                { "$pull": { "sprints.$.userStories": { _id : userStoryId } } },
+                function(err) {
+                    if (err) {
+                        console.log("Could not remove this us from the sprint: " + err);
+                    }
+                    else {
+                        userStory.description = newUserStoryDescription;
+                        userStory.difficulty = newUserStoryDifficulty;
+                        userStory.priority = newUserStoryPriority;
+
+                        // Push the updated us
+                        ModelProject.updateOne(
+                            { 'sprints._id' : sprintId },
+                            { "$push": { "sprints.$.userStories": userStory } },
+                            function(err) {
+                                if (err) {
+                                    console.log("Couldn't update the sprint: " + err)
+                                }
+                                else {
+                                    // Update the us in the backlog
+                                    ModelUserStory.updateOne({ _id: userStoryId },
+                                        { description: newUserStoryDescription, difficulty: newUserStoryDifficulty, priority: newUserStoryPriority })
+                                        .then(() => controllerProject.renderProjectPage(res, projectId))
+                                        .catch(err => console.log("merde: " + err));
+                                }
+                            }
+                        );
+                    }
+                }
+            );
+        }
     }
     else {
         ModelUserStory.findOne({ _id: userStoryId })
         .then(userStory => {
+
             res.render('modifyUserStory', {
                 errors: errors,
                 projectId: projectId,
                 userStory: userStory,
-                sprintId: userStory.sprintId
+                sprintId: sprintId
             });
         })
         .catch(err => console.log("Couldn't find this user story: " + err));
