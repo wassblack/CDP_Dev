@@ -74,13 +74,32 @@
 		<classes>
 			<class name="Sprint3Test">
 				<methods>
-					<include name="testCreateTest" />
-					<include name="testModifyTest" />
 					<include name="testAddTask" />
 					<include name="testLinkTask" />
 					<include name="testUnlinkTask" />
 					<include name="testModifyTask" />
 					<include name="testDeleteTask" />
+					<include name="testCreateTest" />
+					<include name="testModifyTest" />
+					<include name="testDeleteTest" />
+				</methods>
+			</class>
+		</classes>
+	</test>
+	
+	<test name="Sprint3Firefox">
+		<parameter name="browser" value="firefox" />
+		<classes>
+			<class name="Sprint3Test">
+				<methods>
+					<include name="testAddTask" />
+					<include name="testLinkTask" />
+					<include name="testUnlinkTask" />
+					<include name="testModifyTask" />
+					<include name="testDeleteTask" />
+					<include name="testCreateTest" />
+					<include name="testModifyTest" />
+					<include name="testDeleteTest" />
 				</methods>
 			</class>
 		</classes>

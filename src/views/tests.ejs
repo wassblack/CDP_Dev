@@ -3,8 +3,8 @@
 <h3 class="card-header">Liste des tests</h3>
 <% if(typeof projectTests == 'undefined' || projectTests.length == 0) { %>
 
-<div class="card-body">
-    <h5 class="card-title">Vous n'avez pas encore de tests.</h5>
+<div class="card-body" id="testsSection">
+    <h5 class="card-title">Vous n'avez pas de tests.</h5>
     <form action="/project/<%= project.id %>/createTest" method="GET">
         <button type="submit" class="btn btn-outline-secondary" id="addTestButton">Ajouter un test</button>
     </form>

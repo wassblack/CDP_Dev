@@ -37,6 +37,8 @@ public class Sprint2Test
 			driver = new FirefoxDriver();
 		}
 		
+		driver.manage().window().maximize();
+		
 		register();
 		login();
 		createWorthlessProject();
@@ -233,6 +235,7 @@ public class Sprint2Test
 	    ((JavascriptExecutor) driver).executeScript(jsCheckCode, elementToCheck);
 	    
 	    // Submit it
+	    Thread.sleep(500);
 	    driver.findElement(By.cssSelector("#submitAddUserstoriesToSprint")).click();
 	    
 	    // Check if the user story was added to the sprint

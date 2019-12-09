@@ -34,6 +34,8 @@ public class Sprint1Test
 			System.setProperty("webdriver.gecko.driver", "WebDrivers/geckodriver.exe");
 			driver = new FirefoxDriver();
 		}
+		
+		driver.manage().window().maximize();
 	}
 	
 	@BeforeMethod

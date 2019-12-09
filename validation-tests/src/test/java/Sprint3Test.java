@@ -1,4 +1,3 @@
-import org.bson.Document;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -36,10 +35,11 @@ public class Sprint3Test
 			driver = new FirefoxDriver();
 		}
 		
+		driver.manage().window().maximize();
+		
 		register();
 		login();
 		createWorthlessProject();
-		createWorthlessUserDB();
 		createWorthlessUserstory();
 		createWorthlessSprint();
 		addUserstoryToSprint();
@@ -61,74 +61,14 @@ public class Sprint3Test
 
 		// Delete the test documents
 		database.getCollection("users").deleteOne(Filters.eq("email", "selenium@auto.com"));
-		database.getCollection("users").deleteOne(Filters.eq("email", "selenium-buddy@auto.com"));
 		database.getCollection("projects").deleteOne(Filters.and(Filters.eq("name", "Worthless project")
 				, Filters.eq("description", "This project is meant to be deleted")));
 		database.getCollection("userstories").deleteOne(Filters.eq("description", "Super description"));
-		//database.getCollection("userstories").deleteOne(Filters.eq("description", "Super description modifiée"));
 		
 		driver.quit();
 	}
 
-	// Issue ??
-	@Test
-	public void testCreateTest() throws Exception
-	{
-		// Click on the project name
-		driver.findElement(By.cssSelector("#projectPageLink")).click();
-
-		// Click on the tests url
-
-		// Fill the form to create a test
-		String testName = "Test_Selenium";
-		String testDesc = "Ce test va être supprimé à l'issue de l'exécution parce qu'il sert seulement de test.";
-		String testState = "PASSED";
-
-		driver.findElement(By.id("testsPageLink")).click();
-		driver.findElement(By.cssSelector("#name")).sendKeys(testName);
-		driver.findElement(By.cssSelector("#description")).sendKeys(testDesc);
-		driver.findElement(By.cssSelector("#state")).sendKeys(testState);
-
-		String jsCheckCode = "arguments[0].scrollIntoView(true); arguments[0].click();";
-		WebElement elementToCheck = driver.findElement(By.name("selectedUs"));
-		((JavascriptExecutor) driver).executeScript(jsCheckCode, elementToCheck);
-
-		driver.findElement(By.cssSelector("#submitCreate")).click();
-
-		
-		// Check if the task was added
-		WebElement taskSection = driver.findElement(By.cssSelector("#testsTable"));
-		Assert.assertEquals(true, 
-				taskSection.getText().contains(testName)
-				&& taskSection.getText().contains(testDesc)
-				&& taskSection.getText().contains(testState));
-	}
-
-	// Issue ??
-	@Test
-	public void testModifyTest() throws Exception
-	{
-		// Click on the project name
-		driver.findElement(By.cssSelector("#projectPageLink")).click();
 	
-		// Fill the form to modify a test
-		String newTestDesc = "Ceci est une nouvelle description";
-	
-		driver.findElement(By.id("testsPageLink")).click();
-		driver.findElement(By.cssSelector("modifyTest")).click();
-	
-		String jsCheckCode = "arguments[0].scrollIntoView(true); arguments[0].click();";
-		WebElement elementToCheck = driver.findElement(By.name("selectedUs"));
-		((JavascriptExecutor) driver).executeScript(jsCheckCode, elementToCheck);
-	
-		// Submit it
-		Thread.sleep(500);
-		driver.findElement(By.cssSelector("#submitCreate")).click();
-	
-		// Check if the task was added
-		WebElement testsSection = driver.findElement(By.cssSelector("#testsTable"));
-		Assert.assertEquals(true, testsSection.getText().contains(newTestDesc));
-	}
 
 	// Issue 13
 	@Test
@@ -236,7 +176,70 @@ public class Sprint3Test
 		Assert.assertEquals(true, taskSection.getText().contains("VOUS N'AVEZ PAS DE TÂCHES."));
 	}
 	
-	
+	// Issue 15
+	@Test
+	public void testCreateTest() throws Exception
+	{
+		// Click on the project name
+		driver.findElement(By.cssSelector("#projectPageLink")).click();
+
+		// Fill the form to create a test
+		String testName = "Test_Selenium";
+		String testDesc = "Ce test va être supprimé à l'issue de l'exécution parce qu'il sert seulement de test.";
+		String testState = "FAILED";
+
+		driver.findElement(By.id("testsPageLink")).click();
+		driver.findElement(By.id("addTestButton")).click();
+		driver.findElement(By.cssSelector("#name")).sendKeys(testName);
+		driver.findElement(By.cssSelector("#description")).sendKeys(testDesc);
+		driver.findElement(By.cssSelector("#submitCreateTest")).click();
+
+		// Check if the test was added
+		WebElement testsTable = driver.findElement(By.cssSelector("#testsTable"));
+		Assert.assertEquals(true, 
+				testsTable.getText().contains(testName)
+				&& testsTable.getText().contains(testDesc)
+				&& testsTable.getText().contains(testState));
+	}
+
+	// Issue 15
+	@Test
+	public void testModifyTest() throws Exception
+	{
+		// Click on the project name
+		driver.findElement(By.cssSelector("#projectPageLink")).click();
+
+		// Fill the form to modify a test
+		String newTestDesc = "Ceci est une nouvelle description";
+		driver.findElement(By.id("testsPageLink")).click();
+		driver.findElement(By.className("modifyTest")).click();
+		driver.findElement(By.cssSelector("#description")).clear();
+		driver.findElement(By.cssSelector("#description")).sendKeys(newTestDesc);
+
+		driver.findElement(By.cssSelector("#submitModifyTest")).click();
+
+		// Check if the test was modified
+		WebElement testsTable = driver.findElement(By.cssSelector("#testsTable"));
+		Assert.assertEquals(true, testsTable.getText().contains(newTestDesc));
+	}
+
+	// Issue 16
+	@Test
+	public void testDeleteTest() throws Exception
+	{
+		// Click on the project name
+		driver.findElement(By.cssSelector("#projectPageLink")).click();
+
+		// Click on the icon to delete a test
+		driver.findElement(By.id("testsPageLink")).click();
+		driver.findElement(By.className("deleteTest")).click();
+
+		// Check if the test was deleted
+		WebElement testsTable = driver.findElement(By.cssSelector("#testsSection"));
+		Assert.assertEquals(true, testsTable.getText().contains("VOUS N'AVEZ PAS DE TESTS."));
+	}
+
+
 	
 	public void login()
 	{
@@ -264,20 +267,6 @@ public class Sprint3Test
 		driver.findElement(By.cssSelector("#name")).sendKeys("Worthless project");
 		driver.findElement(By.cssSelector("#description")).sendKeys("This project is meant to be deleted");
 		driver.findElement(By.cssSelector("#submitCreate")).click();
-	}
-	
-	public void createWorthlessUserDB()
-	{
-		// Connection to MongoDB
-		MongoClient mongoClient = MongoClients.create("mongodb+srv://team:FRNK6OOMZq9PBdMq@cluster0-e1ewl.mongodb.net/scrumit?retryWrites=true&w=majority");
-		MongoDatabase database = mongoClient.getDatabase("scrumit");
-
-		// Insert a user to later add him as a contributor
-		Document user = new Document("lastname", "I'm selenium buddy")
-							.append("firstname", "I'm selenium buddy")
-							.append("email", "selenium-buddy@auto.com")
-							.append("password", "abcdef");
-		database.getCollection("users").insertOne(user);
 	}
 	
 	public void createWorthlessUserstory()
