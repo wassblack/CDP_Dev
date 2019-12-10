@@ -48,7 +48,7 @@ router.get('/project/:projectId/createSprint', ensureAuthenticated, controllerSp
  *        description:  Sprint end date
  *  responses:
  *    200':
- *      description: redirect to the project's main page
+ *      description: success, redirect to the project's main page
  */
 router.post('/project/:projectId/createSprint', ensureAuthenticated, controllerSprint.createSprint);
 
@@ -107,7 +107,7 @@ router.get('/project/:projectId/modifySprint/:sprintId', ensureAuthenticated, co
  *        description:  New sprint end date
  *  responses:
  *    200':
- *      description: redirect to the project's main page
+ *      description: success, redirect to the project's main page
  */
 router.post('/project/:projectId/modifySprint/:sprintId', ensureAuthenticated, controllerSprint.editSprint);
 
@@ -156,7 +156,7 @@ router.get('/project/:projectId/deleteSprint/:sprintId', ensureAuthenticated, co
  *        description:  Userstory to add to the sprint
  *  responses:
  *    200':
- *      description: redirect to the project's main page
+ *      description: success, redirect to the project's main page
  */
 router.post('/project/:projectId/addUs/:sprintId', ensureAuthenticated, controllerSprint.addUserStory);
 

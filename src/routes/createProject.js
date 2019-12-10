@@ -32,7 +32,7 @@ router.get('/createProject', ensureAuthenticated, controllerProject.displayCreat
  *        description:  Project description
  *  responses:
  *    200':
- *      description: redirect to the list of projects of the user
+ *      description: success, redirect to the list of projects of the user
  */
 router.post('/createProject', ensureAuthenticated, controllerProject.createProject);
 

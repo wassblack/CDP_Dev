@@ -17,7 +17,7 @@ router.get('/', ensureAuthenticated, controllerIndex.redirectToIndex);
 
 /**
  * @swagger
- * /:
+ * /Projects:
  *  get:
  *    description: Display the list of projects in which the user contributes
  *  responses:

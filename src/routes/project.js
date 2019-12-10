@@ -62,7 +62,7 @@ router.get('/project/:projectId/ModifyProject', ensureAuthenticated, controllerP
  *        description:  New project description
  *  responses:
  *    200':
- *      description: redirect to main page
+ *      description: success, redirect to main page
  */
 router.post('/project/:projectId', ensureAuthenticated, controllerProject.modifyProject);
 
@@ -118,7 +118,7 @@ router.get('/project/:projectId/addUser', ensureAuthenticated, controllerProject
  *        description: email of the user to add 
  *  responses:
  *    200':
- *      description: displays the add user to project page
+ *      description: success, displays the add user to project page
  */
 router.post('/project/:projectId/addUser', ensureAuthenticated, controllerProject.addUserToProject);
 
@@ -194,7 +194,7 @@ router.get('/project/:projectId/modifyTask/:taskId', ensureAuthenticated, contro
  *        description:  New task state        
  *  responses:
  *    200':
- *      description: displays the main project page
+ *      description: success, displays the main project page
  */
 router.post('/project/:projectId/modifyTask/:taskId', ensureAuthenticated, controllerTask.modifyTask);
 
@@ -226,7 +226,7 @@ router.post('/project/:projectId/modifyTask/:taskId', ensureAuthenticated, contr
  *        description: task state        
  *  responses:
  *    200':
- *      description: displays the main project page
+ *      description: success, displays the main project page
  */
 router.post('/project/:projectId/createTask', ensureAuthenticated, controllerTask.createTask);
 
@@ -275,7 +275,7 @@ router.get('/project/:projectId/deleteTask/:taskId', ensureAuthenticated, contro
  *        description: User story to link 
  *  responses:
  *    200':
- *      description: displays the main project page
+ *      description: success, displays the main project page
  */
 router.post('/project/:projectId/linkTask/:taskId', ensureAuthenticated, controllerTask.linkTask);
 
@@ -307,7 +307,7 @@ router.post('/project/:projectId/linkTask/:taskId', ensureAuthenticated, control
  *        description: userStory id
  *  responses:
  *    200':
- *      description: displays the main project page
+ *      description: success, displays the main project page
  */
 router.post('/project/:projectId/unlinkTask/:sprintId/:taskId/:userStoryId', ensureAuthenticated, controllerTask.unlinkTask);
 
@@ -378,7 +378,7 @@ router.get('/project/:projectId/createTest', ensureAuthenticated, controllerTest
  *        description: user story to link with the test
  *  responses:
  *    200':
- *      description: displays the current project's tests page
+ *      description: success, displays the current project's tests page
  */
 router.post('/project/:projectId/createTest', ensureAuthenticated, controllerTests.createTest);
 
@@ -442,7 +442,7 @@ router.get('/project/:projectId/modifyTest/:testId', ensureAuthenticated, contro
  *        description: new user story id
  *  responses:
  *    200':
- *      description: displays the current project's tests page
+ *      description: success, displays the current project's tests page
  * 
  */
 router.post('/project/:projectId/modifyTest/:testId', ensureAuthenticated, controllerTests.modifyTest);
