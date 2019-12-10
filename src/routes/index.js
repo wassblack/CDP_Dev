@@ -4,10 +4,26 @@ const controllerIndex = require('../controller/controller.index');
 //Must add to every resource access page
 const { ensureAuthenticated } = require('../config/authenticated');
 
-//Display all the projects in which the user contributes
+/**
+ * @swagger
+ * /:
+ *  get:
+ *    description: Redirect to /Projects
+ *  responses:
+ *    200':
+ *      description: redirection success
+ */
 router.get('/', ensureAuthenticated, controllerIndex.redirectToIndex);
 
-//Passing ensureAuthenticated
+/**
+ * @swagger
+ * /:
+ *  get:
+ *    description: Display the list of projects in which the user contributes
+ *  responses:
+ *    200':
+ *      description: display success
+ */
 router.get('/Projects', ensureAuthenticated, controllerIndex.displayIndex);
 
 
