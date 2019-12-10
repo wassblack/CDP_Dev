@@ -22,12 +22,12 @@ router.get('/createProject', ensureAuthenticated, controllerProject.displayCreat
  *  parameters:
  *      - in: formData
  *        name: name
- *        schema: 
+ *        schema:
  *          type: string
  *        description:  Project name
  *      - in: formData
  *        name: description
- *        schema: 
+ *        schema:
  *          type: string
  *        description:  Project description
  *  responses:

@@ -11,7 +11,7 @@ const { ensureAuthenticated } = require('../config/authenticated');
  *  parameters:
  *      - in: path
  *        name: projectId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the project
  *  responses:
@@ -28,22 +28,22 @@ router.get('/project/:projectId/createSprint', ensureAuthenticated, controllerSp
  *  parameters:
  *      - in: path
  *        name: projectId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the project
  *      - in: formData
  *        name: name
- *        schema: 
+ *        schema:
  *          type: string
  *        description:  Sprint name
  *      - in: formData
  *        name: startDate
- *        schema: 
+ *        schema:
  *          type: string
  *        description:  Sprint start date
  *      - in: formData
  *        name: endDate
- *        schema: 
+ *        schema:
  *          type: string
  *        description:  Sprint end date
  *  responses:
@@ -60,12 +60,12 @@ router.post('/project/:projectId/createSprint', ensureAuthenticated, controllerS
  *  parameters:
  *      - in: path
  *        name: projectId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the project
  *      - in: path
  *        name: sprintId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the sprint to modify
  *  responses:
@@ -82,27 +82,27 @@ router.get('/project/:projectId/modifySprint/:sprintId', ensureAuthenticated, co
  *  parameters:
  *      - in: path
  *        name: projectId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the project
  *      - in: path
  *        name: sprintId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the sprint
  *      - in: formData
  *        name: name
- *        schema: 
+ *        schema:
  *          type: string
  *        description:  New sprint name
  *      - in: formData
  *        name: startDate
- *        schema: 
+ *        schema:
  *          type: string
  *        description:  New sprint start date
  *      - in: formData
  *        name: endDate
- *        schema: 
+ *        schema:
  *          type: string
  *        description:  New sprint end date
  *  responses:
@@ -119,12 +119,12 @@ router.post('/project/:projectId/modifySprint/:sprintId', ensureAuthenticated, c
  *  parameters:
  *      - in: path
  *        name: projectId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the project
  *      - in: path
  *        name: sprintId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the sprint to delete
  *  responses:
@@ -141,17 +141,17 @@ router.get('/project/:projectId/deleteSprint/:sprintId', ensureAuthenticated, co
  *  parameters:
  *      - in: path
  *        name: projectId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the project
  *      - in: path
  *        name: sprintId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the sprint
  *      - in: formData
  *        name: selectedUs
- *        schema: 
+ *        schema:
  *          type: string
  *        description:  Userstory to add to the sprint
  *  responses:
@@ -168,17 +168,17 @@ router.post('/project/:projectId/addUs/:sprintId', ensureAuthenticated, controll
  *  parameters:
  *      - in: path
  *        name: projectId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the project
  *      - in: path
  *        name: sprintId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the sprint
  *      - in: path
  *        name: userStoryId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the userstory to remove
  *  responses:

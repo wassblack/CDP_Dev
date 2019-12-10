@@ -21,27 +21,27 @@ router.get('/register', controllerUser.displayRegister);
  *  parameters:
  *      - in: formData
  *        name: name
- *        schema: 
+ *        schema:
  *          type: string
  *        description:  Name of the user
  *      - in: formData
  *        name: firstname
- *        schema: 
+ *        schema:
  *          type: string
  *        description:  Firstname of the user
  *      - in: formData
  *        name: email
- *        schema: 
+ *        schema:
  *          type: string
  *        description:  Email of the user
  *      - in: formData
  *        name: password
- *        schema: 
+ *        schema:
  *          type: string
  *        description:  Password of the user
  *      - in: formData
  *        name: password2
- *        schema: 
+ *        schema:
  *          type: string
  *        description:  Password confirmed of the user
  *  responses:
@@ -69,12 +69,12 @@ router.get('/login', controllerUser.displayLogin);
  *  parameters:
  *      - in: formData
  *        name: email
- *        schema: 
+ *        schema:
  *          type: string
  *        description:  Email of the user
  *      - in: formData
  *        name: password
- *        schema: 
+ *        schema:
  *          type: string
  *        description:  Password of the user
  *  responses:

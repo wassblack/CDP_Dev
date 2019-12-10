@@ -11,7 +11,7 @@ const { ensureAuthenticated } = require('../config/authenticated');
  *  parameters:
  *      - in: path
  *        name: projectId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the project
  *  responses:
@@ -28,22 +28,22 @@ router.get('/project/:projectId/createUserStory', ensureAuthenticated, controlle
  *  parameters:
  *      - in: path
  *        name: projectId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the project
  *      - in: formData
  *        name: description
- *        schema: 
+ *        schema:
  *          type: string
  *        description:  Description of the userstory
  *      - in: formData
  *        name: difficulty
- *        schema: 
+ *        schema:
  *          type: string
  *        description:  Difficilty of the userstory
  *      - in: formData
  *        name: priority
- *        schema: 
+ *        schema:
  *          type: string
  *        description:  Priority of the userstory
  *  responses:
@@ -60,12 +60,12 @@ router.post('/project/:projectId/createUserStory', ensureAuthenticated, controll
  *  parameters:
  *      - in: path
  *        name: projectId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the project
  *      - in: path
  *        name: userStoryId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the userstory to modify
  *  responses:
@@ -82,27 +82,27 @@ router.get('/project/:projectId/editUserStory/:userStoryId', ensureAuthenticated
  *  parameters:
  *      - in: path
  *        name: projectId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the project
  *      - in: path
  *        name: userStoryId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the userstory to modify
  *      - in: formData
  *        name: description
- *        schema: 
+ *        schema:
  *          type: string
  *        description:  Description of the userstory
  *      - in: formData
  *        name: difficulty
- *        schema: 
+ *        schema:
  *          type: string
  *        description:  Difficilty of the userstory
  *      - in: formData
  *        name: priority
- *        schema: 
+ *        schema:
  *          type: string
  *        description:  Priority of the userstory
  *  responses:
@@ -119,17 +119,17 @@ router.post('/project/:projectId/editUserStory/:userStoryId', ensureAuthenticate
  *  parameters:
  *      - in: path
  *        name: projectId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the project
  *      - in: path
  *        name: userStoryId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the userstory to modify
  *      - in: path
  *        name: sprintId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the sprint in which is the userstory
  *  responses:

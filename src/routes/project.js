@@ -13,7 +13,7 @@ const { ensureAuthenticated } = require('../config/authenticated');
  *  parameters:
  *      - in: path
  *        name: projectId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the project
  *  responses:
@@ -30,7 +30,7 @@ router.get('/project/:projectId', ensureAuthenticated, controllerProject.display
  *  parameters:
  *      - in: path
  *        name: projectId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the project
  *  responses:
@@ -47,17 +47,17 @@ router.get('/project/:projectId/ModifyProject', ensureAuthenticated, controllerP
  *  parameters:
  *      - in: path
  *        name: projectId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the project
  *      - in: formData
  *        name: projectName
- *        schema: 
+ *        schema:
  *          type: string
  *        description:  New project name
  *      - in: formData
  *        name: projectDesc
- *        schema: 
+ *        schema:
  *          type: string
  *        description:  New project description
  *  responses:
@@ -74,7 +74,7 @@ router.post('/project/:projectId', ensureAuthenticated, controllerProject.modify
  *  parameters:
  *      - in: path
  *        name: projectId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the project
  *  responses:
@@ -91,7 +91,7 @@ router.get('/project/:projectId/delete', ensureAuthenticated, controllerProject.
  *  parameters:
  *      - in: path
  *        name: projectId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the project
  *  responses:
@@ -104,18 +104,18 @@ router.get('/project/:projectId/addUser', ensureAuthenticated, controllerProject
  * @swagger
  * /project/{projectId}/addUser:
  *  post:
- *    description:  Adds a user to a project 
+ *    description: Adds a user to a project 
  *  parameters:
  *      - in: path
  *        name: projectId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the project
  *      - in: formData
  *        name: newUser
- *        schema: 
+ *        schema:
  *          type: string
- *        description: email of the user to add 
+ *        description: email of the user to add
  *  responses:
  *    200':
  *      description: success, displays the add user to project page
@@ -130,7 +130,7 @@ router.post('/project/:projectId/addUser', ensureAuthenticated, controllerProjec
  *  parameters:
  *      - in: path
  *        name: projectId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the project
  *  responses:
@@ -147,14 +147,14 @@ router.get('/project/:projectId/createTask', ensureAuthenticated, controllerTask
  *  parameters:
  *      - in: path
  *        name: projectId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the project
  *      - in: path
  *        name: taskId
- *        schema: 
+ *        schema:
  *          type: string
- *        description: id of the task to modify  
+ *        description: id of the task to modify
  *  responses:
  *    200':
  *      description: displays the update task page
@@ -169,29 +169,29 @@ router.get('/project/:projectId/modifyTask/:taskId', ensureAuthenticated, contro
  *  parameters:
  *      - in: path
  *        name: projectId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the project
  *      - in: path
  *        name: taskId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the task
  *      - in: formData
  *        name: description
- *        schema: 
+ *        schema:
  *          type: string
- *        description:  New task description
+ *        description: New task description
  *      - in: formData
  *        name: developerId
- *        schema: 
+ *        schema:
  *          type: string
- *        description:  New task developer
+ *        description: New task developer
  *      - in: formData
  *        name: state
- *        schema: 
+ *        schema:
  *          type: number
- *        description:  New task state        
+ *        description: New task state     
  *  responses:
  *    200':
  *      description: success, displays the main project page
@@ -206,24 +206,24 @@ router.post('/project/:projectId/modifyTask/:taskId', ensureAuthenticated, contr
  *  parameters:
  *      - in: path
  *        name: projectId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the project
  *      - in: formData
  *        name: description
- *        schema: 
+ *        schema:
  *          type: string
  *        description: task description
  *      - in: formData
  *        name: developerId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: task developer id
  *      - in: formData
  *        name: task state
- *        schema: 
+ *        schema:
  *          type: number
- *        description: task state        
+ *        description: task state      
  *  responses:
  *    200':
  *      description: success, displays the main project page
@@ -238,12 +238,12 @@ router.post('/project/:projectId/createTask', ensureAuthenticated, controllerTas
  *  parameters:
  *      - in: path
  *        name: projectId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the project
  *      - in: path
  *        name: taskId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the task
  *  responses:
@@ -260,19 +260,19 @@ router.get('/project/:projectId/deleteTask/:taskId', ensureAuthenticated, contro
  *  parameters:
  *      - in: path
  *        name: projectId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the project
  *      - in: path
  *        name: taskId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the task
  *      - in: formData
  *        name: selectedUs
- *        schema: 
+ *        schema:
  *          type: json
- *        description: User story to link 
+ *        description: User story to link
  *  responses:
  *    200':
  *      description: success, displays the main project page
@@ -287,22 +287,22 @@ router.post('/project/:projectId/linkTask/:taskId', ensureAuthenticated, control
  *  parameters:
  *      - in: path
  *        name: projectId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Id of the project
  *      - in: path
  *        name: sprintId
- *        schema: 
+ *        schema:
  *          type: string
- *        description: Sprint id of the userStory to unlink 
+ *        description: Sprint id of the userStory to unlink
  *      - in: path
  *        name: taskId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: Task id of the linked user story
  *      - in: path
  *        name: userStoryId
- *        schema: 
+ *        schema:
  *          type: string
  *        description: userStory id
  *  responses:
@@ -443,7 +443,7 @@ router.get('/project/:projectId/modifyTest/:testId', ensureAuthenticated, contro
  *  responses:
  *    200':
  *      description: success, displays the current project's tests page
- * 
+ *
  */
 router.post('/project/:projectId/modifyTest/:testId', ensureAuthenticated, controllerTests.modifyTest);
 
